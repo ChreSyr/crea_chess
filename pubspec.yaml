@@ -26,11 +26,18 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^2.4.6
+  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
   freezed: ^2.4.5
 
 flutter:
   uses-material-design: true
   generate: true
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/crea_chess_icon_v1.png"
