@@ -6,7 +6,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart'
     hide Tuple2;
 import 'package:dartchess/dartchess.dart' as dc;
 
-import 'draw_shapes.dart';
+import '../../draw_shapes.dart';
 
 enum Mode {
   botPlay,

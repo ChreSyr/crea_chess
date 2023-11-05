@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "language": "English",
+  "learn": "Learn",
+  "play": "Play",
+  "settings": "Settings",
+  "learn_center": "Learning center",
+  "play_locally": "Play locally",
+  "play_ai": "Challenge an AI",
+  "choose_color": "Choose a color"
+}
