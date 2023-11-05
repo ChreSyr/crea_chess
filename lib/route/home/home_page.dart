@@ -1,4 +1,5 @@
 import 'package:crea_chess/l10n/l10n.dart';
+import 'package:crea_chess/route/home/screen/profile_screen.dart';
 import 'package:crea_chess/route/home/screen/select_game_page.dart';
 import 'package:crea_chess/route/home/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class HomePage extends StatelessWidget {
               // TODO : HomeScreen.getIcon / getLabel / getTitle
               children: const <Widget>[
                 SelectGameScreen(),
+                ProfileScreen(),
                 SettingsScreen(),
               ],
             ),
@@ -43,7 +45,11 @@ class HomePage extends StatelessWidget {
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.play_arrow), // stadia_controller
-                  label: context.l10n.learn,
+                  label: context.l10n.play,
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.person),
+                  label: context.l10n.profile,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.settings),

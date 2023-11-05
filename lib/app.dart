@@ -1,3 +1,4 @@
+import 'package:crea_chess/authentication/authentication_cubit.dart';
 import 'package:crea_chess/route/home/home_page.dart';
 import 'package:crea_chess/l10n/l10n.dart';
 import 'package:crea_chess/settings/cubit/preferences_cubit.dart';
@@ -12,9 +13,15 @@ class CreaChessApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    return BlocProvider(
-      create: (context) => PreferencesCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthenticationCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PreferencesCubit(),
+        ),
+      ],
       child: BlocBuilder<PreferencesCubit, PreferencesState>(
         builder: (context, preferences) {
           final color =
