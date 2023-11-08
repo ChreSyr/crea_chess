@@ -5,13 +5,22 @@ import 'package:crea_chess/package/atomic_design/widget/box.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/l10n/get_locale_flag.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/home/screen/home_screen.dart';
 import 'package:crea_chess/settings/cubit/preferences_cubit.dart';
 import 'package:crea_chess/settings/cubit/preferences_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends HomeScreen {
   const SettingsScreen({super.key});
+
+  @override
+  Icon getIcon() => const Icon(Icons.settings);
+
+  @override
+  String getTitle(AppLocalizations l10n) {
+    return l10n.settings;
+  }
 
   @override
   Widget build(BuildContext context) {

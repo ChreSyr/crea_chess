@@ -1,4 +1,5 @@
 import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/home/screen/home_screen.dart';
 import 'package:crea_chess/route/home/screen/profile_screen.dart';
 import 'package:crea_chess/route/home/screen/select_game_page.dart';
 import 'package:crea_chess/route/home/screen/settings_screen.dart';
@@ -19,10 +20,16 @@ class HomePage extends StatelessWidget {
 
   final PageController pageController = PageController(
       // initialPage: defaultScreenIndex,
-  );
+      );
 
   @override
   Widget build(BuildContext context) {
+    const screens = <HomeScreen>[
+      SelectGameScreen(),
+      ProfileScreen(),
+      SettingsScreen(),
+    ];
+
     return BlocProvider(
       create: (context) => _NavigationCubit(defaultScreenIndex),
       child: BlocBuilder<_NavigationCubit, int>(
@@ -32,29 +39,18 @@ class HomePage extends StatelessWidget {
             body: PageView(
               controller: pageController,
               onPageChanged: navCubit.set,
-              // TODO: HomeScreen.getIcon / getLabel / getTitle
-              children: const <Widget>[
-                SelectGameScreen(),
-                ProfileScreen(),
-                SettingsScreen(),
-              ],
+              children: screens,
             ),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: pageIndex,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.play_arrow), // stadia_controller
-                  label: context.l10n.play,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.person),
-                  label: context.l10n.profile,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.settings),
-                  label: context.l10n.settings,
-                ),
-              ],
+              items: screens
+                  .map(
+                    (e) => BottomNavigationBarItem(
+                      icon: e.getIcon(),
+                      label: e.getTitle(context.l10n),
+                    ),
+                  )
+                  .toList(),
               onTap: (newPageIndex) {
                 pageController.animateToPage(
                   newPageIndex,
