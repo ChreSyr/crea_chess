@@ -1,5 +1,6 @@
 import 'package:crea_chess/authentication/authentication_cubit.dart';
 import 'package:crea_chess/authentication/authentication_model.dart';
+import 'package:crea_chess/package/atomic_design/gap.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,7 +55,7 @@ class _SigninScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(height: 50),
+        CCGap.large,
 
         // logo
         const Icon(
@@ -62,7 +63,7 @@ class _SigninScreen extends StatelessWidget {
           size: 100,
         ),
 
-        const SizedBox(height: 50),
+        CCGap.large,
 
         // welcome back, you've been missed!
         Text(
@@ -73,7 +74,7 @@ class _SigninScreen extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 25),
+        CCGap.medium,
 
         // username textfield
         MyTextField(
@@ -82,7 +83,7 @@ class _SigninScreen extends StatelessWidget {
           obscureText: false,
         ),
 
-        const SizedBox(height: 10),
+        CCGap.small,
 
         // password textfield
         MyTextField(
@@ -91,7 +92,7 @@ class _SigninScreen extends StatelessWidget {
           obscureText: true,
         ),
 
-        const SizedBox(height: 10),
+        CCGap.small,
 
         // forgot password?
         Padding(
@@ -107,7 +108,7 @@ class _SigninScreen extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 25),
+        CCGap.medium,
 
         // sign in button
         FilledButton(
@@ -115,7 +116,7 @@ class _SigninScreen extends StatelessWidget {
           child: const Text('Sign in'),
         ),
 
-        const SizedBox(height: 50),
+        CCGap.large,
 
         // or continue with
         Padding(
@@ -145,7 +146,7 @@ class _SigninScreen extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 50),
+        CCGap.large,
 
         // google + apple sign in buttons
         const Row(
@@ -154,14 +155,14 @@ class _SigninScreen extends StatelessWidget {
             // google button
             SquareTile(imagePath: 'assets/icon/google_icon.png'),
 
-            SizedBox(width: 25),
+            CCGap.medium,
 
             // apple button
             SquareTile(imagePath: 'assets/icon/apple_icon.png')
           ],
         ),
 
-        const SizedBox(height: 50),
+        CCGap.large,
 
         // not a member? register now
         Row(
@@ -171,7 +172,7 @@ class _SigninScreen extends StatelessWidget {
               'Not a member?',
               style: TextStyle(color: Colors.grey[700]),
             ),
-            const SizedBox(width: 4),
+            CCGap.xsmall,
             const Text(
               'Register now',
               style: TextStyle(
