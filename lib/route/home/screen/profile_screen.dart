@@ -1,6 +1,11 @@
 import 'package:crea_chess/authentication/authentication_cubit.dart';
 import 'package:crea_chess/authentication/authentication_model.dart';
-import 'package:crea_chess/package/atomic_design/gap.dart';
+import 'package:crea_chess/package/atomic_design/decoration.dart';
+import 'package:crea_chess/package/atomic_design/widget/divider.dart';
+import 'package:crea_chess/package/atomic_design/widget/gap.dart';
+import 'package:crea_chess/package/atomic_design/padding.dart';
+import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:crea_chess/package/atomic_design/widget/card_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,8 +37,10 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationCubit, AuthenticationModel>(
       builder: (context, auth) {
-        return Center(
-          child: auth.isAbsent ? _SigninScreen() : const _ProfileScreen(),
+        return CCPadding.horizontalLarge(
+          child: Center(
+            child: auth.isAbsent ? _SigninScreen() : const _ProfileScreen(),
+          ),
         );
       },
     );
@@ -41,70 +48,53 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class _SigninScreen extends StatelessWidget {
-  _SigninScreen();
-
-  // text editing controllers
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  // sign user in method
-  void signUserIn() {}
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return ListView(
+      shrinkWrap: true,
       children: [
         CCGap.large,
 
-        // logo
-        const Icon(
-          Icons.lock,
-          size: 100,
+        // Welcome back !
+        const Text(
+          '😄',
+          style: TextStyle(fontSize: CCSize.xxxlarge),
+          textAlign: TextAlign.center,
+        ),
+        const Text(
+          'Bon retour parmi nous !',
+          textAlign: TextAlign.center,
         ),
 
-        CCGap.large,
-
-        // welcome back, you've been missed!
-        Text(
-          'Welcome back you\'ve been missed!',
-          style: TextStyle(
-            color: Colors.grey[700],
-            fontSize: 16,
-          ),
-        ),
-
-        CCGap.medium,
+        CCGap.xlarge,
 
         // username textfield
-        MyTextField(
-          controller: usernameController,
-          hintText: 'Username',
-          obscureText: false,
+        TextField(
+          decoration: CCInputDecoration(
+            context: context,
+            hintText: 'Username',
+          ),
         ),
 
         CCGap.small,
 
         // password textfield
-        MyTextField(
-          controller: passwordController,
-          hintText: 'Password',
+        TextField(
           obscureText: true,
+          decoration: CCInputDecoration(
+            context: context,
+            hintText: 'Password',
+          ),
         ),
 
         CCGap.small,
 
         // forgot password?
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                'Forgot Password?',
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ],
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () {},
+            child: const Text('Forgot Password?'),
           ),
         ),
 
@@ -112,53 +102,47 @@ class _SigninScreen extends StatelessWidget {
 
         // sign in button
         FilledButton(
-          onPressed: signUserIn,
+          onPressed: () {},
           child: const Text('Sign in'),
         ),
 
-        CCGap.large,
+        CCGap.xlarge,
 
         // or continue with
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Divider(
-                  thickness: 0.5,
-                  color: Colors.grey[400],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Text(
-                  'Or continue with',
-                  style: TextStyle(color: Colors.grey[700]),
-                ),
-              ),
-              Expanded(
-                child: Divider(
-                  thickness: 0.5,
-                  color: Colors.grey[400],
-                ),
-              ),
-            ],
-          ),
+        Row(
+          children: [
+            Expanded(child: CCDivider.xthin),
+            CCGap.small,
+            const Text('Or continue with'),
+            CCGap.small,
+            Expanded(child: CCDivider.xthin),
+          ],
         ),
 
         CCGap.large,
 
         // google + apple sign in buttons
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // google button
-            SquareTile(imagePath: 'assets/icon/google_icon.png'),
-
-            CCGap.medium,
-
-            // apple button
-            SquareTile(imagePath: 'assets/icon/apple_icon.png')
+            CardButton(
+              onTap: AuthService.signInWithGoogle,
+              child: CCPadding.allLarge(
+                child: Image.asset(
+                  'assets/icon/google_icon.png',
+                  height: CCSize.xxlarge,
+                ),
+              ),
+            ),
+            CCGap.large,
+            CardButton(
+              child: CCPadding.allLarge(
+                child: Image.asset(
+                  'assets/icon/apple_icon.png',
+                  height: CCSize.xxlarge,
+                ),
+              ),
+            )
           ],
         ),
 
@@ -168,17 +152,11 @@ class _SigninScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Not a member?',
-              style: TextStyle(color: Colors.grey[700]),
-            ),
+            const Text('Besoin d\'un compte ?'),
             CCGap.xsmall,
-            const Text(
-              'Register now',
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-              ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('S\'inscrire'),
             ),
           ],
         )
@@ -198,10 +176,12 @@ class _ProfileScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             CircleAvatar(
-              radius: 50,
+              radius: CCSize.xxlarge,
               backgroundImage: NetworkImage(auth.photo ?? ''),
             ),
+            CCGap.small,
             Text(auth.email ?? ''),
+            CCGap.large,
             ElevatedButton.icon(
               onPressed: context.read<AuthenticationCubit>().signoutRequested,
               icon: const Icon(Icons.logout),
@@ -210,65 +190,6 @@ class _ProfileScreen extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class SquareTile extends StatelessWidget {
-  final String imagePath;
-  const SquareTile({
-    super.key,
-    required this.imagePath,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.grey[200],
-      ),
-      child: Image.asset(
-        imagePath,
-        height: 40,
-      ),
-    );
-  }
-}
-
-class MyTextField extends StatelessWidget {
-  final TextEditingController? controller;
-  final String hintText;
-  final bool obscureText;
-
-  const MyTextField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    required this.obscureText,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-            fillColor: Colors.grey.shade200,
-            filled: true,
-            hintText: hintText,
-            hintStyle: TextStyle(color: Colors.grey[500])),
-      ),
     );
   }
 }
