@@ -10,7 +10,7 @@ class SelectGameScreen extends StatelessWidget {
       child: FilledButton(
         onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(
+          MaterialPageRoute<PlayPage>(
             builder: (context) => const PlayPage(),
           ),
         ),

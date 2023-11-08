@@ -1,35 +1,15 @@
-import 'package:crea_chess/package/authentication/authentication_cubit.dart';
-import 'package:crea_chess/package/authentication/authentication_model.dart';
 import 'package:crea_chess/package/atomic_design/decoration.dart';
-import 'package:crea_chess/package/atomic_design/widget/divider.dart';
-import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/atomic_design/padding.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/card_button.dart';
+import 'package:crea_chess/package/atomic_design/widget/divider.dart';
+import 'package:crea_chess/package/atomic_design/widget/gap.dart';
+import 'package:crea_chess/package/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/authentication/authentication_cubit.dart';
+import 'package:crea_chess/package/authentication/authentication_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
-class AuthService {
-  // Google sign in
-  static signInWithGoogle() async {
-    // begin interactive sign in process
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-
-    // obtain auth details from request
-    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
-
-    // create a new credential for user
-    final credential = GoogleAuthProvider.credential(
-      accessToken: gAuth.accessToken,
-      idToken: gAuth.idToken,
-    );
-
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
-}
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -127,7 +107,7 @@ class _SigninScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CardButton(
-              onTap: AuthService.signInWithGoogle,
+              onTap: AuthenticationCRUD.signInWithGoogle,
               child: CCPadding.allLarge(
                 child: Image.asset(
                   'assets/icon/google_icon.png',
@@ -143,7 +123,7 @@ class _SigninScreen extends StatelessWidget {
                   height: CCSize.xxlarge,
                 ),
               ),
-            )
+            ),
           ],
         ),
 
@@ -160,7 +140,7 @@ class _SigninScreen extends StatelessWidget {
               child: Text(context.l10n.registerNow),
             ),
           ],
-        )
+        ),
       ],
     );
   }

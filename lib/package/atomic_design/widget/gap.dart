@@ -1,5 +1,5 @@
-import 'package:gap/gap.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:gap/gap.dart';
 
 
 class CCGap {

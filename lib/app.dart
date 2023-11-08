@@ -1,6 +1,6 @@
 import 'package:crea_chess/package/authentication/authentication_cubit.dart';
-import 'package:crea_chess/route/home/home_page.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/home/home_page.dart';
 import 'package:crea_chess/settings/cubit/preferences_cubit.dart';
 import 'package:crea_chess/settings/cubit/preferences_state.dart';
 import 'package:crea_chess/utils/constants.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreaChessApp extends StatelessWidget {
-  const CreaChessApp({Key? key}) : super(key: key);
+  const CreaChessApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -32,7 +32,9 @@ class CreaChessApp extends StatelessWidget {
               useMaterial3: true,
               colorScheme: preferences.brightness == Brightness.dark
                   ? ColorScheme.highContrastDark(
-                      primary: color, secondary: color)
+                      primary: color,
+                      secondary: color,
+                    )
                   : ColorScheme.highContrastLight(primary: color),
             ),
             debugShowCheckedModeBanner: false, // hide debug banner at topleft

@@ -6,7 +6,6 @@ import 'package:crea_chess/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// TODO : download flag emoji locally, shouldn't need internet
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -29,12 +28,13 @@ class SettingsScreen extends StatelessWidget {
               preferencesCubit.setSeedColor(colorName);
               Navigator.pop(context);
             },
-            child: const Text('')),
+          child: const Text(''),
+        ),
       );
     }
 
     void showOptionsDialog(BuildContext context) {
-      showDialog(
+      showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
@@ -44,27 +44,27 @@ class SettingsScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildRoundButton("iratusGreen", context),
+                  buildRoundButton('iratusGreen', context),
                   const SizedBox(width: 20),
-                  buildRoundButton("green", context),
+                  buildRoundButton('green', context),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildRoundButton("blue", context),
+                  buildRoundButton('blue', context),
                   const SizedBox(width: 20),
-                  buildRoundButton("pink", context),
+                  buildRoundButton('pink', context),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildRoundButton("yellow", context),
+                  buildRoundButton('yellow', context),
                   const SizedBox(width: 20),
-                  buildRoundButton("orange", context),
+                  buildRoundButton('orange', context),
                 ],
               ),
               const SizedBox(height: 20),
@@ -88,9 +88,7 @@ class SettingsScreen extends StatelessWidget {
                     minimumSize: Size.zero,
                     padding: EdgeInsets.zero,
                   ),
-                  onPressed: () {
-                    preferencesCubit.toggleTheme();
-                  },
+                  onPressed: preferencesCubit.toggleTheme,
                   child: Icon(
                     preferences.isDarkMode ? Icons.nightlight : Icons.sunny,
                     size: 50,
@@ -110,7 +108,8 @@ class SettingsScreen extends StatelessWidget {
                     onPressed: () {
                       showOptionsDialog(context);
                     },
-                    child: const Text('')),
+                  child: const Text(''),
+                ),
               ),
               const SizedBox(height: 20),
               SizedBox(
@@ -121,16 +120,17 @@ class SettingsScreen extends StatelessWidget {
                       minimumSize: Size.zero,
                       padding: EdgeInsets.zero,
                     ),
-                    onPressed: () {
-                      preferencesCubit.toggleLocale();
-                    },
+                  onPressed: preferencesCubit.toggleLocale,
                     child: Text(
                         getLocaleFlag(
-                            Localizations.localeOf(context).languageCode),
+                      Localizations.localeOf(context).languageCode,
+                    ),
                         style: const TextStyle(
                           fontSize: 40,
                           fontFamily: 'NotoColorEmoji',
-                        ))),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

@@ -12,12 +12,15 @@ class PreferencesCubit extends HydratedCubit<PreferencesState> {
           brightness: Brightness.dark,
           languageCode: defaultLocale,
           seedColor: 'iratusGreen',
-        ));
+          ),
+        );
 
   void toggleTheme() => emit(state.copyWith(
       brightness: state.brightness == Brightness.light
           ? Brightness.dark
-          : Brightness.light));
+              : Brightness.light,
+        ),
+      );
 
   void setDarkTheme() => emit(state.copyWith(brightness: Brightness.dark));
 
@@ -28,7 +31,8 @@ class PreferencesCubit extends HydratedCubit<PreferencesState> {
   }
 
   void toggleLocale() => emit(
-      state.copyWith(languageCode: state.languageCode == 'fr' ? 'en' : 'fr'));
+        state.copyWith(languageCode: state.languageCode == 'fr' ? 'en' : 'fr'),
+      );
 
   @override
   PreferencesState? fromJson(Map<String, dynamic> json) {

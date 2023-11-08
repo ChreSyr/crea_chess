@@ -1,12 +1,13 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+
 import 'package:chessground/chessground.dart';
+import 'package:dartchess/dartchess.dart' as dc;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart'
     hide Tuple2;
-import 'package:dartchess/dartchess.dart' as dc;
+import 'package:flutter/material.dart';
 
 class DrawShapesPage extends StatefulWidget {
-  const DrawShapesPage({Key? key}) : super(key: key);
+  const DrawShapesPage({super.key});
 
   @override
   State<DrawShapesPage> createState() => _DrawShapesPageState();
@@ -29,7 +30,7 @@ class _DrawShapesPageState extends State<DrawShapesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +45,6 @@ class _DrawShapesPageState extends State<DrawShapesPage> {
               settings: BoardSettings(
                 pieceAssets: pieceSet.assets,
                 colorScheme: boardTheme.colors,
-                enableCoordinates: true,
                 drawShape: DrawShapeOptions(
                   enable: drawShapes,
                   onCompleteShape: _onCompleteShape,
@@ -67,13 +67,10 @@ class _DrawShapesPageState extends State<DrawShapesPage> {
               onMove: _onUserMoveFreePlay,
             ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ElevatedButton(
+                  onPressed: _toggleDrawing,
                   child: Text('Drawing: ${drawShapes ? 'ON' : 'OFF'}'),
-                  onPressed: () {
-                    _toggleDrawing();
-                  },
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
@@ -107,7 +104,7 @@ class _DrawShapesPageState extends State<DrawShapesPage> {
     );
   }
 
-  _toggleDrawing() {
+  void _toggleDrawing() {
     setState(() {
       drawShapes = !drawShapes;
     });

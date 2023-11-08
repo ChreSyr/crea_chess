@@ -1,11 +1,11 @@
-import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/border.dart';
+import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:flutter/material.dart';
 
 class CardButton extends StatelessWidget {
   const CardButton({
-    super.key,
     required this.child,
+    super.key,
     this.onTap,
   });
 

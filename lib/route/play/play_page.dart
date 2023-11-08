@@ -1,12 +1,12 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:chessground/chessground.dart';
+import 'package:crea_chess/draw_shapes.dart';
+import 'package:dartchess/dartchess.dart' as dc;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart'
     hide Tuple2;
-import 'package:dartchess/dartchess.dart' as dc;
-
-import '../../draw_shapes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 enum Mode {
   botPlay,
@@ -14,7 +14,7 @@ enum Mode {
 }
 
 class PlayPage extends StatefulWidget {
-  const PlayPage({Key? key}) : super(key: key);
+  const PlayPage({super.key});
 
   @override
   State<PlayPage> createState() => _HomePageState();
@@ -36,7 +36,7 @@ class _HomePageState extends State<PlayPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -45,42 +45,43 @@ class _HomePageState extends State<PlayPage> {
             : const Text('Free Play'),
       ),
       drawer: Drawer(
-          child: ListView(
-        children: [
-          ListTile(
-            title: const Text('Random Bot'),
-            onTap: () {
-              setState(() {
-                playMode = Mode.botPlay;
-              });
-              if (position.turn == dc.Side.black) {
-                _playBlackMove();
-              }
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Free Play'),
-            onTap: () {
-              setState(() {
-                playMode = Mode.freePlay;
-              });
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Draw Shapes'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DrawShapesPage(),
-                ),
-              );
-            },
-          ),
-        ],
-      )),
+        child: ListView(
+          children: [
+            ListTile(
+              title: const Text('Random Bot'),
+              onTap: () {
+                setState(() {
+                  playMode = Mode.botPlay;
+                });
+                if (position.turn == dc.Side.black) {
+                  _playBlackMove();
+                }
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Free Play'),
+              onTap: () {
+                setState(() {
+                  playMode = Mode.freePlay;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Draw Shapes'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<DrawShapesPage>(
+                    builder: (context) => const DrawShapesPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -90,7 +91,6 @@ class _HomePageState extends State<PlayPage> {
               settings: BoardSettings(
                 pieceAssets: pieceSet.assets,
                 colorScheme: boardTheme.colors,
-                enableCoordinates: true,
               ),
               data: BoardData(
                 interactableSide: playMode == Mode.botPlay
@@ -113,7 +113,6 @@ class _HomePageState extends State<PlayPage> {
               onPremove: _onSetPremove,
             ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ElevatedButton(
                   child:
@@ -124,10 +123,12 @@ class _HomePageState extends State<PlayPage> {
                     });
                     if (immersiveMode) {
                       SystemChrome.setEnabledSystemUIMode(
-                          SystemUiMode.immersiveSticky);
+                        SystemUiMode.immersiveSticky,
+                      );
                     } else {
                       SystemChrome.setEnabledSystemUIMode(
-                          SystemUiMode.edgeToEdge);
+                        SystemUiMode.edgeToEdge,
+                      );
                     }
                   },
                 ),
@@ -141,7 +142,6 @@ class _HomePageState extends State<PlayPage> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
                   children: [
                     ElevatedButton(
                       child: Text('Piece set: ${pieceSet.label}'),
@@ -180,17 +180,18 @@ class _HomePageState extends State<PlayPage> {
                 ),
                 if (playMode == Mode.freePlay)
                   Center(
-                      child: IconButton(
-                          onPressed: lastPos != null
-                              ? () => setState(() {
-                                    position = lastPos!;
-                                    fen = position.fen;
-                                    validMoves =
-                                        dc.algebraicLegalMoves(position);
-                                    lastPos = null;
-                                  })
-                              : null,
-                          icon: const Icon(Icons.chevron_left_sharp))),
+                    child: IconButton(
+                      onPressed: lastPos != null
+                          ? () => setState(() {
+                                position = lastPos!;
+                                fen = position.fen;
+                                validMoves = dc.algebraicLegalMoves(position);
+                                lastPos = null;
+                              })
+                          : null,
+                      icon: const Icon(Icons.chevron_left_sharp),
+                    ),
+                  ),
               ],
             ),
           ],
@@ -260,7 +261,11 @@ class _HomePageState extends State<PlayPage> {
     });
   }
 
-  void _onUserMoveAgainstBot(Move move, {bool? isDrop, bool? isPremove}) async {
+  Future<void> _onUserMoveAgainstBot(
+    Move move, {
+    bool? isDrop,
+    bool? isPremove,
+  }) async {
     lastPos = position;
     final m = dc.Move.fromUci(move.uci)!;
     setState(() {
@@ -273,16 +278,18 @@ class _HomePageState extends State<PlayPage> {
   }
 
   Future<void> _playBlackMove() async {
-    Future.delayed(const Duration(milliseconds: 10)).then((value) {
+    await Future<void>.delayed(const Duration(milliseconds: 10)).then((value) {
       setState(() {});
     });
     if (!position.isGameOver) {
       final random = Random();
-      await Future.delayed(Duration(milliseconds: random.nextInt(5500) + 500));
+      await Future<void>.delayed(
+        Duration(milliseconds: random.nextInt(5500) + 500),
+      );
       final allMoves = [
         for (final entry in position.legalMoves.entries)
           for (final dest in entry.value.squares)
-            dc.NormalMove(from: entry.key, to: dest)
+            dc.NormalMove(from: entry.key, to: dest),
       ];
       if (allMoves.isNotEmpty) {
         final mv = (allMoves..shuffle()).first;

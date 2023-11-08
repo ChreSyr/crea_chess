@@ -18,8 +18,7 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final PageController pageController = PageController(
-    initialPage: defaultScreenIndex,
-    keepPage: true,
+      // initialPage: defaultScreenIndex,
   );
 
   @override
@@ -28,12 +27,12 @@ class HomePage extends StatelessWidget {
       create: (context) => _NavigationCubit(defaultScreenIndex),
       child: BlocBuilder<_NavigationCubit, int>(
         builder: (context, pageIndex) {
-          var navCubit = context.read<_NavigationCubit>();
+          final navCubit = context.read<_NavigationCubit>();
           return Scaffold(
             body: PageView(
               controller: pageController,
               onPageChanged: navCubit.set,
-              // TODO : HomeScreen.getIcon / getLabel / getTitle
+              // TODO: HomeScreen.getIcon / getLabel / getTitle
               children: const <Widget>[
                 SelectGameScreen(),
                 ProfileScreen(),

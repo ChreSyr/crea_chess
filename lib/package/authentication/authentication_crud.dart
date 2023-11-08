@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationCRUD {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  static final GoogleSignIn _googleAuth = GoogleSignIn();
 
   static final _authenticationStreamController =
       StreamController<AuthenticationModel>();
@@ -34,17 +35,17 @@ class AuthenticationCRUD {
   }
 
   /// SignIn with Google
-  static signInWithGoogle() async {
+  static Future<void> signInWithGoogle() async {
     // begin interactive sign in process
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    final gUser = await _googleAuth.signIn();
 
     if (gUser == null) {
       // Handle the case where the user canceled the sign-in
-      return null;
+      return;
     }
 
     // obtain auth details from request
-    final GoogleSignInAuthentication gAuth = await gUser.authentication;
+    final gAuth = await gUser.authentication;
 
     // create a new credential for user
     final credential = GoogleAuthProvider.credential(
@@ -52,7 +53,7 @@ class AuthenticationCRUD {
       idToken: gAuth.idToken,
     );
 
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   /// SingOut current User
@@ -60,6 +61,6 @@ class AuthenticationCRUD {
     await _firebaseAuth.signOut();
 
     // Sign out to force the account chooser next time
-    await GoogleSignIn().signOut();
+    await _googleAuth.signOut();
   }
 }

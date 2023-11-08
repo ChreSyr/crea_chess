@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class CCPadding extends Padding {
   const CCPadding({
-    super.key,
     required super.padding,
+    super.key,
     super.child,
   });
 
