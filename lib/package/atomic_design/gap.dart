@@ -1,6 +1,9 @@
 import 'package:gap/gap.dart';
 
 class CCGap {
+  /// Gap(2)
+  static const xxsmall = Gap(2);
+
   /// Gap(4)
   static const xsmall = Gap(4);
 
