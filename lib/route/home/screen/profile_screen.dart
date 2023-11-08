@@ -6,6 +6,7 @@ import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/atomic_design/padding.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/card_button.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,8 +62,8 @@ class _SigninScreen extends StatelessWidget {
           style: TextStyle(fontSize: CCSize.xxxlarge),
           textAlign: TextAlign.center,
         ),
-        const Text(
-          'Bon retour parmi nous !',
+        Text(
+          context.l10n.welcomeBack,
           textAlign: TextAlign.center,
         ),
 
@@ -72,7 +73,7 @@ class _SigninScreen extends StatelessWidget {
         TextField(
           decoration: CCInputDecoration(
             context: context,
-            hintText: 'Username',
+            hintText: context.l10n.usernameOrMail,
           ),
         ),
 
@@ -83,7 +84,7 @@ class _SigninScreen extends StatelessWidget {
           obscureText: true,
           decoration: CCInputDecoration(
             context: context,
-            hintText: 'Password',
+            hintText: context.l10n.password,
           ),
         ),
 
@@ -94,7 +95,7 @@ class _SigninScreen extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () {},
-            child: const Text('Forgot Password?'),
+            child: Text(context.l10n.passwordForgot),
           ),
         ),
 
@@ -103,7 +104,7 @@ class _SigninScreen extends StatelessWidget {
         // sign in button
         FilledButton(
           onPressed: () {},
-          child: const Text('Sign in'),
+          child: Text(context.l10n.signin),
         ),
 
         CCGap.xlarge,
@@ -113,7 +114,7 @@ class _SigninScreen extends StatelessWidget {
           children: [
             Expanded(child: CCDivider.xthin),
             CCGap.small,
-            const Text('Or continue with'),
+            Text(context.l10n.orContinueWith),
             CCGap.small,
             Expanded(child: CCDivider.xthin),
           ],
@@ -152,11 +153,11 @@ class _SigninScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Besoin d\'un compte ?'),
+            Text(context.l10n.needAccount),
             CCGap.xsmall,
             TextButton(
               onPressed: () {},
-              child: const Text('S\'inscrire'),
+              child: Text(context.l10n.registerNow),
             ),
           ],
         )
@@ -185,7 +186,7 @@ class _ProfileScreen extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: context.read<AuthenticationCubit>().signoutRequested,
               icon: const Icon(Icons.logout),
-              label: const Text('Se déconnecter'),
+              label: Text(context.l10n.disconnect),
             ),
           ],
         );

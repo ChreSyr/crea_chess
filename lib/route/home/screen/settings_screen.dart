@@ -1,5 +1,5 @@
-import 'package:crea_chess/l10n/get_locale_flag.dart';
-import 'package:crea_chess/l10n/l10n.dart';
+import 'package:crea_chess/package/l10n/get_locale_flag.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/settings/cubit/preferences_cubit.dart';
 import 'package:crea_chess/settings/cubit/preferences_state.dart';
 import 'package:crea_chess/utils/constants.dart';
@@ -38,7 +38,7 @@ class SettingsScreen extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: Center(child: Text(context.l10n.choose_color)),
+            title: Center(child: Text(context.l10n.chooseColor)),
             children: <Widget>[
               const SizedBox(height: 30),
               Row(

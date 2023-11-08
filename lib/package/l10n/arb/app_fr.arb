@@ -1,0 +1,16 @@
+{
+  "@@locale": "fr",
+  "chooseColor": "Choisis une couleur",
+  "disconnect": "Se déconnecter",
+  "needAccount": "Besoin d'un compte ?",
+  "orContinueWith": "Ou continuer avec",
+  "password": "Mot de passe",
+  "passwordForgot": "Mot de passe oublié ?",
+  "play": "Jouer",
+  "profile": "Profil",
+  "registerNow": "S'inscrire",
+  "settings": "Réglages",
+  "signin": "Connexion",
+  "usernameOrMail": "Nom d'utilisateur ou mail",
+  "welcomeBack": "Bon retour parmi nous !"
+}

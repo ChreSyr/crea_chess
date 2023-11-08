@@ -1,0 +1,16 @@
+{
+  "@@locale": "en",
+  "chooseColor": "Choose a color",
+  "disconnect": "Sign out",
+  "needAccount": "Need an account ?",
+  "orContinueWith": "Or continue with",
+  "password": "Password",
+  "passwordForgot": "Forgot password ?",
+  "play": "Play",
+  "profile": "Profile",
+  "registerNow": "Register now",
+  "settings": "Settings",
+  "signin": "Sign in",
+  "usernameOrMail": "Username or email",
+  "welcomeBack": "Welcome back !"
+}

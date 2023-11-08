@@ -2,7 +2,7 @@
 
 import 'dart:ui';
 
-import 'package:crea_chess/l10n/l10n.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/settings/cubit/preferences_state.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 

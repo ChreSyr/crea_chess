@@ -1,6 +1,6 @@
 import 'package:crea_chess/authentication/authentication_cubit.dart';
 import 'package:crea_chess/route/home/home_page.dart';
-import 'package:crea_chess/l10n/l10n.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/settings/cubit/preferences_cubit.dart';
 import 'package:crea_chess/settings/cubit/preferences_state.dart';
 import 'package:crea_chess/utils/constants.dart';
