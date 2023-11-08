@@ -16,11 +16,7 @@ class _NavigationCubit extends Cubit<int> {
 const defaultScreenIndex = 0;
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
-
-  final PageController pageController = PageController(
-      // initialPage: defaultScreenIndex,
-      );
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +32,8 @@ class HomePage extends StatelessWidget {
         builder: (context, pageIndex) {
           final navCubit = context.read<_NavigationCubit>();
           return Scaffold(
-            body: PageView(
-              controller: pageController,
-              onPageChanged: navCubit.set,
+            body: IndexedStack(
+              index: pageIndex,
               children: screens,
             ),
             bottomNavigationBar: BottomNavigationBar(
@@ -51,13 +46,7 @@ class HomePage extends StatelessWidget {
                     ),
                   )
                   .toList(),
-              onTap: (newPageIndex) {
-                pageController.animateToPage(
-                  newPageIndex,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeInOut,
-                );
-              },
+              onTap: navCubit.set,
               type: BottomNavigationBarType.fixed, // even space between items
             ),
           );
