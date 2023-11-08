@@ -1,8 +1,8 @@
+import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/l10n/get_locale_flag.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/settings/cubit/preferences_cubit.dart';
 import 'package:crea_chess/settings/cubit/preferences_state.dart';
-import 'package:crea_chess/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,8 +13,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final preferencesCubit = context.read<PreferencesCubit>();
 
-    Widget buildRoundButton(String colorName, BuildContext context) {
-      // TODO : SeedColor.lightgreen
+    Widget buildRoundButton(SeedColor seedColor, BuildContext context) {
       return SizedBox(
         height: 80,
         width: 80,
@@ -22,10 +21,10 @@ class SettingsScreen extends StatelessWidget {
             style: TextButton.styleFrom(
               minimumSize: Size.zero,
               padding: EdgeInsets.zero,
-              backgroundColor: seedColors[colorName],
+            backgroundColor: seedColor.color,
             ),
             onPressed: () {
-              preferencesCubit.setSeedColor(colorName);
+            preferencesCubit.setSeedColor(seedColor);
               Navigator.pop(context);
             },
           child: const Text(''),
@@ -44,27 +43,27 @@ class SettingsScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildRoundButton('iratusGreen', context),
+                  buildRoundButton(SeedColor.lightgreen, context),
                   const SizedBox(width: 20),
-                  buildRoundButton('green', context),
+                  buildRoundButton(SeedColor.green, context),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildRoundButton('blue', context),
+                  buildRoundButton(SeedColor.blue, context),
                   const SizedBox(width: 20),
-                  buildRoundButton('pink', context),
+                  buildRoundButton(SeedColor.pink, context),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildRoundButton('yellow', context),
+                  buildRoundButton(SeedColor.yellow, context),
                   const SizedBox(width: 20),
-                  buildRoundButton('orange', context),
+                  buildRoundButton(SeedColor.orange, context),
                 ],
               ),
               const SizedBox(height: 20),
@@ -103,7 +102,7 @@ class SettingsScreen extends StatelessWidget {
                     style: TextButton.styleFrom(
                       minimumSize: Size.zero,
                       padding: EdgeInsets.zero,
-                      backgroundColor: seedColors[preferences.seedColor],
+                    backgroundColor: preferences.seedColor.color,
                     ),
                     onPressed: () {
                       showOptionsDialog(context);

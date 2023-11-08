@@ -24,7 +24,7 @@ mixin _$PreferencesState {
   @JsonKey(name: 'language_code')
   String get languageCode => throw _privateConstructorUsedError;
   @JsonKey(name: 'seed_color')
-  String get seedColor => throw _privateConstructorUsedError;
+  SeedColor get seedColor => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +41,7 @@ abstract class $PreferencesStateCopyWith<$Res> {
   $Res call(
       {Brightness brightness,
       @JsonKey(name: 'language_code') String languageCode,
-      @JsonKey(name: 'seed_color') String seedColor});
+      @JsonKey(name: 'seed_color') SeedColor seedColor});
 }
 
 /// @nodoc
@@ -73,7 +73,7 @@ class _$PreferencesStateCopyWithImpl<$Res, $Val extends PreferencesState>
       seedColor: null == seedColor
           ? _value.seedColor
           : seedColor // ignore: cast_nullable_to_non_nullable
-              as String,
+              as SeedColor,
     ) as $Val);
   }
 }
@@ -89,7 +89,7 @@ abstract class _$$PreferencesStateImplCopyWith<$Res>
   $Res call(
       {Brightness brightness,
       @JsonKey(name: 'language_code') String languageCode,
-      @JsonKey(name: 'seed_color') String seedColor});
+      @JsonKey(name: 'seed_color') SeedColor seedColor});
 }
 
 /// @nodoc
@@ -119,7 +119,7 @@ class __$$PreferencesStateImplCopyWithImpl<$Res>
       seedColor: null == seedColor
           ? _value.seedColor
           : seedColor // ignore: cast_nullable_to_non_nullable
-              as String,
+              as SeedColor,
     ));
   }
 }
@@ -143,7 +143,7 @@ class _$PreferencesStateImpl extends _PreferencesState {
   final String languageCode;
   @override
   @JsonKey(name: 'seed_color')
-  final String seedColor;
+  final SeedColor seedColor;
 
   @override
   String toString() {
@@ -187,7 +187,7 @@ abstract class _PreferencesState extends PreferencesState {
   factory _PreferencesState(
           {required final Brightness brightness,
           @JsonKey(name: 'language_code') required final String languageCode,
-          @JsonKey(name: 'seed_color') required final String seedColor}) =
+          @JsonKey(name: 'seed_color') required final SeedColor seedColor}) =
       _$PreferencesStateImpl;
   _PreferencesState._() : super._();
 
@@ -201,7 +201,7 @@ abstract class _PreferencesState extends PreferencesState {
   String get languageCode;
   @override
   @JsonKey(name: 'seed_color')
-  String get seedColor;
+  SeedColor get seedColor;
   @override
   @JsonKey(ignore: true)
   _$$PreferencesStateImplCopyWith<_$PreferencesStateImpl> get copyWith =>

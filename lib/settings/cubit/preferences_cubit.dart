@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/settings/cubit/preferences_state.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -11,7 +12,7 @@ class PreferencesCubit extends HydratedCubit<PreferencesState> {
       : super(PreferencesState(
           brightness: Brightness.dark,
           languageCode: defaultLocale,
-          seedColor: 'iratusGreen',
+            seedColor: SeedColor.lightgreen,
           ),
         );
 
@@ -26,7 +27,7 @@ class PreferencesCubit extends HydratedCubit<PreferencesState> {
 
   void setLigthTheme() => emit(state.copyWith(brightness: Brightness.light));
 
-  void setSeedColor(String seedColor) {
+  void setSeedColor(SeedColor seedColor) {
     emit(state.copyWith(seedColor: seedColor));
   }
 

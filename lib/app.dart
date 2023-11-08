@@ -3,7 +3,6 @@ import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/home/home_page.dart';
 import 'package:crea_chess/settings/cubit/preferences_cubit.dart';
 import 'package:crea_chess/settings/cubit/preferences_state.dart';
-import 'package:crea_chess/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,8 +23,8 @@ class CreaChessApp extends StatelessWidget {
       ],
       child: BlocBuilder<PreferencesCubit, PreferencesState>(
         builder: (context, preferences) {
-          final color =
-              seedColors[preferences.seedColor] ?? seedColors['iratusGreen']!;
+          final color = preferences.seedColor.color;
+          // seedColors[preferences.seedColor] ?? seedColors['iratusGreen']!;
           return MaterialApp(
             title: 'Crea-Chess Bêta',
             theme: ThemeData(
