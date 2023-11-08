@@ -1,5 +1,5 @@
-import 'package:crea_chess/authentication/authentication_cubit.dart';
-import 'package:crea_chess/authentication/authentication_model.dart';
+import 'package:crea_chess/package/authentication/authentication_cubit.dart';
+import 'package:crea_chess/package/authentication/authentication_model.dart';
 import 'package:crea_chess/package/atomic_design/decoration.dart';
 import 'package:crea_chess/package/atomic_design/widget/divider.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
