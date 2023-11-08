@@ -11,18 +11,7 @@ class AuthenticationCRUD {
   static final _authenticationStreamController =
       StreamController<AuthenticationModel>();
 
-  /// Get AuthenticationModel
-  static AuthenticationModel get() {
-    return AuthenticationModel.fromUser(_getUser());
-  }
-
-  /// Stream AuthenticationModel
-  static Stream<AuthenticationModel> stream() {
-    _streamUser().listen((user) {
-      _authenticationStreamController.add(AuthenticationModel.fromUser(user));
-    });
-    return _authenticationStreamController.stream;
-  }
+  // TODO : separate stream & signin methods
 
   /// Get User (firebase object)
   static User? _getUser() {
@@ -32,6 +21,27 @@ class AuthenticationCRUD {
   /// Stream User (firebase object) changes
   static Stream<User?> _streamUser() {
     return _firebaseAuth.userChanges();
+  }
+
+  /// Get AuthenticationModel
+  static AuthenticationModel get() {
+    return AuthenticationModel.fromUser(_getUser());
+  }
+
+  /// Send an email to reset the password
+  static Future<void> sendPasswordResetEmail({required String email}) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  /// SignIn with email and password
+  static Future<void> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    await _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   /// SignIn with Google
@@ -62,5 +72,18 @@ class AuthenticationCRUD {
 
     // Sign out to force the account chooser next time
     await _googleAuth.signOut();
+  }
+
+  /// Stream AuthenticationModel
+  static Stream<AuthenticationModel> stream() {
+    _streamUser().listen((user) {
+      _authenticationStreamController.add(AuthenticationModel.fromUser(user));
+    });
+    return _authenticationStreamController.stream;
+  }
+
+  /// True if mail in Authentication.
+  static Future<bool> userExist(String email) async {
+    return (await _firebaseAuth.fetchSignInMethodsForEmail(email)).isNotEmpty;
   }
 }

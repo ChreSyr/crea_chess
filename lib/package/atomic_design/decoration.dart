@@ -43,9 +43,6 @@ class CCInputDecoration extends InputDecoration {
     super.counterStyle,
     super.focusColor,
     super.hoverColor,
-    super.focusedBorder,
-    super.focusedErrorBorder,
-    super.disabledBorder,
     super.enabled,
     super.semanticCounterText,
     super.alignLabelWithHint,
@@ -54,6 +51,6 @@ class CCInputDecoration extends InputDecoration {
           border: const OutlineInputBorder(),
           fillColor: CCColor.fieldBackground(context),
           filled: true,
-          hintStyle: TextStyle(color: Colors.grey[500]),
+          hintStyle: TextStyle(color: CCColor.fieldHintColor),
         );
 }

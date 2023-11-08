@@ -2,6 +2,13 @@
   "@@locale": "fr",
   "chooseColor": "Choisis une couleur",
   "disconnect": "Se déconnecter",
+  "email": "Mail",
+  "formError": "{code, select, other{Erreur inconnue.} empty{Ce champ doit être renseigné.} notEmail{Ne semble pas être une adresse e-mail.} notPassword{TODO : qu'est-ce qu'un password ?} userNotFound{Impossible de trouver votre compte.} wrongPassword{Mot de passe incorrect. Réessayez ou cliquez sur \"Mot de passe oublié ?\" pour le réinitialiser.}}",
+  "@formError": {
+    "placeholders": {
+      "code": {}
+    }
+  },
   "needAccount": "Besoin d'un compte ?",
   "orContinueWith": "Ou continuer avec",
   "password": "Mot de passe",
@@ -11,6 +18,5 @@
   "registerNow": "S'inscrire",
   "settings": "Réglages",
   "signin": "Connexion",
-  "usernameOrMail": "Nom d'utilisateur ou mail",
   "welcomeBack": "Bon retour parmi nous !"
 }

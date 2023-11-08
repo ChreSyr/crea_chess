@@ -4,10 +4,16 @@ class CCColor {
   static Color background(BuildContext context) =>
       Theme.of(context).colorScheme.background;
 
+  static Color error(BuildContext context) =>
+      Theme.of(context).colorScheme.error;
+
   static Color fieldBackground(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? Theme.of(context).colorScheme.inverseSurface
           : Colors.grey[200]!;
+
+  static Color fieldHintColor = Colors.grey[500]!;
+  static Color fieldTextColor = Colors.black;
 
   static Color inverseSurface(BuildContext context) =>
       Theme.of(context).colorScheme.inverseSurface;

@@ -2,6 +2,13 @@
   "@@locale": "en",
   "chooseColor": "Choose a color",
   "disconnect": "Sign out",
+  "email": "Email",
+  "formError": "{code, select, other{Unknown error.} empty{This field is required.} notEmail{Doesn't appear to be an email address.} notPassword{TODO : qu'est-ce qu'un password ?} userNotFound{Unable to find your account.} wrongPassword{Incorrect password. Try again or click \"Forgot password ?\" to reset it.}}",
+  "@formError": {
+    "placeholders": {
+      "code": {}
+    }
+  },
   "needAccount": "Need an account ?",
   "orContinueWith": "Or continue with",
   "password": "Password",
@@ -11,6 +18,5 @@
   "registerNow": "Register now",
   "settings": "Settings",
   "signin": "Sign in",
-  "usernameOrMail": "Username or email",
   "welcomeBack": "Welcome back !"
 }
