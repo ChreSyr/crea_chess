@@ -1,4 +1,8 @@
 import 'package:crea_chess/package/atomic_design/color.dart';
+import 'package:crea_chess/package/atomic_design/padding.dart';
+import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:crea_chess/package/atomic_design/widget/box.dart';
+import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/l10n/get_locale_flag.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/settings/cubit/preferences_cubit.dart';
@@ -13,75 +17,13 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final preferencesCubit = context.read<PreferencesCubit>();
 
-    Widget buildRoundButton(SeedColor seedColor, BuildContext context) {
-      return SizedBox(
-        height: 80,
-        width: 80,
-        child: FilledButton(
-            style: TextButton.styleFrom(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.zero,
-            backgroundColor: seedColor.color,
-            ),
-            onPressed: () {
-            preferencesCubit.setSeedColor(seedColor);
-              Navigator.pop(context);
-            },
-          child: const Text(''),
-        ),
-      );
-    }
-
-    void showOptionsDialog(BuildContext context) {
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            title: Center(child: Text(context.l10n.chooseColor)),
-            children: <Widget>[
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  buildRoundButton(SeedColor.lightgreen, context),
-                  const SizedBox(width: 20),
-                  buildRoundButton(SeedColor.green, context),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  buildRoundButton(SeedColor.blue, context),
-                  const SizedBox(width: 20),
-                  buildRoundButton(SeedColor.pink, context),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  buildRoundButton(SeedColor.yellow, context),
-                  const SizedBox(width: 20),
-                  buildRoundButton(SeedColor.orange, context),
-                ],
-              ),
-              const SizedBox(height: 20),
-            ],
-          );
-        },
-      );
-    }
-
     return BlocBuilder<PreferencesCubit, PreferencesState>(
       builder: (context, preferences) {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
-                height: 80,
-                width: 80,
+              CCSmallBox(
                 child: FilledButton(
                   style: TextButton.styleFrom(
                     minimumSize: Size.zero,
@@ -94,39 +36,40 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 80,
-                width: 80,
+              CCGap.large,
+              CCSmallBox(
                 child: FilledButton(
-                    style: TextButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.zero,
+                  style: TextButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
                     backgroundColor: preferences.seedColor.color,
-                    ),
-                    onPressed: () {
-                      showOptionsDialog(context);
+                  ),
+                  onPressed: () => showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const Dialog(
+                        child: SelectSeedColorScreen(),
+                      );
                     },
+                  ),
                   child: const Text(''),
                 ),
               ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 80,
-                width: 80,
+              CCGap.large,
+              CCSmallBox(
                 child: FilledButton(
-                    style: TextButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.zero,
-                    ),
+                  style: TextButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
+                  ),
                   onPressed: preferencesCubit.toggleLocale,
-                    child: Text(
-                        getLocaleFlag(
+                  child: Text(
+                    getLocaleFlag(
                       Localizations.localeOf(context).languageCode,
                     ),
-                        style: const TextStyle(
-                          fontSize: 40,
-                          fontFamily: 'NotoColorEmoji',
+                    style: const TextStyle(
+                      fontSize: CCSize.xxlarge,
+                      fontFamily: 'NotoColorEmoji',
                     ),
                   ),
                 ),
@@ -135,6 +78,50 @@ class SettingsScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class SelectSeedColorScreen extends StatelessWidget {
+  const SelectSeedColorScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CCGap.large,
+        Center(
+          child: Text(
+            context.l10n.chooseColor,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        CCPadding.allXlarge(
+          child: GridView.count(
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            crossAxisSpacing: CCSize.large,
+            mainAxisSpacing: CCSize.large,
+            children: SeedColor.values
+                .map(
+                  (e) => FilledButton(
+                    style: TextButton.styleFrom(
+                      minimumSize: Size.zero,
+                      padding: EdgeInsets.zero,
+                      backgroundColor: e.color,
+                    ),
+                    onPressed: () {
+                      context.read<PreferencesCubit>().setSeedColor(e);
+                      Navigator.pop(context);
+                    },
+                    child: const Text(''),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -39,7 +39,7 @@ class _SigninScreen extends StatelessWidget {
         // Welcome back !
         const Text(
           '😄',
-          style: TextStyle(fontSize: CCSize.xxxlarge),
+          style: TextStyle(fontSize: CCWidgetSize.xxsmall),
           textAlign: TextAlign.center,
         ),
         Text(
