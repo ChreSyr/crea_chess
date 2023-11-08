@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+  "alreadyHaveAccount": "Already have an account ?",
   "chooseColor": "Choose a color",
   "disconnect": "Sign out",
   "email": "Email",

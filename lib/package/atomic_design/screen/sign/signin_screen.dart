@@ -1,6 +1,7 @@
 import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/decoration.dart';
 import 'package:crea_chess/package/atomic_design/padding.dart';
+import 'package:crea_chess/package/atomic_design/screen/sign/sign_screen.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/card_button.dart';
@@ -168,7 +169,7 @@ class _SigninScreen extends StatelessWidget {
                 Text(context.l10n.needAccount),
                 CCGap.xsmall,
                 TextButton(
-                  onPressed: () {},
+                  onPressed: context.read<SignNavCubit>().goToSignup,
                   child: Text(context.l10n.registerNow),
                 ),
               ],

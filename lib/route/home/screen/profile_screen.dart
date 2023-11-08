@@ -1,5 +1,5 @@
 import 'package:crea_chess/package/atomic_design/padding.dart';
-import 'package:crea_chess/package/atomic_design/screen/signin_screen.dart';
+import 'package:crea_chess/package/atomic_design/screen/sign/sign_screen.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/authentication/authentication_cubit.dart';
@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
         return CCPadding.horizontalLarge(
           child: Center(
             child:
-                auth.isAbsent ? const SigninScreen() : const _ProfileScreen(),
+                auth.isAbsent ? const SignScreen() : const _ProfileScreen(),
           ),
         );
       },
