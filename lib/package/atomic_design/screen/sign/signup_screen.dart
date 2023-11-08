@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/screen/sign/sign_screen.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,12 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: context.read<SignNavCubit>().goToSignin,
-      child: Text(context.l10n.alreadyHaveAccount),
+    return ColoredBox(
+      color: CCColor.background(context),
+      child: TextButton(
+        onPressed: context.read<SignNavCubit>().goToSignin,
+        child: Text(context.l10n.alreadyHaveAccount),
+      ),
     );
   }
 }

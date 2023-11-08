@@ -19,7 +19,12 @@ class SignScreen extends StatelessWidget {
       create: (context) => SignNavCubit(),
       child: BlocBuilder<SignNavCubit, int>(
         builder: (context, index) {
-          return index == 0 ? const SigninScreen() : const SignupScreen();
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            transitionBuilder: (child, animation) =>
+                ScaleTransition(scale: animation, child: child),
+            child: index == 0 ? const SigninScreen() : const SignupScreen(),
+          );
         },
       ),
     );

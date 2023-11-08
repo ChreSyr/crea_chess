@@ -22,7 +22,10 @@ class SigninScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SigninCubit(),
-      child: const _SigninScreen(),
+      child: ColoredBox(
+        color: CCColor.background(context),
+        child: const _SigninScreen(),
+      ),
     );
   }
 }
