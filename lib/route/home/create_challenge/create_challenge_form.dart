@@ -1,0 +1,43 @@
+import 'package:crea_chess/package/atomic_design/from_lichess/time_control.dart';
+import 'package:crea_chess/package/form/form_error.dart';
+import 'package:crea_chess/package/form/input/input_int.dart';
+import 'package:crea_chess/package/form/input/input_select.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/home/create_challenge/create_challenge_status.dart';
+import 'package:formz/formz.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'create_challenge_form.freezed.dart';
+
+@freezed
+class CreateChallengeForm with FormzMixin, _$CreateChallengeForm {
+  factory CreateChallengeForm({
+    required InputSelect<TimeControl> timeControl,
+    required InputInt budget,
+    required InputInt boardWidth,
+    required InputInt boardHeight,
+    required CreateChallengeStatus status,
+  }) = _CreateChallengeForm;
+
+  /// Required for the override getter
+  const CreateChallengeForm._();
+
+  @override
+  List<FormzInput<dynamic, dynamic>> get inputs => [
+        timeControl,
+        budget,
+        boardWidth,
+        boardHeight,
+      ];
+
+  String? errorMessage(
+    FormzInput<dynamic, FormError> input,
+    AppLocalizations l10n,
+  ) {
+    if (input.error == null) return null;
+    if (status != CreateChallengeStatus.editError) return null;
+    if (!inputs.contains(input)) return null;
+
+    return l10n.formError(input.error!.name);
+  }
+}

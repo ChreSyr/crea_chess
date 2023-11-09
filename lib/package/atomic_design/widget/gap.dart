@@ -15,9 +15,15 @@ class CCGap {
   /// Gap(16)
   static const medium = Gap(CCSize.medium);
 
-  /// Gap(32)
+  /// Gap(24)
   static const large = Gap(CCSize.large);
 
-  /// Gap(64)
+  /// Gap(32)
   static const xlarge = Gap(CCSize.xlarge);
+
+  /// Gap(48)
+  static const xxlarge = Gap(CCSize.xxlarge);
+
+  /// Gap(64)
+  static const xxxlarge = Gap(CCSize.xxxlarge);
 }
