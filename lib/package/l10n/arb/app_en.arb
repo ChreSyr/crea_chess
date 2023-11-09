@@ -4,20 +4,24 @@
   "chooseColor": "Choose a color",
   "disconnect": "Sign out",
   "email": "Email",
-  "formError": "{code, select, other{Unknown error.} empty{This field is required.} notEmail{Doesn't appear to be an email address.} notPassword{TODO : qu'est-ce qu'un password ?} userNotFound{Unable to find your account.} wrongPassword{Incorrect password. Try again or click \"Forgot password ?\" to reset it.}}",
+  "formError": "{code, select, other{Unknown error.} empty{This field is required.} notEmail{Doesn't appear to be an email address.} notPassword{TODO : qu'est-ce qu'un password ?} passwordsDontMatch{Passwords don't match.} userNotFound{Unable to find your account.} wrongPassword{Incorrect password. Try again or click \"Forgot password ?\" to reset it.}}",
   "@formError": {
     "placeholders": {
       "code": {}
     }
   },
+  "iAcceptConditions": "I have not read the Terms of Use or the Privacy Policy.",
   "needAccount": "Need an account ?",
   "orContinueWith": "Or continue with",
   "password": "Password",
+  "passwordConfirmation": "Password confirmation",
   "passwordForgot": "Forgot password ?",
   "play": "Play",
   "profile": "Profile",
   "registerNow": "Register now",
   "settings": "Settings",
   "signin": "Sign in",
-  "welcomeBack": "Welcome back !"
+  "signup": "Create an account",
+  "welcomeBack": "Welcome back !",
+  "welcomeAmongUs": "Welcome among us !"
 }

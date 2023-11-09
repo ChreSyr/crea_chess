@@ -74,6 +74,25 @@ class AuthenticationCRUD {
     await _googleAuth.signOut();
   }
 
+
+  /// SignUp with email and password
+  static Future<void> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    await _firebaseAuth.signInAnonymously();
+    final credential = EmailAuthProvider.credential(
+      email: email,
+      password: password,
+    );
+    final currentUser = _getUser();
+    if (currentUser != null) {
+      await currentUser.linkWithCredential(credential);
+    } else {
+      throw Exception();
+    }
+  }
+
   /// Stream AuthenticationModel
   static Stream<AuthenticationModel> stream() {
     _streamUser().listen((user) {

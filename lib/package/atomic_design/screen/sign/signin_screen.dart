@@ -40,7 +40,7 @@ class _SigninScreen extends StatelessWidget {
     return BlocConsumer<SigninCubit, SigninForm>(
       listener: (context, form) {
         switch (form.status) {
-          case SigninStatus.userNotFound:
+          case SigninStatus.userNotFound: // TODO: proposer de créer un compte
           case SigninStatus.wrongPassword:
             snackBarError(
               context,
@@ -53,7 +53,7 @@ class _SigninScreen extends StatelessWidget {
               'Check your mail box !',
             );
           case _:
-            return;
+            break;
         }
       },
       builder: (context, form) {

@@ -40,7 +40,7 @@ class CreaChessApp extends StatelessWidget {
             supportedLocales: AppLocalizations.supportedLocales,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             locale: locales[preferences.languageCode],
-            home: HomePage(),
+            home: const HomePage(),
           );
         },
       ),

@@ -4,20 +4,24 @@
   "chooseColor": "Choisis une couleur",
   "disconnect": "Se déconnecter",
   "email": "Mail",
-  "formError": "{code, select, other{Erreur inconnue.} empty{Ce champ doit être renseigné.} notEmail{Ne semble pas être une adresse e-mail.} notPassword{TODO : qu'est-ce qu'un password ?} userNotFound{Impossible de trouver votre compte.} wrongPassword{Mot de passe incorrect. Réessayez ou cliquez sur \"Mot de passe oublié ?\" pour le réinitialiser.}}",
+  "formError": "{code, select, other{Erreur inconnue.} empty{Ce champ doit être renseigné.} notEmail{Ne semble pas être une adresse e-mail.} notPassword{TODO : qu'est-ce qu'un password ?} passwordsDontMatch{Les mots de passe ne correspondent pas.} userNotFound{Impossible de trouver votre compte.} wrongPassword{Mot de passe incorrect. Réessayez ou cliquez sur \"Mot de passe oublié ?\" pour le réinitialiser.}}",
   "@formError": {
     "placeholders": {
       "code": {}
     }
   },
+  "iAcceptConditions": "Je n'ai lu ni les Conditions d'utilisation, ni la Politique de confidentialité.",
   "needAccount": "Besoin d'un compte ?",
   "orContinueWith": "Ou continuer avec",
   "password": "Mot de passe",
+  "passwordConfirmation": "Confirmation du mot de passe",
   "passwordForgot": "Mot de passe oublié ?",
   "play": "Jouer",
   "profile": "Profil",
   "registerNow": "S'inscrire",
   "settings": "Réglages",
   "signin": "Connexion",
-  "welcomeBack": "Bon retour parmi nous !"
+  "signup": "Créer un compte",
+  "welcomeBack": "Bon retour parmi nous !",
+  "welcomeAmongUs": "Bienvenue parmi nous !"
 }

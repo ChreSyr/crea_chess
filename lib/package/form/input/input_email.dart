@@ -1,5 +1,5 @@
 import 'package:crea_chess/package/form/form_error.dart';
-import 'package:crea_chess/package/form/input_string.dart';
+import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:regexpattern/regexpattern.dart';
 
 class InputEmail extends InputString {

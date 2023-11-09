@@ -1,6 +1,6 @@
 import 'package:crea_chess/package/authentication/authentication_crud.dart';
-import 'package:crea_chess/package/form/input_email.dart';
-import 'package:crea_chess/package/form/input_string.dart';
+import 'package:crea_chess/package/form/input/input_email.dart';
+import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/package/form/signin/signin_form.dart';
 import 'package:crea_chess/package/form/signin/signin_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,29 +17,19 @@ class SigninCubit extends Cubit<SigninForm> {
         );
 
   void clearFailure() {
-    emit(
-      state.copyWith(
-        status: SigninStatus.inProgress,
-      ),
-    );
+    emit(state.copyWith(status: SigninStatus.inProgress));
   }
 
   void emailChanged(String value) {
     emit(
       state.copyWith(
-        email: state.email.copyWith(
-          string: value.toLowerCase(),
-        ),
+        email: state.email.copyWith(string: value.toLowerCase()),
       ),
     );
   }
 
   void passwordChanged(String value) {
-    emit(
-      state.copyWith(
-        password: state.password.copyWith(string: value),
-      ),
-    );
+    emit(state.copyWith(password: state.password.copyWith(string: value)));
   }
 
   Future<void> submit() async {
@@ -47,22 +37,13 @@ class SigninCubit extends Cubit<SigninForm> {
       return emit(state.copyWith(status: SigninStatus.editError));
     }
 
-    emit(
-      state.copyWith(
-        status: SigninStatus.inProgress,
-      ),
-    );
+    emit(state.copyWith(status: SigninStatus.inProgress));
 
-    void userNotFound() => emit(
-          state.copyWith(
-            status: SigninStatus.userNotFound,
-          ),
-        );
+    void userNotFound() =>
+        emit(state.copyWith(status: SigninStatus.userNotFound));
 
     try {
-      if (!await AuthenticationCRUD.userExist(
-        state.email.value,
-      )) {
+      if (!await AuthenticationCRUD.userExist(state.email.value)) {
         return userNotFound();
       }
     } on FirebaseAuthException {
@@ -83,11 +64,7 @@ class SigninCubit extends Cubit<SigninForm> {
         ),
       );
     } catch (_) {
-      emit(
-        state.copyWith(
-          status: SigninStatus.wrongPassword,
-        ),
-      );
+      emit(state.copyWith(status: SigninStatus.wrongPassword));
     }
   }
 
