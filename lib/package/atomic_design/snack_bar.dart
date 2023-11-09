@@ -1,30 +1,32 @@
+import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:flutter/material.dart';
 
-void _snackBar(
-  BuildContext context,
-  Widget content, {
+void _snackBar({
+  required BuildContext context,
+  required String message,
+  required Color backgroundColor,
+  required Color textColor,
+  Duration duration = const Duration(seconds: 3),
   Widget? action,
   bool canClose = true,
-  Color color = Colors.red,
-  Duration duration = const Duration(seconds: 3),
 }) {
   final scaffoldMessenger = ScaffoldMessenger.of(context);
   scaffoldMessenger
     ..removeCurrentSnackBar()
     ..showSnackBar(
       SnackBar(
-        backgroundColor: color,
+        backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
         content: DefaultTextStyle(
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: textColor),
           child: GestureDetector(
             child: Row(
               children: [
-                Expanded(child: content),
+                Expanded(child: Text(message)),
                 if (action != null) action,
                 if (canClose)
                   IconButton(
-                    color: Colors.white,
+                    color: textColor,
                     onPressed: scaffoldMessenger.removeCurrentSnackBar,
                     icon: const Icon(Icons.close),
                   ),
@@ -39,16 +41,19 @@ void _snackBar(
 
 void snackBarError(BuildContext context, String message) {
   _snackBar(
-    context,
-    Text(message),
+    context: context,
+    message: message,
+    textColor: Colors.white,
+    backgroundColor: Colors.red,
   );
 }
 
 void snackBarNotify(BuildContext context, String message) {
   _snackBar(
-    context,
-    Text(message),
-    color: Colors.black38, // TODO: change
+    context: context,
+    message: message,
+    textColor: CCColor.onInverseSurface(context),
+    backgroundColor: CCColor.inverseSurface(context),
   );
 }
 

@@ -46,6 +46,7 @@ class _ProfileScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: CCSize.xxlarge,
+              backgroundColor: Colors.transparent,
               backgroundImage: NetworkImage(auth.photo ?? ''),
             ),
             CCGap.small,

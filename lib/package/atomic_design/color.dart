@@ -17,6 +17,9 @@ class CCColor {
 
   static Color inverseSurface(BuildContext context) =>
       Theme.of(context).colorScheme.inverseSurface;
+
+  static Color onInverseSurface(BuildContext context) =>
+      Theme.of(context).colorScheme.onInverseSurface;
 }
 
 enum SeedColor {
