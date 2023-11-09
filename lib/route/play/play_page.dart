@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:chessground/chessground.dart';
 import 'package:crea_chess/draw_shapes.dart';
-import 'package:dartchess/dartchess.dart' as dc;
+import 'package:dartchess_webok/dartchess_webok.dart' as dc;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart'
     hide Tuple2;
 import 'package:flutter/material.dart';

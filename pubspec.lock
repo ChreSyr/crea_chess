@@ -233,14 +233,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.3"
-  dartchess:
+  dartchess_webok:
     dependency: "direct main"
     description:
-      name: dartchess
-      sha256: e5439cc1b537d3e1d01ff699e9971cd53384c2fb95a31806f7f6fc0a64028ce5
+      name: dartchess_webok
+      sha256: ffa7ad8d754191276f0122a708a9818603f63a11a29fd969596fca0fa49c15ec
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.0"
+    version: "0.1.0"
   fake_async:
     dependency: transitive
     description:
