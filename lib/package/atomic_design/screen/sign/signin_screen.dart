@@ -40,7 +40,7 @@ class _SigninScreen extends StatelessWidget {
     return BlocConsumer<SigninCubit, SigninForm>(
       listener: (context, form) {
         switch (form.status) {
-          case SigninStatus.userNotFound: // TODO: proposer de créer un compte
+          case SigninStatus.userNotFound: // Todo: proposer de créer un compte
           case SigninStatus.wrongPassword:
             snackBarError(
               context,

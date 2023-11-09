@@ -36,7 +36,7 @@ class _SignupScreen extends StatelessWidget {
     return BlocConsumer<SignupCubit, SignupForm>(
       listener: (context, form) {
         switch (form.status) {
-          case SignupStatus.mailTaken: // TODO : l10n
+          case SignupStatus.mailTaken: // Todo : l10n
             snackBarError(
               context,
               context.l10n.formError(form.status.name),

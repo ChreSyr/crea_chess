@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
-import 'package:crea_chess/package/atomic_design/from_lichess/speed.dart';
-import 'package:crea_chess/package/atomic_design/from_lichess/time_control.dart';
 import 'package:crea_chess/package/atomic_design/padding.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/text_style.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
+import 'package:crea_chess/package/game/speed.dart';
+import 'package:crea_chess/package/game/time_control.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
@@ -115,8 +115,9 @@ class _SectionChoices extends StatelessWidget {
         .mapIndexed((index, choice) {
           return [
             Expanded(
-              child: _ChoiceChip(
-                key: ValueKey(choice),
+              child: ChoiceChip(
+                // TODO: back to non contrasted theme ?
+                selectedColor: Theme.of(context).colorScheme.primary,
                 label: Text(choice.display, style: CCTextStyle.bold),
                 selected: selected == choice,
                 onSelected: (bool selected) {
@@ -151,30 +152,6 @@ class _SectionChoices extends StatelessWidget {
           children: choiceWidgets,
         ),
       ],
-    );
-  }
-}
-
-class _ChoiceChip extends StatelessWidget {
-  const _ChoiceChip({
-    required this.label,
-    required this.selected,
-    required this.onSelected,
-    super.key,
-  });
-
-  final Widget label;
-  final bool selected;
-  // ignore: avoid_positional_boolean_parameters
-  final void Function(bool) onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return ChoiceChip(
-      label: label,
-      labelStyle: const TextStyle(letterSpacing: 1.2),
-      selected: selected,
-      onSelected: onSelected,
     );
   }
 }

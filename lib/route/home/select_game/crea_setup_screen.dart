@@ -1,11 +1,23 @@
-import 'package:crea_chess/package/atomic_design/from_lichess/time_control.dart';
-import 'package:crea_chess/package/atomic_design/from_lichess/time_control_modal.dart';
+import 'package:crea_chess/package/atomic_design/modal/time_control_modal.dart';
 import 'package:crea_chess/package/atomic_design/padding.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
+import 'package:crea_chess/package/game/time_control.dart';
 import 'package:crea_chess/route/home/create_challenge/create_challenge_cubit.dart';
 import 'package:crea_chess/route/home/create_challenge/create_challenge_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+// TODO: remove this temporary page
+class CreaSetupPage extends StatelessWidget {
+  const CreaSetupPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: CreaSetupScreen(),
+    );
+  }
+}
 
 class CreaSetupScreen extends StatelessWidget {
   const CreaSetupScreen({super.key});
@@ -61,8 +73,7 @@ class _CreaSetupScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  icon: Icon(form
-                      .timeControl.value.speed.icon), // TODO : timeControl.icon
+                  icon: Icon(form.timeControl.value.speed.icon),
                   label: Text(form.timeControl.value.display),
                 ),
               ],

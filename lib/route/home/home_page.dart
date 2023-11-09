@@ -1,10 +1,9 @@
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/home/screen/home_screen.dart';
 import 'package:crea_chess/route/home/screen/profile_screen.dart';
-import 'package:crea_chess/route/home/select_game/select_game_page.dart';
 import 'package:crea_chess/route/home/screen/settings_screen.dart';
+import 'package:crea_chess/route/home/select_game/select_game_page.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class _NavigationCubit extends Cubit<int> {

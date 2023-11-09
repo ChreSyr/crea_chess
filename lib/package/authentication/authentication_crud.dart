@@ -11,7 +11,7 @@ class AuthenticationCRUD {
   static final _authenticationStreamController =
       StreamController<AuthenticationModel>();
 
-  // TODO : separate stream & signin methods
+  // Todo : separate stream & signin methods
 
   /// Get User (firebase object)
   static User? _getUser() {

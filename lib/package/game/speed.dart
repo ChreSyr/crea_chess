@@ -1,4 +1,4 @@
-import 'package:crea_chess/package/atomic_design/from_lichess/time_control.dart';
+import 'package:crea_chess/package/game/time_control.dart';
 import 'package:flutter/material.dart';
 
 enum Speed {

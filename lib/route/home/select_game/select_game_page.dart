@@ -40,7 +40,7 @@ class SelectGameScreen extends HomeScreen {
               onPressed: () => Navigator.push<void>(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const CreaSetupScreen(),
+                  builder: (_) => const CreaSetupPage(),
                 ),
               ),
               icon: const Icon(Icons.add),

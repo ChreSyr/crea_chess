@@ -13,7 +13,7 @@ class SignupCubit extends Cubit<SignupForm> {
       : super(
           SignupForm(
             email: const InputEmail.pure(isRequired: true),
-            username: const InputString.pure(), // TODO ?
+            username: const InputString.pure(), // Todo?
             password: const InputPassword.pure(isRequired: true),
             confirmPassword: const InputPassword.pure(isRequired: true),
             acceptConditions: const InputBoolean.pure(isRequired: true),

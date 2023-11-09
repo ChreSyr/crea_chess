@@ -1,4 +1,4 @@
-// TODO: l10n
+// Todo: l10n
 enum SignupStatus {
   inProgress,
 
