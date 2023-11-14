@@ -1,5 +1,5 @@
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/home/nav_tab.dart';
+import 'package:crea_chess/route/nav/nav_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +25,7 @@ class NavPage extends StatelessWidget {
             body: IndexedStack(
               index: pageIndex,
               children:
-                  NavTab.values.map((e) => e.screen(context.l10n)).toList(),
+                  NavTab.values.map((e) => e.navScreen(context.l10n)).toList(),
             ),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: pageIndex,

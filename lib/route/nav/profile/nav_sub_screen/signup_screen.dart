@@ -1,6 +1,5 @@
 import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/decoration.dart';
-import 'package:crea_chess/package/atomic_design/screen/sign/sign_screen.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
@@ -8,20 +7,19 @@ import 'package:crea_chess/package/form/signup/signup_cubit.dart';
 import 'package:crea_chess/package/form/signup/signup_form.dart';
 import 'package:crea_chess/package/form/signup/signup_status.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/nav/nav_sub_screen.dart';
+import 'package:crea_chess/route/nav/profile/profile_nav_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends NavSubScreen {
   const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SignupCubit(),
-      child: ColoredBox(
-        color: CCColor.background(context),
-        child: const _SignupScreen(),
-      ),
+      child: const _SignupScreen(),
     );
   }
 }
@@ -147,9 +145,11 @@ class _SignupScreen extends StatelessWidget {
             CCGap.large,
 
             // already have an account ?
-            TextButton(
-        onPressed: context.read<SignNavCubit>().goToSignin,
-        child: Text(context.l10n.alreadyHaveAccount),
+            Center(
+              child: TextButton(
+                onPressed: context.read<ProfileNavCubit>().goSignin,
+                child: Text(context.l10n.alreadyHaveAccount),
+              ),
             ),
           ],
         );

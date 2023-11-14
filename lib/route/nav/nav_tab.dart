@@ -1,8 +1,8 @@
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/home/nav_screen/nav_screen.dart';
-import 'package:crea_chess/route/home/nav_screen/play_nav_screen.dart';
-import 'package:crea_chess/route/home/nav_screen/profile_nav_screen.dart';
-import 'package:crea_chess/route/home/nav_screen/settings_nav_screen.dart';
+import 'package:crea_chess/route/nav/nav_screen.dart';
+import 'package:crea_chess/route/nav/play/play_nav_screen.dart';
+import 'package:crea_chess/route/nav/profile/profile_nav_screen.dart';
+import 'package:crea_chess/route/nav/settings/settings_nav_screen.dart';
 import 'package:flutter/material.dart';
 
 enum NavTab {
@@ -25,7 +25,7 @@ enum NavTab {
     }
   }
 
-  NavScreen screen(AppLocalizations l10n) {
+  NavScreen navScreen(AppLocalizations l10n) {
     switch (this) {
       case NavTab.play:
         return const PlayNavScreen();

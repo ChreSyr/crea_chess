@@ -3,7 +3,7 @@ import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/authentication/authentication_cubit.dart';
 import 'package:crea_chess/package/authentication/authentication_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/home/nav_sub_screen/nav_sub_screen.dart';
+import 'package:crea_chess/route/nav/nav_sub_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

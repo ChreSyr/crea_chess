@@ -1,6 +1,6 @@
-import 'package:crea_chess/route/home/nav_screen/nav_screen.dart';
-import 'package:crea_chess/route/home/nav_sub_screen/settings/color_screen.dart';
-import 'package:crea_chess/route/home/nav_sub_screen/settings/settings_screen.dart';
+import 'package:crea_chess/route/nav/nav_screen.dart';
+import 'package:crea_chess/route/nav/settings/nav_sub_screen/color_screen.dart';
+import 'package:crea_chess/route/nav/settings/nav_sub_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

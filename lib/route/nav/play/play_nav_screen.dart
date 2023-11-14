@@ -1,6 +1,6 @@
-import 'package:crea_chess/route/home/nav_screen/nav_screen.dart';
-import 'package:crea_chess/route/home/nav_sub_screen/play/home_screen.dart';
-import 'package:crea_chess/route/home/nav_sub_screen/play/setup_screen.dart';
+import 'package:crea_chess/route/nav/nav_screen.dart';
+import 'package:crea_chess/route/nav/play/nav_sub_screen/create_challenge_screen.dart';
+import 'package:crea_chess/route/nav/play/nav_sub_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +9,7 @@ class PlayNavCubit extends NavCubit {
       : super(
           subscreens: [
             const HomeScreen(),
-            const SetupScreen(),
+            const CreateChallengeScreen(),
           ],
           initialIndex: 0,
         );
