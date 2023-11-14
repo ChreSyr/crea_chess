@@ -23,10 +23,7 @@ class SigninScreen extends NavSubScreen {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SigninCubit(),
-      child: ColoredBox(
-        color: CCColor.background(context),
-        child: const _SigninScreen(),
-      ),
+      child: const _SigninScreen(),
     );
   }
 }

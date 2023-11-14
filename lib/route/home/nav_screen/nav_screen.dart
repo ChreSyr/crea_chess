@@ -42,12 +42,12 @@ abstract class NavScreen<T extends NavCubit> extends StatelessWidget {
 
           return CCPadding.allLarge(
             child: Center(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                transitionBuilder: (child, animation) =>
-                    ScaleTransition(scale: animation, child: child),
-                child: child,
-              ),
+              // child: AnimatedSwitcher(
+              //   duration: const Duration(milliseconds: 200),
+              //   transitionBuilder: (child, animation) =>
+              //       ScaleTransition(scale: animation, child: child),
+              child: child,
+              // ),
             ),
           );
         },

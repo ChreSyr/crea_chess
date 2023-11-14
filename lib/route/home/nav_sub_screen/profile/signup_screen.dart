@@ -19,10 +19,7 @@ class SignupScreen extends NavSubScreen {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SignupCubit(),
-      child: ColoredBox(
-        color: CCColor.background(context),
-        child: const _SignupScreen(),
-      ),
+      child: const _SignupScreen(),
     );
   }
 }

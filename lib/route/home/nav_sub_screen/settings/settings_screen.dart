@@ -1,12 +1,10 @@
-import 'package:crea_chess/package/atomic_design/color.dart';
-import 'package:crea_chess/package/atomic_design/padding.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/box.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/l10n/get_locale_flag.dart';
-import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/package/preferences/preferences_cubit.dart';
 import 'package:crea_chess/package/preferences/preferences_state.dart';
+import 'package:crea_chess/route/home/nav_screen/settings_nav_screen.dart';
 import 'package:crea_chess/route/home/nav_sub_screen/nav_sub_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,109 +18,56 @@ class SettingsScreen extends NavSubScreen {
 
     return BlocBuilder<PreferencesCubit, PreferencesState>(
       builder: (context, preferences) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CCSmallBox(
-                child: FilledButton(
-                  style: TextButton.styleFrom(
-                    minimumSize: Size.zero,
-                    padding: EdgeInsets.zero,
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CCSmallBox(
+              child: FilledButton(
+                style: TextButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.zero,
+                ),
+                onPressed: preferencesCubit.toggleTheme,
+                child: Icon(
+                  preferences.isDarkMode ? Icons.nightlight : Icons.sunny,
+                  size: 50,
+                ),
+              ),
+            ),
+            CCGap.large,
+            CCSmallBox(
+              child: FilledButton(
+                style: TextButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.zero,
+                  backgroundColor: preferences.seedColor.color,
+                ),
+                onPressed: context.read<SettingsNavCubit>().goColor,
+                child: const Text(''),
+              ),
+            ),
+            CCGap.large,
+            CCSmallBox(
+              child: FilledButton(
+                style: TextButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.zero,
+                ),
+                onPressed: preferencesCubit.toggleLocale,
+                child: Text(
+                  getLocaleFlag(
+                    Localizations.localeOf(context).languageCode,
                   ),
-                  onPressed: preferencesCubit.toggleTheme,
-                  child: Icon(
-                    preferences.isDarkMode ? Icons.nightlight : Icons.sunny,
-                    size: 50,
+                  style: const TextStyle(
+                    fontSize: CCSize.xxlarge,
+                    fontFamily: 'NotoColorEmoji',
                   ),
                 ),
               ),
-              CCGap.large,
-              CCSmallBox(
-                child: FilledButton(
-                  style: TextButton.styleFrom(
-                    minimumSize: Size.zero,
-                    padding: EdgeInsets.zero,
-                    backgroundColor: preferences.seedColor.color,
-                  ),
-                  onPressed: () => showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const Dialog(
-                        child: SelectSeedColorScreen(),
-                      );
-                    },
-                  ),
-                  child: const Text(''),
-                ),
-              ),
-              CCGap.large,
-              CCSmallBox(
-                child: FilledButton(
-                  style: TextButton.styleFrom(
-                    minimumSize: Size.zero,
-                    padding: EdgeInsets.zero,
-                  ),
-                  onPressed: preferencesCubit.toggleLocale,
-                  child: Text(
-                    getLocaleFlag(
-                      Localizations.localeOf(context).languageCode,
-                    ),
-                    style: const TextStyle(
-                      fontSize: CCSize.xxlarge,
-                      fontFamily: 'NotoColorEmoji',
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         );
       },
-    );
-  }
-}
-
-class SelectSeedColorScreen extends StatelessWidget {
-  const SelectSeedColorScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CCGap.large,
-        Center(
-          child: Text(
-            context.l10n.chooseColor,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
-        CCPadding.allXlarge(
-          child: GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            crossAxisSpacing: CCSize.large,
-            mainAxisSpacing: CCSize.large,
-            children: SeedColor.values
-                .map(
-                  (e) => FilledButton(
-                    style: TextButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.zero,
-                      backgroundColor: e.color,
-                    ),
-                    onPressed: () {
-                      context.read<PreferencesCubit>().setSeedColor(e);
-                      Navigator.pop(context);
-                    },
-                    child: const Text(''),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-      ],
     );
   }
 }
