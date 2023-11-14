@@ -116,7 +116,6 @@ class _SectionChoices extends StatelessWidget {
           return [
             Expanded(
               child: ChoiceChip(
-                // TODO: back to non contrasted theme ?
                 selectedColor: Theme.of(context).colorScheme.primary,
                 label: Text(choice.display, style: CCTextStyle.bold),
                 selected: selected == choice,

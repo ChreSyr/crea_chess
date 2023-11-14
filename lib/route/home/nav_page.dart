@@ -1,8 +1,5 @@
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/home/screen/home_screen.dart';
-import 'package:crea_chess/route/home/screen/profile_screen.dart';
-import 'package:crea_chess/route/home/screen/settings_screen.dart';
-import 'package:crea_chess/route/home/select_game/select_game_page.dart';
+import 'package:crea_chess/route/home/nav_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,17 +11,11 @@ class _NavigationCubit extends Cubit<int> {
 
 const defaultScreenIndex = 0;
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class NavPage extends StatelessWidget {
+  const NavPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const screens = <HomeScreen>[
-      SelectGameScreen(),
-      ProfileScreen(),
-      SettingsScreen(),
-    ];
-
     return BlocProvider(
       create: (context) => _NavigationCubit(defaultScreenIndex),
       child: BlocBuilder<_NavigationCubit, int>(
@@ -33,15 +24,16 @@ class HomePage extends StatelessWidget {
           return Scaffold(
             body: IndexedStack(
               index: pageIndex,
-              children: screens,
+              children:
+                  NavTab.values.map((e) => e.screen(context.l10n)).toList(),
             ),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: pageIndex,
-              items: screens
+              items: NavTab.values
                   .map(
                     (e) => BottomNavigationBarItem(
-                      icon: e.getIcon(),
-                      label: e.getTitle(context.l10n),
+                      icon: Icon(e.iconData),
+                      label: e.label(context.l10n),
                     ),
                   )
                   .toList(),
