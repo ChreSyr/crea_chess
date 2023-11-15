@@ -41,9 +41,11 @@ abstract class NavScreen<T extends NavCubit> extends StatelessWidget {
               child = navCubit.subscreens.first;
             }
 
-            return CCPadding.allLarge(
-              child: Center(
-                child: child,
+            return SafeArea(
+              child: CCPadding.allLarge(
+                child: Center(
+                  child: child,
+                ),
               ),
             );
           },

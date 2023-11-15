@@ -33,4 +33,10 @@ class CCWidgetSize {
 
   /// 96.0
   static const small = 96.0;
+
+  /// 112.0
+  static const medium = 112.0;
+
+  /// 128.0
+  static const large = 128.0;
 }

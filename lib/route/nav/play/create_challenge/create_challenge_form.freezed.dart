@@ -19,8 +19,7 @@ mixin _$CreateChallengeForm {
   InputSelect<TimeControl> get timeControl =>
       throw _privateConstructorUsedError;
   InputInt get budget => throw _privateConstructorUsedError;
-  InputInt get boardWidth => throw _privateConstructorUsedError;
-  InputInt get boardHeight => throw _privateConstructorUsedError;
+  InputSelect<BoardSize> get boardSize => throw _privateConstructorUsedError;
   CreateChallengeStatus get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -37,8 +36,7 @@ abstract class $CreateChallengeFormCopyWith<$Res> {
   $Res call(
       {InputSelect<TimeControl> timeControl,
       InputInt budget,
-      InputInt boardWidth,
-      InputInt boardHeight,
+      InputSelect<BoardSize> boardSize,
       CreateChallengeStatus status});
 }
 
@@ -57,8 +55,7 @@ class _$CreateChallengeFormCopyWithImpl<$Res, $Val extends CreateChallengeForm>
   $Res call({
     Object? timeControl = null,
     Object? budget = null,
-    Object? boardWidth = null,
-    Object? boardHeight = null,
+    Object? boardSize = null,
     Object? status = null,
   }) {
     return _then(_value.copyWith(
@@ -70,14 +67,10 @@ class _$CreateChallengeFormCopyWithImpl<$Res, $Val extends CreateChallengeForm>
           ? _value.budget
           : budget // ignore: cast_nullable_to_non_nullable
               as InputInt,
-      boardWidth: null == boardWidth
-          ? _value.boardWidth
-          : boardWidth // ignore: cast_nullable_to_non_nullable
-              as InputInt,
-      boardHeight: null == boardHeight
-          ? _value.boardHeight
-          : boardHeight // ignore: cast_nullable_to_non_nullable
-              as InputInt,
+      boardSize: null == boardSize
+          ? _value.boardSize
+          : boardSize // ignore: cast_nullable_to_non_nullable
+              as InputSelect<BoardSize>,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -97,8 +90,7 @@ abstract class _$$CreateChallengeFormImplCopyWith<$Res>
   $Res call(
       {InputSelect<TimeControl> timeControl,
       InputInt budget,
-      InputInt boardWidth,
-      InputInt boardHeight,
+      InputSelect<BoardSize> boardSize,
       CreateChallengeStatus status});
 }
 
@@ -115,8 +107,7 @@ class __$$CreateChallengeFormImplCopyWithImpl<$Res>
   $Res call({
     Object? timeControl = null,
     Object? budget = null,
-    Object? boardWidth = null,
-    Object? boardHeight = null,
+    Object? boardSize = null,
     Object? status = null,
   }) {
     return _then(_$CreateChallengeFormImpl(
@@ -128,14 +119,10 @@ class __$$CreateChallengeFormImplCopyWithImpl<$Res>
           ? _value.budget
           : budget // ignore: cast_nullable_to_non_nullable
               as InputInt,
-      boardWidth: null == boardWidth
-          ? _value.boardWidth
-          : boardWidth // ignore: cast_nullable_to_non_nullable
-              as InputInt,
-      boardHeight: null == boardHeight
-          ? _value.boardHeight
-          : boardHeight // ignore: cast_nullable_to_non_nullable
-              as InputInt,
+      boardSize: null == boardSize
+          ? _value.boardSize
+          : boardSize // ignore: cast_nullable_to_non_nullable
+              as InputSelect<BoardSize>,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -150,8 +137,7 @@ class _$CreateChallengeFormImpl extends _CreateChallengeForm {
   _$CreateChallengeFormImpl(
       {required this.timeControl,
       required this.budget,
-      required this.boardWidth,
-      required this.boardHeight,
+      required this.boardSize,
       required this.status})
       : super._();
 
@@ -160,15 +146,13 @@ class _$CreateChallengeFormImpl extends _CreateChallengeForm {
   @override
   final InputInt budget;
   @override
-  final InputInt boardWidth;
-  @override
-  final InputInt boardHeight;
+  final InputSelect<BoardSize> boardSize;
   @override
   final CreateChallengeStatus status;
 
   @override
   String toString() {
-    return 'CreateChallengeForm(timeControl: $timeControl, budget: $budget, boardWidth: $boardWidth, boardHeight: $boardHeight, status: $status)';
+    return 'CreateChallengeForm(timeControl: $timeControl, budget: $budget, boardSize: $boardSize, status: $status)';
   }
 
   @override
@@ -179,16 +163,14 @@ class _$CreateChallengeFormImpl extends _CreateChallengeForm {
             (identical(other.timeControl, timeControl) ||
                 other.timeControl == timeControl) &&
             (identical(other.budget, budget) || other.budget == budget) &&
-            (identical(other.boardWidth, boardWidth) ||
-                other.boardWidth == boardWidth) &&
-            (identical(other.boardHeight, boardHeight) ||
-                other.boardHeight == boardHeight) &&
+            (identical(other.boardSize, boardSize) ||
+                other.boardSize == boardSize) &&
             (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, timeControl, budget, boardWidth, boardHeight, status);
+  int get hashCode =>
+      Object.hash(runtimeType, timeControl, budget, boardSize, status);
 
   @JsonKey(ignore: true)
   @override
@@ -202,8 +184,7 @@ abstract class _CreateChallengeForm extends CreateChallengeForm {
   factory _CreateChallengeForm(
       {required final InputSelect<TimeControl> timeControl,
       required final InputInt budget,
-      required final InputInt boardWidth,
-      required final InputInt boardHeight,
+      required final InputSelect<BoardSize> boardSize,
       required final CreateChallengeStatus status}) = _$CreateChallengeFormImpl;
   _CreateChallengeForm._() : super._();
 
@@ -212,9 +193,7 @@ abstract class _CreateChallengeForm extends CreateChallengeForm {
   @override
   InputInt get budget;
   @override
-  InputInt get boardWidth;
-  @override
-  InputInt get boardHeight;
+  InputSelect<BoardSize> get boardSize;
   @override
   CreateChallengeStatus get status;
   @override

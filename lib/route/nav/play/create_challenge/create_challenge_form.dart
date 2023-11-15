@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/modal/board_size_modal.dart';
 import 'package:crea_chess/package/form/form_error.dart';
 import 'package:crea_chess/package/form/input/input_int.dart';
 import 'package:crea_chess/package/form/input/input_select.dart';
@@ -14,8 +15,7 @@ class CreateChallengeForm with FormzMixin, _$CreateChallengeForm {
   factory CreateChallengeForm({
     required InputSelect<TimeControl> timeControl,
     required InputInt budget,
-    required InputInt boardWidth,
-    required InputInt boardHeight,
+    required InputSelect<BoardSize> boardSize,
     required CreateChallengeStatus status,
   }) = _CreateChallengeForm;
 
@@ -26,8 +26,7 @@ class CreateChallengeForm with FormzMixin, _$CreateChallengeForm {
   List<FormzInput<dynamic, dynamic>> get inputs => [
         timeControl,
         budget,
-        boardWidth,
-        boardHeight,
+        boardSize,
       ];
 
   String? errorMessage(

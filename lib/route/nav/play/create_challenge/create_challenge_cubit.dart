@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/modal/board_size_modal.dart';
 import 'package:crea_chess/package/form/input/input_int.dart';
 import 'package:crea_chess/package/form/input/input_select.dart';
 import 'package:crea_chess/package/game/time_control.dart';
@@ -12,9 +13,8 @@ class CreateChallengeCubit extends Cubit<CreateChallengeForm> {
             timeControl: const InputSelect<TimeControl>.dirty(
               value: TimeControl(180, 2),
             ),
-            budget: const InputInt.pure(),
-            boardWidth: const InputInt.dirty(value: 8),
-            boardHeight: const InputInt.dirty(value: 8),
+            budget: const InputInt.dirty(value: 39),
+            boardSize: const InputSelect.dirty(value: BoardSize(8, 8)),
             status: CreateChallengeStatus.inProgress,
           ),
         );
@@ -27,11 +27,7 @@ class CreateChallengeCubit extends Cubit<CreateChallengeForm> {
     emit(state.copyWith(budget: state.budget.copyWith(value: value)));
   }
 
-  void setBoardWidth(int value) {
-    emit(state.copyWith(boardWidth: state.boardWidth.copyWith(value: value)));
-  }
-
-  void setBoardHeight(int value) {
-    emit(state.copyWith(boardHeight: state.boardHeight.copyWith(value: value)));
+  void setBoardSize(BoardSize value) {
+    emit(state.copyWith(boardSize: state.boardSize.copyWith(value: value)));
   }
 }
