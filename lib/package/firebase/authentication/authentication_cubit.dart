@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:crea_chess/package/authentication/authentication_crud.dart';
-import 'package:crea_chess/package/authentication/authentication_model.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationModel> {

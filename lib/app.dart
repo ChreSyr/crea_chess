@@ -1,4 +1,4 @@
-import 'package:crea_chess/package/authentication/authentication_cubit.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/package/preferences/preferences_cubit.dart';
 import 'package:crea_chess/package/preferences/preferences_state.dart';

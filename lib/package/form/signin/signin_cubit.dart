@@ -1,4 +1,4 @@
-import 'package:crea_chess/package/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/form/input/input_email.dart';
 import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/package/form/signin/signin_form.dart';

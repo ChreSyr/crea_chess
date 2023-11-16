@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:crea_chess/package/authentication/authentication_model.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 

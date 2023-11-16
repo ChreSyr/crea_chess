@@ -1,5 +1,5 @@
-import 'package:crea_chess/package/authentication/authentication_cubit.dart';
-import 'package:crea_chess/package/authentication/authentication_model.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/route/nav/nav_screen.dart';
 import 'package:crea_chess/route/nav/profile/nav_sub_screen/profile_screen.dart';
 import 'package:crea_chess/route/nav/profile/nav_sub_screen/signin_screen.dart';

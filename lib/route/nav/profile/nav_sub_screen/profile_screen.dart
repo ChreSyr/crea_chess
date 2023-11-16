@@ -1,7 +1,7 @@
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/authentication/authentication_cubit.dart';
-import 'package:crea_chess/package/authentication/authentication_model.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/nav_sub_screen.dart';
 import 'package:flutter/material.dart';
