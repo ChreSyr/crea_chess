@@ -3,12 +3,17 @@ import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/nav/nav_sub_screen.dart';
+import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileScreen extends NavSubScreen {
+class ProfileScreen extends RouteBody {
   const ProfileScreen({super.key});
+
+  @override
+  String getTitle(AppLocalizations l10n) {
+    return l10n.profile;
+  }
 
   @override
   Widget build(BuildContext context) {

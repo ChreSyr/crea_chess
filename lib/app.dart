@@ -2,7 +2,7 @@ import 'package:crea_chess/package/firebase/authentication/authentication_cubit.
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/package/preferences/preferences_cubit.dart';
 import 'package:crea_chess/package/preferences/preferences_state.dart';
-import 'package:crea_chess/route/nav/nav_page.dart';
+import 'package:crea_chess/route/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +24,7 @@ class CreaChessApp extends StatelessWidget {
       child: BlocBuilder<PreferencesCubit, PreferencesState>(
         builder: (context, preferences) {
           final color = preferences.seedColor.color;
-          return MaterialApp(
+          return MaterialApp.router(
             title: 'Crea-Chess Bêta',
             theme: ThemeData(
               useMaterial3: true,
@@ -39,7 +39,8 @@ class CreaChessApp extends StatelessWidget {
             supportedLocales: AppLocalizations.supportedLocales,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             locale: locales[preferences.languageCode],
-            home: const NavPage(),
+            // home: const NavPage(),
+            routerConfig: router,
           );
         },
       ),

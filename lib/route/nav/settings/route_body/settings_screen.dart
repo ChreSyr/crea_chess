@@ -4,13 +4,20 @@ import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/l10n/get_locale_flag.dart';
 import 'package:crea_chess/package/preferences/preferences_cubit.dart';
 import 'package:crea_chess/package/preferences/preferences_state.dart';
-import 'package:crea_chess/route/nav/nav_sub_screen.dart';
-import 'package:crea_chess/route/nav/settings/settings_nav_screen.dart';
+import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
-class SettingsScreen extends NavSubScreen {
+class SettingsScreen extends RouteBody {
   const SettingsScreen({super.key});
+
+  @override
+  String getTitle(AppLocalizations l10n) {
+    // TODO: implement getTitle
+    return l10n.settings;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +49,7 @@ class SettingsScreen extends NavSubScreen {
                   padding: EdgeInsets.zero,
                   backgroundColor: preferences.seedColor.color,
                 ),
-                onPressed: context.read<SettingsNavCubit>().goColor,
+                onPressed: () => context.go('/settings/color/'),
                 child: const Text(''),
               ),
             ),

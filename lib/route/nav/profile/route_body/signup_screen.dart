@@ -7,13 +7,18 @@ import 'package:crea_chess/package/form/signup/signup_cubit.dart';
 import 'package:crea_chess/package/form/signup/signup_form.dart';
 import 'package:crea_chess/package/form/signup/signup_status.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/nav/nav_sub_screen.dart';
-import 'package:crea_chess/route/nav/profile/profile_nav_screen.dart';
+import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-class SignupScreen extends NavSubScreen {
+class SignupScreen extends RouteBody {
   const SignupScreen({super.key});
+
+  @override
+  String getTitle(AppLocalizations l10n) {
+    return l10n.signup;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +152,7 @@ class _SignupScreen extends StatelessWidget {
             // already have an account ?
             Center(
               child: TextButton(
-                onPressed: context.read<ProfileNavCubit>().goSignin,
+                onPressed: () => context.go('profile/signin'),
                 child: Text(context.l10n.alreadyHaveAccount),
               ),
             ),

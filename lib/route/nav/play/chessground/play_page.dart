@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:chessground/chessground.dart';
-import 'package:crea_chess/route/play/draw_shapes_page.dart';
+import 'package:crea_chess/route/nav/play/chessground/draw_shapes_page.dart';
 import 'package:dartchess_webok/dartchess_webok.dart' as dc;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart'
     hide Tuple2;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 enum Mode {
   botPlay,
@@ -47,6 +48,13 @@ class _HomePageState extends State<PlayPage> {
       drawer: Drawer(
         child: ListView(
           children: [
+            ListTile(
+              title: const Text('Back'),
+              leading: const Icon(Icons.arrow_left),
+              onTap: () => context
+                ..pop()
+                ..pop(),
+            ),
             ListTile(
               title: const Text('Random Bot'),
               onTap: () {
