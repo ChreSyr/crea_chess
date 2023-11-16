@@ -1,4 +1,5 @@
 // Code from : https://codewithandrea.com/articles/flutter-bottom-navigation-bar-nested-routes-gorouter/
+// TODO : responsive scaffold
 
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/play/route_body/chessground_body.dart';
@@ -23,6 +24,7 @@ final _shellNavigatorCKey = GlobalKey<NavigatorState>(debugLabel: 'shellC');
 final router = GoRouter(
   initialLocation: '/play',
   navigatorKey: _rootNavigatorKey,
+  errorBuilder: (context, state) => ErrorPage(state: state),
   routes: [
     // Stateful nested navigation based on:
     // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart
@@ -105,6 +107,31 @@ final router = GoRouter(
     ),
   ],
 );
+
+class ErrorPage extends StatelessWidget {
+  const ErrorPage({required this.state, super.key});
+
+  final GoRouterState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Page not found')),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(state.error?.toString() ?? 'null'),
+            TextButton(
+              onPressed: () => context.go('/play'),
+              child: Text(context.l10n.home),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 // use like this:
 // MaterialApp.router(routerConfig: goRouter, ...)

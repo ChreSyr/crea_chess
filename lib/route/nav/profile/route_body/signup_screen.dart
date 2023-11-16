@@ -17,7 +17,7 @@ class SignupScreen extends RouteBody {
 
   @override
   String getTitle(AppLocalizations l10n) {
-    return l10n.signup;
+    return l10n.registration;
   }
 
   @override
@@ -152,7 +152,7 @@ class _SignupScreen extends StatelessWidget {
             // already have an account ?
             Center(
               child: TextButton(
-                onPressed: () => context.go('profile/signin'),
+                onPressed: () => context.go('/profile/signin'),
                 child: Text(context.l10n.alreadyHaveAccount),
               ),
             ),

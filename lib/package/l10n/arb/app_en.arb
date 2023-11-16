@@ -10,6 +10,7 @@
       "code": {}
     }
   },
+  "home": "Home",
   "iAcceptConditions": "I have not read the Terms of Use or the Privacy Policy.",
   "needAccount": "Need an account ?",
   "orContinueWith": "Or continue with",
@@ -19,6 +20,7 @@
   "play": "Play",
   "profile": "Profile",
   "registerNow": "Register now",
+  "registration": "Registration",
   "settings": "Settings",
   "signin": "Sign in",
   "signup": "Create an account",

@@ -7,6 +7,8 @@ import 'package:crea_chess/package/atomic_design/widget/card_button.dart';
 import 'package:crea_chess/package/atomic_design/widget/divider.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/package/form/signin/signin_cubit.dart';
 import 'package:crea_chess/package/form/signin/signin_form.dart';
 import 'package:crea_chess/package/form/signin/signin_status.dart';
@@ -26,9 +28,14 @@ class SigninScreen extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SigninCubit(),
-      child: const _SigninScreen(),
+    return BlocListener<AuthenticationCubit, AuthenticationModel>(
+      listener: (context, auth) {
+        if (!auth.isAbsent) context.pop();
+      },
+      child: BlocProvider(
+        create: (context) => SigninCubit(),
+        child: const _SigninScreen(),
+      ),
     );
   }
 }
@@ -175,7 +182,7 @@ class _SigninScreen extends StatelessWidget {
                 Text(context.l10n.needAccount),
                 CCGap.xsmall,
                 TextButton(
-                  onPressed: () => context.go('profile/signup'),
+                  onPressed: () => context.push('/profile/signup'),
                   child: Text(context.l10n.registerNow),
                 ),
               ],
