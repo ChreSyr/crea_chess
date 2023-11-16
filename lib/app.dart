@@ -33,7 +33,10 @@ class CreaChessApp extends StatelessWidget {
                       primary: color,
                       secondary: color,
                     )
-                  : ColorScheme.light(primary: color),
+                  : ColorScheme.light(
+                      primary: color,
+                      secondary: color,
+                    ),
             ),
             debugShowCheckedModeBanner: false, // hide debug banner at topleft
             supportedLocales: AppLocalizations.supportedLocales,
