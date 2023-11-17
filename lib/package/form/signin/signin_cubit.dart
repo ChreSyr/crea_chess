@@ -50,6 +50,8 @@ class SigninCubit extends Cubit<SigninForm> {
       return userNotFound();
     }
 
+    // TODO : can only signin if signin method is mail / password
+
     try {
       await AuthenticationCRUD.signInWithEmailAndPassword(
         email: state.email.value,
@@ -63,8 +65,14 @@ class SigninCubit extends Cubit<SigninForm> {
           status: SigninStatus.inProgress,
         ),
       );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-login-credentials') {
+        emit(state.copyWith(status: SigninStatus.wrongPassword));
+      } else {
+        emit(state.copyWith(status: SigninStatus.unexpectedError));
+      }
     } catch (_) {
-      emit(state.copyWith(status: SigninStatus.wrongPassword));
+      emit(state.copyWith(status: SigninStatus.unexpectedError));
     }
   }
 
@@ -88,14 +96,20 @@ class SigninCubit extends Cubit<SigninForm> {
         );
 
     try {
-      if (!await AuthenticationCRUD.userExist(
-        state.email.value,
-      )) {
+      if (!await AuthenticationCRUD.userExist(state.email.value)) {
         return userNotFound();
       }
-    } on FirebaseAuthException {
+    } on FirebaseAuthException catch (e) {
+      print('USER NOT FOUND §§§');
+      print('---------------------');
+      print(e.runtimeType);
+      print(e);
+      print(e.code);
+      print('---------------------');
       return userNotFound();
     }
+
+    // TODO : can only reset password if signin method is mail / password
 
     try {
       await AuthenticationCRUD.sendPasswordResetEmail(
@@ -103,11 +117,9 @@ class SigninCubit extends Cubit<SigninForm> {
       );
       emit(state.copyWith(status: SigninStatus.resetPasswordSuccess));
     } catch (_) {
-      emit(
-        state.copyWith(
-          status: SigninStatus.userNotFound,
-        ),
-      );
+      emit(state.copyWith(status: SigninStatus.unexpectedError));
     }
   }
 }
+
+// test@gmail.com

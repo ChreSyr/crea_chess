@@ -4,7 +4,7 @@
   "chooseColor": "Choisis une couleur",
   "disconnect": "Se déconnecter",
   "email": "Mail",
-  "formError": "{code, select, other{Erreur inconnue.} empty{Ce champ doit être renseigné.} notEmail{Ne semble pas être une adresse e-mail.} notPassword{TODO : qu'est-ce qu'un password ?} passwordsDontMatch{Les mots de passe ne correspondent pas.} userNotFound{Impossible de trouver votre compte.} wrongPassword{Mot de passe incorrect. Réessayez ou cliquez sur \"Mot de passe oublié ?\" pour le réinitialiser.}}",
+  "formError": "{code, select, other{Erreur inconnue.} empty{Ce champ doit être renseigné.} mailTaken{Cette adresse e-mail est déjà utilisée par un autre compte.} notEmail{Ne semble pas être une adresse e-mail.} notPassword{TODO : qu'est-ce qu'un password ?} passwordsDontMatch{Les mots de passe ne correspondent pas.} userNotFound{Cette adresse e-mail n'est liée à aucun compte.} wrongPassword{Mot de passe incorrect. Réessayez ou cliquez sur \"Mot de passe oublié ?\" pour le réinitialiser.}}",
   "@formError": {
     "placeholders": {
       "code": {}

@@ -52,6 +52,7 @@ class _SigninScreen extends StatelessWidget {
         switch (form.status) {
           case SigninStatus.userNotFound: // Todo: proposer de créer un compte
           case SigninStatus.wrongPassword:
+          case SigninStatus.unexpectedError:
             snackBarError(
               context,
               context.l10n.formError(form.status.name),

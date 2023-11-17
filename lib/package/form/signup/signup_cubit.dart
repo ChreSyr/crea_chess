@@ -94,6 +94,12 @@ class SignupCubit extends Cubit<SignupForm> {
           status: SignupStatus.inProgress,
         ),
       );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        emit(state.copyWith(status: SignupStatus.mailTaken));
+      } else {
+        emit(state.copyWith(status: SignupStatus.unexpectedError));
+      }
     } catch (_) {
       emit(state.copyWith(status: SignupStatus.unexpectedError));
     }

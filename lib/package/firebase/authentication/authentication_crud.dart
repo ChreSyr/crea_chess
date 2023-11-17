@@ -6,7 +6,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationCRUD {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  static final GoogleSignIn _googleAuth = GoogleSignIn();
+  static final GoogleSignIn _googleAuth = GoogleSignIn(
+    clientId:
+        // ignore: lines_longer_than_80_chars
+        '737365859201-spnihhusekc0prr23451hdjaj9a6dltc.apps.googleusercontent.com',
+  );
 
   static final _authenticationStreamController =
       StreamController<AuthenticationModel>();
@@ -95,6 +99,13 @@ class AuthenticationCRUD {
 
   /// True if mail in Authentication.
   static Future<bool> userExist(String email) async {
+    final obj = await _firebaseAuth.fetchSignInMethodsForEmail(email);
+    print('ERROROOORR');
+    print('---------------------');
+    print(email);
+    print(obj.runtimeType);
+    print(obj);
+    print('---------------------');
     return (await _firebaseAuth.fetchSignInMethodsForEmail(email)).isNotEmpty;
   }
 }

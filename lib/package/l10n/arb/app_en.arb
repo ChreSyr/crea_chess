@@ -4,7 +4,7 @@
   "chooseColor": "Choose a color",
   "disconnect": "Sign out",
   "email": "Email",
-  "formError": "{code, select, other{Unknown error.} empty{This field is required.} notEmail{Doesn't appear to be an email address.} notPassword{TODO : qu'est-ce qu'un password ?} passwordsDontMatch{Passwords don't match.} userNotFound{Unable to find your account.} wrongPassword{Incorrect password. Try again or click \"Forgot password ?\" to reset it.}}",
+  "formError": "{code, select, other{Unknown error.} empty{This field is required.} mailTaken{The email address is already in use by another account.} notEmail{Doesn't appear to be an email address.} notPassword{TODO : qu'est-ce qu'un password ?} passwordsDontMatch{Passwords don't match.} userNotFound{This email address is not linked to any account.} wrongPassword{Incorrect password. Try again or click \"Forgot password ?\" to reset it.}}",
   "@formError": {
     "placeholders": {
       "code": {}

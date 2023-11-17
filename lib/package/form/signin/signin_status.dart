@@ -14,4 +14,5 @@ enum SigninStatus {
   // snack bar notified errors
   userNotFound,
   wrongPassword,
+  unexpectedError,
 }
