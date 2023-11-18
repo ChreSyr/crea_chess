@@ -1,6 +1,9 @@
 enum SigninStatus {
   inProgress,
 
+  // show progress indicator
+  waiting,
+
   // show error under form fields
   editError,
 
@@ -9,10 +12,10 @@ enum SigninStatus {
 
   // reset password
   invalidMailForResetPassword,
+  userNotFound,
   resetPasswordSuccess,
 
   // snack bar notified errors
-  userNotFound,
-  wrongPassword,
+  invalidCredentials, // TODO : l10n
   unexpectedError,
 }

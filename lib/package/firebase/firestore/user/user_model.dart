@@ -12,6 +12,7 @@ class UserModel with _$UserModel {
     String? id,
     String? ref,
     String? name,
+    String? email,
     String? photoUrl,
   }) = _UserModel;
 

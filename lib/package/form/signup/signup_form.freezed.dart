@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SignupForm {
   InputEmail get email => throw _privateConstructorUsedError;
-  InputString get username => throw _privateConstructorUsedError;
   InputPassword get password => throw _privateConstructorUsedError;
   InputPassword get confirmPassword => throw _privateConstructorUsedError;
   InputBoolean get acceptConditions => throw _privateConstructorUsedError;
@@ -36,7 +35,6 @@ abstract class $SignupFormCopyWith<$Res> {
   @useResult
   $Res call(
       {InputEmail email,
-      InputString username,
       InputPassword password,
       InputPassword confirmPassword,
       InputBoolean acceptConditions,
@@ -57,7 +55,6 @@ class _$SignupFormCopyWithImpl<$Res, $Val extends SignupForm>
   @override
   $Res call({
     Object? email = null,
-    Object? username = null,
     Object? password = null,
     Object? confirmPassword = null,
     Object? acceptConditions = null,
@@ -68,10 +65,6 @@ class _$SignupFormCopyWithImpl<$Res, $Val extends SignupForm>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as InputEmail,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as InputString,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -102,7 +95,6 @@ abstract class _$$SignupFormImplCopyWith<$Res>
   @useResult
   $Res call(
       {InputEmail email,
-      InputString username,
       InputPassword password,
       InputPassword confirmPassword,
       InputBoolean acceptConditions,
@@ -121,7 +113,6 @@ class __$$SignupFormImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? email = null,
-    Object? username = null,
     Object? password = null,
     Object? confirmPassword = null,
     Object? acceptConditions = null,
@@ -132,10 +123,6 @@ class __$$SignupFormImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as InputEmail,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as InputString,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -161,7 +148,6 @@ class __$$SignupFormImplCopyWithImpl<$Res>
 class _$SignupFormImpl extends _SignupForm {
   _$SignupFormImpl(
       {required this.email,
-      required this.username,
       required this.password,
       required this.confirmPassword,
       required this.acceptConditions,
@@ -170,8 +156,6 @@ class _$SignupFormImpl extends _SignupForm {
 
   @override
   final InputEmail email;
-  @override
-  final InputString username;
   @override
   final InputPassword password;
   @override
@@ -183,7 +167,7 @@ class _$SignupFormImpl extends _SignupForm {
 
   @override
   String toString() {
-    return 'SignupForm(email: $email, username: $username, password: $password, confirmPassword: $confirmPassword, acceptConditions: $acceptConditions, status: $status)';
+    return 'SignupForm(email: $email, password: $password, confirmPassword: $confirmPassword, acceptConditions: $acceptConditions, status: $status)';
   }
 
   @override
@@ -192,8 +176,6 @@ class _$SignupFormImpl extends _SignupForm {
         (other.runtimeType == runtimeType &&
             other is _$SignupFormImpl &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.username, username) ||
-                other.username == username) &&
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.confirmPassword, confirmPassword) ||
@@ -204,8 +186,8 @@ class _$SignupFormImpl extends _SignupForm {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, email, username, password,
-      confirmPassword, acceptConditions, status);
+  int get hashCode => Object.hash(
+      runtimeType, email, password, confirmPassword, acceptConditions, status);
 
   @JsonKey(ignore: true)
   @override
@@ -217,7 +199,6 @@ class _$SignupFormImpl extends _SignupForm {
 abstract class _SignupForm extends SignupForm {
   factory _SignupForm(
       {required final InputEmail email,
-      required final InputString username,
       required final InputPassword password,
       required final InputPassword confirmPassword,
       required final InputBoolean acceptConditions,
@@ -226,8 +207,6 @@ abstract class _SignupForm extends SignupForm {
 
   @override
   InputEmail get email;
-  @override
-  InputString get username;
   @override
   InputPassword get password;
   @override

@@ -1,12 +1,8 @@
 import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/decoration.dart';
-import 'package:crea_chess/package/atomic_design/padding.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
-import 'package:crea_chess/package/atomic_design/widget/card_button.dart';
-import 'package:crea_chess/package/atomic_design/widget/divider.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/package/form/signin/signin_cubit.dart';
@@ -18,12 +14,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class SigninScreen extends RouteBody {
-  const SigninScreen({super.key});
+class SigninBody extends RouteBody {
+  const SigninBody({super.key});
 
   @override
   String getTitle(AppLocalizations l10n) {
-    return l10n.signin;
+    return l10n.signin; // TODO
   }
 
   @override
@@ -34,14 +30,14 @@ class SigninScreen extends RouteBody {
       },
       child: BlocProvider(
         create: (context) => SigninCubit(),
-        child: const _SigninScreen(),
+        child: const _SigninBody(),
       ),
     );
   }
 }
 
-class _SigninScreen extends StatelessWidget {
-  const _SigninScreen();
+class _SigninBody extends StatelessWidget {
+  const _SigninBody();
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +46,7 @@ class _SigninScreen extends StatelessWidget {
     return BlocConsumer<SigninCubit, SigninForm>(
       listener: (context, form) {
         switch (form.status) {
-          case SigninStatus.userNotFound: // Todo: proposer de créer un compte
-          case SigninStatus.wrongPassword:
+          case SigninStatus.userNotFound:
           case SigninStatus.unexpectedError:
             snackBarError(
               context,
@@ -61,8 +56,9 @@ class _SigninScreen extends StatelessWidget {
           case SigninStatus.resetPasswordSuccess:
             snackBarNotify(
               context,
-              'Check your mail box !',
+              'Check your mail box !', // TODO: l10n
             );
+            signinCubit.clearFailure();
           case _:
             break;
         }
@@ -71,8 +67,8 @@ class _SigninScreen extends StatelessWidget {
         return ListView(
           shrinkWrap: true,
           children: [
-            CCGap.large,
-
+            if (form.status == SigninStatus.waiting)
+              const LinearProgressIndicator(),
             // Welcome back !
             const Text(
               '😄',
@@ -132,61 +128,6 @@ class _SigninScreen extends StatelessWidget {
             FilledButton(
               onPressed: signinCubit.submit,
               child: Text(context.l10n.signin),
-            ),
-
-            CCGap.xlarge,
-
-            // or continue with
-            Row(
-              children: [
-                Expanded(child: CCDivider.xthin),
-                CCGap.small,
-                Text(context.l10n.orContinueWith),
-                CCGap.small,
-                Expanded(child: CCDivider.xthin),
-              ],
-            ),
-
-            CCGap.large,
-
-            // google + apple sign in buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CardButton(
-                  onTap: AuthenticationCRUD.signInWithGoogle,
-                  child: CCPadding.allLarge(
-                    child: Image.asset(
-                      'assets/icon/google_icon.png',
-                      height: CCSize.xxlarge,
-                    ),
-                  ),
-                ),
-                CCGap.large,
-                CardButton(
-                  child: CCPadding.allLarge(
-                    child: Image.asset(
-                      'assets/icon/apple_icon.png',
-                      height: CCSize.xxlarge,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            CCGap.large,
-
-            // not a member? register now
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(context.l10n.needAccount),
-                CCGap.xsmall,
-                TextButton(
-                  onPressed: () => context.push('/profile/signup'),
-                  child: Text(context.l10n.registerNow),
-                ),
-              ],
             ),
           ],
         );

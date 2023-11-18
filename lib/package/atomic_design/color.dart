@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+// TODO : sort
+// TODO : rethink
 class CCColor {
   static Color background(BuildContext context) =>
       Theme.of(context).colorScheme.background;
 
   static Color error(BuildContext context) =>
       Theme.of(context).colorScheme.error;
+
+  static Color onError(BuildContext context) =>
+      Theme.of(context).colorScheme.onError;
 
   static Color fieldBackground(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark

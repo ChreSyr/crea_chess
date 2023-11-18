@@ -2,7 +2,6 @@ import 'package:crea_chess/package/firebase/authentication/authentication_crud.d
 import 'package:crea_chess/package/form/input/input_boolean.dart';
 import 'package:crea_chess/package/form/input/input_email.dart';
 import 'package:crea_chess/package/form/input/input_password.dart';
-import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/package/form/signup/signup_form.dart';
 import 'package:crea_chess/package/form/signup/signup_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +12,6 @@ class SignupCubit extends Cubit<SignupForm> {
       : super(
           SignupForm(
             email: const InputEmail.pure(isRequired: true),
-            username: const InputString.pure(), // Todo?
             password: const InputPassword.pure(isRequired: true),
             confirmPassword: const InputPassword.pure(isRequired: true),
             acceptConditions: const InputBoolean.pure(isRequired: true),
@@ -29,14 +27,6 @@ class SignupCubit extends Cubit<SignupForm> {
     emit(
       state.copyWith(
         email: state.email.copyWith(string: value.toLowerCase()),
-      ),
-    );
-  }
-
-  void usernameChanged(String value) {
-    emit(
-      state.copyWith(
-        username: state.username.copyWith(string: value.toLowerCase()),
       ),
     );
   }
@@ -71,18 +61,10 @@ class SignupCubit extends Cubit<SignupForm> {
       return emit(state.copyWith(status: SignupStatus.passwordsDontMatch));
     }
 
-    emit(state.copyWith(status: SignupStatus.inProgress));
+    emit(state.copyWith(status: SignupStatus.waiting));
 
     try {
-      if (await AuthenticationCRUD.userExist(state.email.value)) {
-        return emit(state.copyWith(status: SignupStatus.mailTaken));
-      }
-    } on FirebaseAuthException {
-      //
-    }
-
-    try {
-      await AuthenticationCRUD.signUpWithEmailAndPassword(
+      await authenticationCRUD.signUpWithEmailAndPassword(
         email: state.email.value,
         password: state.password.value,
       );

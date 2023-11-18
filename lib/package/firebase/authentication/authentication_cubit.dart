@@ -10,7 +10,7 @@ class AuthenticationCubit extends Cubit<AuthenticationModel> {
   }
 
   Future<void> signoutRequested() async {
-    await AuthenticationCRUD.signOut();
+    await authenticationCRUD.signOut();
   }
 
   void authenticationChanged(AuthenticationModel authentication) {
@@ -19,7 +19,7 @@ class AuthenticationCubit extends Cubit<AuthenticationModel> {
 
   void setStreamSubscriptionAuthentication() {
     cancelStreamSubscriptionAuthentication();
-    streamSubscriptionAuthentication = AuthenticationCRUD.stream().listen(
+    streamSubscriptionAuthentication = authenticationCRUD.stream().listen(
       authenticationChanged,
     );
   }

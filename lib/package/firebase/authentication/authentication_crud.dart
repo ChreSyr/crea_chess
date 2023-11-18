@@ -4,41 +4,45 @@ import 'package:crea_chess/package/firebase/authentication/authentication_model.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthenticationCRUD {
-  static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  static final GoogleSignIn _googleAuth = GoogleSignIn(
+class _AuthenticationCRUD {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleAuth = GoogleSignIn(
     clientId:
         // ignore: lines_longer_than_80_chars
         '737365859201-spnihhusekc0prr23451hdjaj9a6dltc.apps.googleusercontent.com',
   );
 
-  static final _authenticationStreamController =
+  final _authenticationStreamController =
       StreamController<AuthenticationModel>();
 
   // Todo : separate stream & signin methods
 
   /// Get User (firebase object)
-  static User? _getUser() {
+  User? _getUser() {
     return _firebaseAuth.currentUser;
   }
 
   /// Stream User (firebase object) changes
-  static Stream<User?> _streamUser() {
+  Stream<User?> _streamUser() {
     return _firebaseAuth.userChanges();
   }
 
+  void delete({required String userId}) {
+    // TODO
+  }
+
   /// Get AuthenticationModel
-  static AuthenticationModel get() {
+  AuthenticationModel get() {
     return AuthenticationModel.fromUser(_getUser());
   }
 
   /// Send an email to reset the password
-  static Future<void> sendPasswordResetEmail({required String email}) async {
+  Future<void> sendPasswordResetEmail({required String email}) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
   /// SignIn with email and password
-  static Future<void> signInWithEmailAndPassword({
+  Future<void> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -49,7 +53,7 @@ class AuthenticationCRUD {
   }
 
   /// SignIn with Google
-  static Future<void> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
     // begin interactive sign in process
     final gUser = await _googleAuth.signIn();
 
@@ -71,7 +75,7 @@ class AuthenticationCRUD {
   }
 
   /// SingOut current User
-  static Future<void> signOut() async {
+  Future<void> signOut() async {
     await _firebaseAuth.signOut();
 
     // Sign out to force the account chooser next time
@@ -79,7 +83,7 @@ class AuthenticationCRUD {
   }
 
   /// SignUp with email and password
-  static Future<void> signUpWithEmailAndPassword({
+  Future<void> signUpWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -90,22 +94,12 @@ class AuthenticationCRUD {
   }
 
   /// Stream AuthenticationModel
-  static Stream<AuthenticationModel> stream() {
+  Stream<AuthenticationModel> stream() {
     _streamUser().listen((user) {
       _authenticationStreamController.add(AuthenticationModel.fromUser(user));
     });
     return _authenticationStreamController.stream;
   }
-
-  /// True if mail in Authentication.
-  static Future<bool> userExist(String email) async {
-    final obj = await _firebaseAuth.fetchSignInMethodsForEmail(email);
-    print('ERROROOORR');
-    print('---------------------');
-    print(email);
-    print(obj.runtimeType);
-    print(obj);
-    print('---------------------');
-    return (await _firebaseAuth.fetchSignInMethodsForEmail(email)).isNotEmpty;
-  }
 }
+
+final authenticationCRUD = _AuthenticationCRUD();

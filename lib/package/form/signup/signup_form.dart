@@ -2,7 +2,6 @@ import 'package:crea_chess/package/form/form_error.dart';
 import 'package:crea_chess/package/form/input/input_boolean.dart';
 import 'package:crea_chess/package/form/input/input_email.dart';
 import 'package:crea_chess/package/form/input/input_password.dart';
-import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/package/form/signup/signup_status.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:formz/formz.dart';
@@ -14,7 +13,6 @@ part 'signup_form.freezed.dart';
 class SignupForm with FormzMixin, _$SignupForm {
   factory SignupForm({
     required InputEmail email,
-    required InputString username,
     required InputPassword password,
     required InputPassword confirmPassword,
     required InputBoolean acceptConditions,
@@ -27,7 +25,6 @@ class SignupForm with FormzMixin, _$SignupForm {
   @override
   List<FormzInput<dynamic, dynamic>> get inputs => [
         email,
-        username,
         password,
         confirmPassword,
         acceptConditions,

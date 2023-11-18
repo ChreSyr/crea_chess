@@ -3,6 +3,8 @@ import 'package:crea_chess/package/atomic_design/decoration.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/package/form/signup/signup_cubit.dart';
 import 'package:crea_chess/package/form/signup/signup_form.dart';
 import 'package:crea_chess/package/form/signup/signup_status.dart';
@@ -12,8 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class SignupScreen extends RouteBody {
-  const SignupScreen({super.key});
+class SignupBody extends RouteBody {
+  const SignupBody({super.key});
 
   @override
   String getTitle(AppLocalizations l10n) {
@@ -24,13 +26,18 @@ class SignupScreen extends RouteBody {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SignupCubit(),
-      child: const _SignupScreen(),
+      child: BlocListener<AuthenticationCubit, AuthenticationModel>(
+        listener: (context, auth) {
+          if (!auth.isAbsent) context.pop();
+        },
+        child: const _SignupBody(),
+      ),
     );
   }
 }
 
-class _SignupScreen extends StatelessWidget {
-  const _SignupScreen();
+class _SignupBody extends StatelessWidget {
+  const _SignupBody();
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +61,9 @@ class _SignupScreen extends StatelessWidget {
         return ListView(
           shrinkWrap: true,
           children: [
-            CCGap.large,
-
-            // Welcome back !
+            if (form.status == SignupStatus.waiting)
+              const LinearProgressIndicator(),
+            // Welcome among us !
             const Text(
               '🎉',
               style: TextStyle(fontSize: CCWidgetSize.xxsmall),
@@ -144,18 +151,8 @@ class _SignupScreen extends StatelessWidget {
 
             // sign in button
             FilledButton(
-              onPressed: signupCubit.submit,
+              onPressed: signupCubit.submit, // TODO : confirm email
               child: Text(context.l10n.signup),
-            ),
-
-            CCGap.large,
-
-            // already have an account ?
-            Center(
-              child: TextButton(
-                onPressed: () => context.go('/profile/signin'),
-                child: Text(context.l10n.alreadyHaveAccount),
-              ),
             ),
           ],
         );

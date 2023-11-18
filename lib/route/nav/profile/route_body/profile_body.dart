@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class ProfileScreen extends RouteBody {
-  const ProfileScreen({super.key});
+class ProfileBody extends RouteBody {
+  const ProfileBody({super.key});
 
   @override
   String getTitle(AppLocalizations l10n) {
@@ -23,7 +23,7 @@ class ProfileScreen extends RouteBody {
       builder: (context, auth) {
         if (auth.isAbsent) {
           return FilledButton.icon(
-            onPressed: () => context.go('/profile/signin'),
+            onPressed: () => context.go('/profile/sign_methods'),
             icon: const Icon(Icons.login),
             label: Text(context.l10n.signin),
           );
@@ -32,6 +32,7 @@ class ProfileScreen extends RouteBody {
           user: UserModel(
             id: auth.id,
             name: auth.name,
+            email: auth.email,
             photoUrl: auth.photo,
           ),
         );
@@ -47,6 +48,7 @@ class UserDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authCubit = context.read<AuthenticationCubit>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -58,12 +60,14 @@ class UserDetails extends StatelessWidget {
               user.photoUrl == null ? null : NetworkImage(user.photoUrl!),
         ),
         CCGap.small,
-        Text(user.name ?? ''),
+        Text('username : ${user.name ?? ''}'),
+        CCGap.small,
+        Text('email : ${user.email ?? ''}'),
         CCGap.large,
         ElevatedButton.icon(
           onPressed: () {
-            context.go('/profile/signin');
-            context.read<AuthenticationCubit>().signoutRequested();
+            context.go('/profile/sign_methods');
+            authCubit.signoutRequested();
           },
           icon: const Icon(Icons.logout),
           label: Text(context.l10n.disconnect),

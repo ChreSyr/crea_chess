@@ -37,23 +37,12 @@ class SigninCubit extends Cubit<SigninForm> {
       return emit(state.copyWith(status: SigninStatus.editError));
     }
 
-    emit(state.copyWith(status: SigninStatus.inProgress));
-
-    void userNotFound() =>
-        emit(state.copyWith(status: SigninStatus.userNotFound));
-
-    try {
-      if (!await AuthenticationCRUD.userExist(state.email.value)) {
-        return userNotFound();
-      }
-    } on FirebaseAuthException {
-      return userNotFound();
-    }
+    emit(state.copyWith(status: SigninStatus.waiting));
 
     // TODO : can only signin if signin method is mail / password
 
     try {
-      await AuthenticationCRUD.signInWithEmailAndPassword(
+      await authenticationCRUD.signInWithEmailAndPassword(
         email: state.email.value,
         password: state.password.value,
       );
@@ -67,7 +56,7 @@ class SigninCubit extends Cubit<SigninForm> {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-login-credentials') {
-        emit(state.copyWith(status: SigninStatus.wrongPassword));
+        emit(state.copyWith(status: SigninStatus.invalidCredentials));
       } else {
         emit(state.copyWith(status: SigninStatus.unexpectedError));
       }
@@ -83,41 +72,19 @@ class SigninCubit extends Cubit<SigninForm> {
       );
     }
 
-    emit(
-      state.copyWith(
-        status: SigninStatus.inProgress,
-      ),
-    );
+    emit(state.copyWith(status: SigninStatus.waiting));
 
-    void userNotFound() => emit(
-          state.copyWith(
-            status: SigninStatus.userNotFound,
-          ),
-        );
-
-    try {
-      if (!await AuthenticationCRUD.userExist(state.email.value)) {
-        return userNotFound();
-      }
-    } on FirebaseAuthException catch (e) {
-      print('USER NOT FOUND §§§');
-      print('---------------------');
-      print(e.runtimeType);
-      print(e);
-      print(e.code);
-      print('---------------------');
-      return userNotFound();
-    }
-
+    // TODO : error if email doesn't exist
     // TODO : can only reset password if signin method is mail / password
 
     try {
-      await AuthenticationCRUD.sendPasswordResetEmail(
+      await authenticationCRUD.sendPasswordResetEmail(
         email: state.email.value,
       );
       emit(state.copyWith(status: SigninStatus.resetPasswordSuccess));
     } catch (_) {
-      emit(state.copyWith(status: SigninStatus.unexpectedError));
+      // TODO : resetPasswordError
+      emit(state.copyWith(status: SigninStatus.userNotFound));
     }
   }
 }
