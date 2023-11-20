@@ -5,6 +5,7 @@ import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/play/route_body/chessground_body.dart';
 import 'package:crea_chess/route/nav/play/route_body/create_challenge_body.dart';
 import 'package:crea_chess/route/nav/play/route_body/home_body.dart';
+import 'package:crea_chess/route/nav/profile/route_body/email_verification_body.dart';
 import 'package:crea_chess/route/nav/profile/route_body/profile_body.dart';
 import 'package:crea_chess/route/nav/profile/route_body/sign_methods_body.dart';
 import 'package:crea_chess/route/nav/profile/route_body/signin_body.dart';
@@ -84,6 +85,11 @@ final router = GoRouter(
                   path: 'signup',
                   builder: (context, state) =>
                       const RouteScaffold(body: SignupBody()),
+                ),
+                GoRoute(
+                  path: 'email_verification',
+                  builder: (context, state) =>
+                      const RouteScaffold(body: EmailVerificationBody()),
                 ),
               ],
             ),

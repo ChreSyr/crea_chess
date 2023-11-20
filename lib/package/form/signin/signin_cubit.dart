@@ -49,9 +49,7 @@ class SigninCubit extends Cubit<SigninForm> {
       // reset cubit when success
       emit(
         state.copyWith(
-          email: state.email.copyWith(string: ''),
-          password: state.password.copyWith(string: ''),
-          status: SigninStatus.inProgress,
+          status: SigninStatus.signinSuccess,
         ),
       );
     } on FirebaseAuthException catch (e) {

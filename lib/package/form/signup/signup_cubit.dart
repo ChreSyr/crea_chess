@@ -68,12 +68,10 @@ class SignupCubit extends Cubit<SignupForm> {
         email: state.email.value,
         password: state.password.value,
       );
-      // reset cubit when success
+      await authenticationCRUD.sendEmailVerification();
       emit(
         state.copyWith(
-          email: state.email.copyWith(string: ''),
-          password: state.password.copyWith(string: ''),
-          status: SignupStatus.inProgress,
+          status: SignupStatus.signupSuccess,
         ),
       );
     } on FirebaseAuthException catch (e) {

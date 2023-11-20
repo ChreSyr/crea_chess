@@ -53,6 +53,14 @@ class _SignMethodsBody extends StatelessWidget {
           child: Text(context.l10n.signup),
         ),
 
+        CCGap.small,
+
+        // TODO: REMOVE
+        FilledButton(
+          onPressed: () => context.push('/profile/email_verification'),
+          child: Text('Email verification'),
+        ),
+
         CCGap.medium,
 
         // or continue with

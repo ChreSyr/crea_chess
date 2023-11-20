@@ -53,6 +53,8 @@ class _SignupBody extends StatelessWidget {
               context.l10n.formError(form.status.name),
             );
             signupCubit.clearFailure();
+          case SignupStatus.signupSuccess:
+            context.push('/profile/email_verification');
           case _:
             break;
         }

@@ -26,7 +26,11 @@ class SigninBody extends RouteBody {
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationCubit, AuthenticationModel>(
       listener: (context, auth) {
-        if (!auth.isAbsent) context.pop();
+        if (!auth.isAbsent) {
+          context.pop();
+        } else if ((auth.id ?? '').isNotEmpty) {
+          context.push('/profile/email_verification');
+        }
       },
       child: BlocProvider(
         create: (context) => SigninCubit(),

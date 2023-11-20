@@ -27,6 +27,13 @@ class _AuthenticationCRUD {
     return _firebaseAuth.userChanges();
   }
 
+  void checkEmailVerified() {
+    final user = _getUser();
+    if (user == null) return;
+
+    user.reload();
+  }
+
   void delete({required String userId}) {
     // TODO
   }
@@ -34,6 +41,13 @@ class _AuthenticationCRUD {
   /// Get AuthenticationModel
   AuthenticationModel get() {
     return AuthenticationModel.fromUser(_getUser());
+  }
+
+  Future<void> sendEmailVerification() async {
+    final user = _getUser();
+    if (user == null) return;
+
+    await user.sendEmailVerification();
   }
 
   /// Send an email to reset the password
