@@ -61,91 +61,92 @@ class _SignupBody extends StatelessWidget {
         }
       },
       builder: (context, form) {
-        return ListView(
-          shrinkWrap: true,
-          children: [
-            if (form.status == SignupStatus.waiting)
-              const LinearProgressIndicator(),
-            // Welcome among us !
-            const Text(
-              '🎉',
-              style: TextStyle(fontSize: CCWidgetSize.xxsmall),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              context.l10n.welcomeAmongUs,
-              textAlign: TextAlign.center,
-            ),
-
-            CCGap.xlarge,
-
-            // mail field
-            TextFormField(
-              decoration: CCInputDecoration(
-                hintText: context.l10n.email,
-                errorText: form.errorMessage(form.email, context.l10n),
+        return SizedBox(
+          width: CCWidgetSize.large3,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              if (form.status == SignupStatus.waiting)
+                const LinearProgressIndicator(),
+              // Welcome among us !
+              const Text(
+                '🎉',
+                style: TextStyle(fontSize: CCWidgetSize.xxsmall),
+                textAlign: TextAlign.center,
               ),
-              initialValue: form.email.value,
-              keyboardType: TextInputType.emailAddress,
-              onChanged: signupCubit.emailChanged,
-            ),
+              Text(
+                context.l10n.welcomeAmongUs,
+                textAlign: TextAlign.center,
+              ),
 
-            CCGap.small,
+              CCGap.xlarge,
 
-            // password textfield
-            PasswordFromField(
+              // mail field
+              TextFormField(
+                decoration: CCInputDecoration(
+                  hintText: context.l10n.email,
+                  errorText: form.errorMessage(form.email, context.l10n),
+                ),
+                initialValue: form.email.value,
+                keyboardType: TextInputType.emailAddress,
+                onChanged: signupCubit.emailChanged,
+              ),
+
+              CCGap.small,
+
+              // password textfield
+              PasswordFromField(
                 hintText: context.l10n.password,
                 errorText: form.errorMessage(form.password, context.l10n),
-              
-              initialValue: form.password.value,
-              onChanged: signupCubit.passwordChanged,
-            ),
+                initialValue: form.password.value,
+                onChanged: signupCubit.passwordChanged,
+              ),
 
-            CCGap.small,
+              CCGap.small,
 
-            // confirm password textfield
-            PasswordFromField(
+              // confirm password textfield
+              PasswordFromField(
                 hintText: context.l10n.passwordConfirmation,
                 errorText:
                     form.errorMessage(form.confirmPassword, context.l10n),
-              
-              initialValue: form.confirmPassword.value,
-              onChanged: signupCubit.confirmPasswordChanged,
-            ),
+                initialValue: form.confirmPassword.value,
+                onChanged: signupCubit.confirmPasswordChanged,
+              ),
 
-            CCGap.medium,
+              CCGap.medium,
 
-            // conditions
-            Row(
-              children: [
-                Checkbox(
-                  value: form.acceptConditions.value,
-                  onChanged: signupCubit.acceptedConditionsChanged,
-                ),
-                Expanded(
-                  child: Text(
-                    context.l10n.iAcceptConditions,
-                    maxLines: 3,
-                    style: form.errorMessage(
-                              form.acceptConditions,
-                              context.l10n,
-                            ) ==
-                            null
-                        ? null
-                        : TextStyle(color: CCColor.error(context)),
+              // conditions
+              Row(
+                children: [
+                  Checkbox(
+                    value: form.acceptConditions.value,
+                    onChanged: signupCubit.acceptedConditionsChanged,
                   ),
-                ),
-              ],
-            ),
+                  Expanded(
+                    child: Text(
+                      context.l10n.iAcceptConditions,
+                      maxLines: 3,
+                      style: form.errorMessage(
+                                form.acceptConditions,
+                                context.l10n,
+                              ) ==
+                              null
+                          ? null
+                          : TextStyle(color: CCColor.error(context)),
+                    ),
+                  ),
+                ],
+              ),
 
-            CCGap.medium,
+              CCGap.medium,
 
-            // sign in button
-            FilledButton(
-              onPressed: signupCubit.submit, // TODO : confirm email
-              child: Text(context.l10n.signup),
-            ),
-          ],
+              // sign in button
+              FilledButton(
+                onPressed: signupCubit.submit, // TODO : confirm email
+                child: Text(context.l10n.signup),
+              ),
+            ],
+          ),
         );
       },
     );

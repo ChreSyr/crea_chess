@@ -36,53 +36,56 @@ class _SignMethodsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        // sign in button
-        FilledButton(
-          onPressed: () => context.push('/profile/signin'),
-          child: Text(context.l10n.signin),
-        ),
+    return SizedBox(
+      width: CCWidgetSize.large3,
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          // sign in button
+          FilledButton(
+            onPressed: () => context.push('/profile/signin'),
+            child: Text(context.l10n.signin),
+          ),
 
-        CCGap.small,
+          CCGap.small,
 
-        // sign up button
-        FilledButton(
-          onPressed: () => context.push('/profile/signup'),
-          child: Text(context.l10n.signup),
-        ),
+          // sign up button
+          FilledButton(
+            onPressed: () => context.push('/profile/signup'),
+            child: Text(context.l10n.signup),
+          ),
 
-        CCGap.medium,
+          CCGap.medium,
 
-        // or continue with
-        Row(
-          children: [
-            Expanded(child: CCDivider.xthin),
-            CCGap.small,
-            Text(context.l10n.orContinueWith),
-            CCGap.small,
-            Expanded(child: CCDivider.xthin),
-          ],
-        ),
+          // or continue with
+          Row(
+            children: [
+              Expanded(child: CCDivider.xthin),
+              CCGap.small,
+              Text(context.l10n.orContinueWith),
+              CCGap.small,
+              Expanded(child: CCDivider.xthin),
+            ],
+          ),
 
-        CCGap.large,
+          CCGap.large,
 
-        // google + apple sign in buttons
-        Center(
-          child: CardButton(
-            onTap: authenticationCRUD.signInWithGoogle,
-            child: CCPadding.allLarge(
-              child: Image.asset(
-                'assets/icon/google_icon.png',
-                height: CCSize.xxlarge,
+          // google + apple sign in buttons
+          Center(
+            child: CardButton(
+              onTap: authenticationCRUD.signInWithGoogle,
+              child: CCPadding.allLarge(
+                child: Image.asset(
+                  'assets/icon/google_icon.png',
+                  height: CCSize.xxlarge,
+                ),
               ),
             ),
           ),
-        ),
 
-        CCGap.large,
-      ],
+          CCGap.large,
+        ],
+      ),
     );
   }
 }

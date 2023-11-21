@@ -35,48 +35,51 @@ class _EmailVerificationBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        // mail icon
-        const Text(
-          '📬',
-          style: TextStyle(fontSize: CCWidgetSize.xxsmall),
-          textAlign: TextAlign.center,
-        ),
-
-        CCGap.large,
-
-        // sign up button
-        Text(
-          'Verify your email',
-          style: Theme.of(context).textTheme.titleLarge,
-          textAlign: TextAlign.center,
-        ),
-
-        CCGap.xxlarge,
-
-        // or continue with
-        const Text(
-          'Please verify your email by clicking the link we just sent, then return to the app and click "Continue."',
-          textAlign: TextAlign.center,
-        ),
-
-        CCGap.xxlarge,
-
-        // google + apple sign in buttons
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const ResendButton(),
-            CCGap.large,
-            FilledButton(
-              onPressed: authenticationCRUD.checkEmailVerified,
-              child: const Text('Continue'),
-            ),
-          ],
-        ),
-      ],
+    return SizedBox(
+          width: CCWidgetSize.large3,
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          // mail icon
+          const Text(
+            '📬',
+            style: TextStyle(fontSize: CCWidgetSize.xxsmall),
+            textAlign: TextAlign.center,
+          ),
+      
+          CCGap.large,
+      
+          // sign up button
+          Text(
+            'Verify your email',
+            style: Theme.of(context).textTheme.titleLarge,
+            textAlign: TextAlign.center,
+          ),
+      
+          CCGap.xxlarge,
+      
+          // or continue with
+          const Text(
+            'Please verify your email by clicking the link we just sent, then return to the app and click "Continue."',
+            textAlign: TextAlign.center,
+          ),
+      
+          CCGap.xxlarge,
+      
+          // google + apple sign in buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const ResendButton(),
+              CCGap.large,
+              FilledButton(
+                onPressed: authenticationCRUD.checkEmailVerified,
+                child: const Text('Continue'),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

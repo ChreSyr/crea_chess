@@ -68,64 +68,67 @@ class _SigninBody extends StatelessWidget {
         }
       },
       builder: (context, form) {
-        return ListView(
-          shrinkWrap: true,
-          children: [
-            if (form.status == SigninStatus.waiting)
-              const LinearProgressIndicator(),
-            // Welcome back !
-            const Text(
-              '😄',
-              style: TextStyle(fontSize: CCWidgetSize.xxsmall),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              context.l10n.welcomeBack,
-              textAlign: TextAlign.center,
-            ),
-
-            CCGap.xlarge,
-
-            // mail field
-            TextFormField(
-              decoration: CCInputDecoration(
-                hintText: context.l10n.email,
-                errorText: form.errorMessage(form.email, context.l10n),
+        return SizedBox(
+          width: CCWidgetSize.large3,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              if (form.status == SigninStatus.waiting)
+                const LinearProgressIndicator(),
+              // Welcome back !
+              const Text(
+                '😄',
+                style: TextStyle(fontSize: CCWidgetSize.xxsmall),
+                textAlign: TextAlign.center,
               ),
-              initialValue: form.email.value,
-              keyboardType: TextInputType.emailAddress,
-              onChanged: signinCubit.emailChanged,
-            ),
-
-            CCGap.small,
-
-            // password textfield
-            PasswordFromField(
-              hintText: context.l10n.password,
-              errorText: form.errorMessage(form.password, context.l10n),
-              initialValue: form.password.value,
-              onChanged: signinCubit.passwordChanged,
-            ),
-
-            CCGap.small,
-
-            // forgot password?
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: signinCubit.submitResetPassword,
-                child: Text(context.l10n.passwordForgot),
+              Text(
+                context.l10n.welcomeBack,
+                textAlign: TextAlign.center,
               ),
-            ),
 
-            CCGap.medium,
+              CCGap.xlarge,
 
-            // sign in button
-            FilledButton(
-              onPressed: signinCubit.submit,
-              child: Text(context.l10n.signin),
-            ),
-          ],
+              // mail field
+              TextFormField(
+                decoration: CCInputDecoration(
+                  hintText: context.l10n.email,
+                  errorText: form.errorMessage(form.email, context.l10n),
+                ),
+                initialValue: form.email.value,
+                keyboardType: TextInputType.emailAddress,
+                onChanged: signinCubit.emailChanged,
+              ),
+
+              CCGap.small,
+
+              // password textfield
+              PasswordFromField(
+                hintText: context.l10n.password,
+                errorText: form.errorMessage(form.password, context.l10n),
+                initialValue: form.password.value,
+                onChanged: signinCubit.passwordChanged,
+              ),
+
+              CCGap.small,
+
+              // forgot password?
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: signinCubit.submitResetPassword,
+                  child: Text(context.l10n.passwordForgot),
+                ),
+              ),
+
+              CCGap.medium,
+
+              // sign in button
+              FilledButton(
+                onPressed: signinCubit.submit,
+                child: Text(context.l10n.signin),
+              ),
+            ],
+          ),
         );
       },
     );
