@@ -29,7 +29,12 @@ class SignupBody extends RouteBody {
       create: (context) => SignupCubit(),
       child: BlocListener<AuthenticationCubit, AuthenticationModel>(
         listener: (context, auth) {
-          if (!auth.isAbsent) context.pop();
+          if (!auth.isAbsent) {
+            context.pop();
+            if (auth.emailVerified != true) {
+              context.push('/profile/email_verification');
+            }
+          }
         },
         child: const _SignupBody(),
       ),
@@ -54,8 +59,6 @@ class _SignupBody extends StatelessWidget {
               context.l10n.formError(form.status.name),
             );
             signupCubit.clearFailure();
-          case SignupStatus.signupSuccess:
-            context.push('/profile/email_verification');
           case _:
             break;
         }
@@ -90,6 +93,7 @@ class _SignupBody extends StatelessWidget {
                 initialValue: form.email.value,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: signupCubit.emailChanged,
+                onFieldSubmitted: (value) => signupCubit.submit(),
               ),
 
               CCGap.small,
@@ -100,6 +104,7 @@ class _SignupBody extends StatelessWidget {
                 errorText: form.errorMessage(form.password, context.l10n),
                 initialValue: form.password.value,
                 onChanged: signupCubit.passwordChanged,
+                onFieldSubmitted: (value) => signupCubit.submit(),
               ),
 
               CCGap.small,
@@ -111,6 +116,7 @@ class _SignupBody extends StatelessWidget {
                     form.errorMessage(form.confirmPassword, context.l10n),
                 initialValue: form.confirmPassword.value,
                 onChanged: signupCubit.confirmPasswordChanged,
+                onFieldSubmitted: (value) => signupCubit.submit(),
               ),
 
               CCGap.medium,
@@ -142,7 +148,7 @@ class _SignupBody extends StatelessWidget {
 
               // sign in button
               FilledButton(
-                onPressed: signupCubit.submit, // TODO : confirm email
+                onPressed: signupCubit.submit,
                 child: Text(context.l10n.signup),
               ),
             ],

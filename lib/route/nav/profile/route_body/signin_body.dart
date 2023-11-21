@@ -28,8 +28,6 @@ class SigninBody extends RouteBody {
       listener: (context, auth) {
         if (!auth.isAbsent) {
           context.pop();
-        } else if ((auth.id ?? '').isNotEmpty) {
-          context.push('/profile/email_verification');
         }
       },
       child: BlocProvider(
@@ -97,6 +95,7 @@ class _SigninBody extends StatelessWidget {
                 initialValue: form.email.value,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: signinCubit.emailChanged,
+                onFieldSubmitted: (value) => signinCubit.submit(),
               ),
 
               CCGap.small,
@@ -107,6 +106,7 @@ class _SigninBody extends StatelessWidget {
                 errorText: form.errorMessage(form.password, context.l10n),
                 initialValue: form.password.value,
                 onChanged: signinCubit.passwordChanged,
+                onFieldSubmitted: (value) => signinCubit.submit(),
               ),
 
               CCGap.small,

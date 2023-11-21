@@ -24,6 +24,7 @@ mixin _$UserModel {
   String? get ref => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
+  bool? get emailVerified => throw _privateConstructorUsedError;
   String? get photoUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +39,12 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {String? id, String? ref, String? name, String? email, String? photoUrl});
+      {String? id,
+      String? ref,
+      String? name,
+      String? email,
+      bool? emailVerified,
+      String? photoUrl});
 }
 
 /// @nodoc
@@ -58,6 +64,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? ref = freezed,
     Object? name = freezed,
     Object? email = freezed,
+    Object? emailVerified = freezed,
     Object? photoUrl = freezed,
   }) {
     return _then(_value.copyWith(
@@ -77,6 +84,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
+      emailVerified: freezed == emailVerified
+          ? _value.emailVerified
+          : emailVerified // ignore: cast_nullable_to_non_nullable
+              as bool?,
       photoUrl: freezed == photoUrl
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
@@ -94,7 +105,12 @@ abstract class _$$UserModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? id, String? ref, String? name, String? email, String? photoUrl});
+      {String? id,
+      String? ref,
+      String? name,
+      String? email,
+      bool? emailVerified,
+      String? photoUrl});
 }
 
 /// @nodoc
@@ -112,6 +128,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? ref = freezed,
     Object? name = freezed,
     Object? email = freezed,
+    Object? emailVerified = freezed,
     Object? photoUrl = freezed,
   }) {
     return _then(_$UserModelImpl(
@@ -131,6 +148,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
+      emailVerified: freezed == emailVerified
+          ? _value.emailVerified
+          : emailVerified // ignore: cast_nullable_to_non_nullable
+              as bool?,
       photoUrl: freezed == photoUrl
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
@@ -142,7 +163,13 @@ class __$$UserModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserModelImpl extends _UserModel {
-  _$UserModelImpl({this.id, this.ref, this.name, this.email, this.photoUrl})
+  _$UserModelImpl(
+      {this.id,
+      this.ref,
+      this.name,
+      this.email,
+      this.emailVerified,
+      this.photoUrl})
       : super._();
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -157,11 +184,13 @@ class _$UserModelImpl extends _UserModel {
   @override
   final String? email;
   @override
+  final bool? emailVerified;
+  @override
   final String? photoUrl;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, ref: $ref, name: $name, email: $email, photoUrl: $photoUrl)';
+    return 'UserModel(id: $id, ref: $ref, name: $name, email: $email, emailVerified: $emailVerified, photoUrl: $photoUrl)';
   }
 
   @override
@@ -173,13 +202,16 @@ class _$UserModelImpl extends _UserModel {
             (identical(other.ref, ref) || other.ref == ref) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.emailVerified, emailVerified) ||
+                other.emailVerified == emailVerified) &&
             (identical(other.photoUrl, photoUrl) ||
                 other.photoUrl == photoUrl));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, ref, name, email, photoUrl);
+  int get hashCode =>
+      Object.hash(runtimeType, id, ref, name, email, emailVerified, photoUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -201,6 +233,7 @@ abstract class _UserModel extends UserModel {
       final String? ref,
       final String? name,
       final String? email,
+      final bool? emailVerified,
       final String? photoUrl}) = _$UserModelImpl;
   _UserModel._() : super._();
 
@@ -215,6 +248,8 @@ abstract class _UserModel extends UserModel {
   String? get name;
   @override
   String? get email;
+  @override
+  bool? get emailVerified;
   @override
   String? get photoUrl;
   @override

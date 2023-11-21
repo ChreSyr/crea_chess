@@ -37,5 +37,5 @@ class AuthenticationModel with _$AuthenticationModel {
 }
 
 extension AuthenticationModelExt on AuthenticationModel {
-  bool get isAbsent => (id ?? '').isEmpty || emailVerified != true;
+  bool get isAbsent => (id ?? '').isEmpty;
 }

@@ -33,6 +33,7 @@ class ProfileBody extends RouteBody {
             id: auth.id,
             name: auth.name,
             email: auth.email,
+            emailVerified: auth.emailVerified,
             photoUrl: auth.photo,
           ),
         );
@@ -63,6 +64,16 @@ class UserDetails extends StatelessWidget {
         Text('username : ${user.name ?? ''}'),
         CCGap.small,
         Text('email : ${user.email ?? ''}'),
+        // email verification
+        if (!(user.emailVerified ?? false)) ...[
+          const Text(
+              'Nous avons besoin de nous assurer que vous êtes bien le propriétaire de cet email.'),
+          CCGap.small,
+          FilledButton(
+            onPressed: () => context.push('/profile/email_verification'),
+            child: const Text('Vérifier mon mail'),
+          ),
+        ],
         CCGap.large,
         ElevatedButton.icon(
           onPressed: () {

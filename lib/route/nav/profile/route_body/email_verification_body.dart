@@ -59,8 +59,8 @@ class _EmailVerificationBody extends StatelessWidget {
           CCGap.xxlarge,
       
           // or continue with
-          const Text(
-            'Please verify your email by clicking the link we just sent, then return to the app and click "Continue."',
+          Text(
+            'Please verify your email by clicking the link we just sent to ${context.read<AuthenticationCubit>().state.email}, then return to the app and click "Continue."',
             textAlign: TextAlign.center,
           ),
       
@@ -98,6 +98,7 @@ class _ResendButtonState extends State<ResendButton> {
   @override
   void initState() {
     super.initState();
+    authenticationCRUD.sendEmailVerification();
     delay = 15;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _decrease();

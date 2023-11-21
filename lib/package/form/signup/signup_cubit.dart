@@ -68,7 +68,6 @@ class SignupCubit extends Cubit<SignupForm> {
         email: state.email.value,
         password: state.password.value,
       );
-      await authenticationCRUD.sendEmailVerification();
       emit(
         state.copyWith(
           status: SignupStatus.signupSuccess,
