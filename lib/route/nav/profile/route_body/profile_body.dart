@@ -5,22 +5,42 @@ import 'package:crea_chess/package/firebase/authentication/authentication_cubit.
 import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/nav/nav_notif_cubit.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class ProfileBody extends RouteBody {
+class ProfileBody extends MainRouteBody {
   const ProfileBody({super.key});
+
+  @override
+  Icon getIcon() {
+    return const Icon(Icons.person);
+  }
+
+  @override
+  String getId() {
+    return 'profile';
+  }
 
   @override
   String getTitle(AppLocalizations l10n) {
     return l10n.profile;
   }
 
+  static const notifEmailNotVerified = 'email-not-verified';
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationCubit, AuthenticationModel>(
+    return BlocConsumer<AuthenticationCubit, AuthenticationModel>(
+      listener: (context, auth) {
+        if (!auth.isAbsent && (auth.emailVerified != true)) {
+          context.read<NavNotifCubit>().add(getId(), notifEmailNotVerified);
+        } else {
+          context.read<NavNotifCubit>().remove(getId(), notifEmailNotVerified);
+        }
+      },
       builder: (context, auth) {
         if (auth.isAbsent) {
           return FilledButton.icon(
@@ -63,7 +83,7 @@ class UserDetails extends StatelessWidget {
         ),
         CCGap.large,
         ListTile(
-          leading: Icon(Icons.alternate_email),
+          leading: const Icon(Icons.alternate_email),
           title: Text(user.name ?? 'non renseigné'),
         ),
         CCGap.small,

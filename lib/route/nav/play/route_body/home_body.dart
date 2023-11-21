@@ -4,8 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeBody extends RouteBody {
+class HomeBody extends MainRouteBody {
   const HomeBody({super.key});
+
+  @override
+  Icon getIcon() {
+    return const Icon(Icons.play_arrow);
+  }
+
+  @override
+  String getId() {
+    return 'home';
+  }
 
   @override
   String getTitle(AppLocalizations l10n) {

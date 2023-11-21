@@ -6,3 +6,10 @@ abstract class RouteBody extends StatelessWidget {
 
   String getTitle(AppLocalizations l10n);
 }
+
+abstract class MainRouteBody extends RouteBody {
+  const MainRouteBody({super.key});
+
+  Icon getIcon();
+  String getId();
+}

@@ -1,7 +1,9 @@
 // Code from : https://codewithandrea.com/articles/flutter-bottom-navigation-bar-nested-routes-gorouter/
 // TODO : responsive scaffold
 
+import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/nav/nav_notif_cubit.dart';
 import 'package:crea_chess/route/nav/play/route_body/chessground_body.dart';
 import 'package:crea_chess/route/nav/play/route_body/create_challenge_body.dart';
 import 'package:crea_chess/route/nav/play/route_body/home_body.dart';
@@ -10,11 +12,13 @@ import 'package:crea_chess/route/nav/profile/route_body/profile_body.dart';
 import 'package:crea_chess/route/nav/profile/route_body/sign_methods_body.dart';
 import 'package:crea_chess/route/nav/profile/route_body/signin_body.dart';
 import 'package:crea_chess/route/nav/profile/route_body/signup_body.dart';
-import 'package:crea_chess/route/nav/settings/route_body/color_screen.dart';
-import 'package:crea_chess/route/nav/settings/route_body/settings_screen.dart';
+import 'package:crea_chess/route/nav/settings/route_body/color_body.dart';
+import 'package:crea_chess/route/nav/settings/route_body/settings_body.dart';
 import 'package:crea_chess/route/route_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:badges/badges.dart' as badges;
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -102,14 +106,14 @@ final router = GoRouter(
             GoRoute(
               path: '/settings',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: RouteScaffold(body: SettingsScreen()),
+                child: RouteScaffold(body: SettingsBody()),
               ),
               routes: [
                 // child routes
                 GoRoute(
                   path: 'color',
                   builder: (context, state) =>
-                      const RouteScaffold(body: ColorScreen()),
+                      const RouteScaffold(body: ColorBody()),
                 ),
               ],
             ),
@@ -119,6 +123,12 @@ final router = GoRouter(
     ),
   ],
 );
+
+final mainRouteBodies = [
+  const HomeBody(),
+  const ProfileBody(),
+  const SettingsBody(),
+];
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({required this.state, super.key});
@@ -145,9 +155,6 @@ class ErrorPage extends StatelessWidget {
   }
 }
 
-// use like this:
-// MaterialApp.router(routerConfig: goRouter, ...)
-
 // Stateful nested navigation based on:
 // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart
 class ScaffoldWithNestedNavigation extends StatelessWidget {
@@ -170,23 +177,25 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        destinations: [
-          NavigationDestination(
-            label: context.l10n.play,
-            icon: const Icon(Icons.play_arrow),
-          ),
-          NavigationDestination(
-            label: context.l10n.profile,
-            icon: const Icon(Icons.person),
-          ),
-          NavigationDestination(
-            label: context.l10n.settings,
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-        onDestinationSelected: _goBranch,
+      bottomNavigationBar:
+          BlocBuilder<NavNotifCubit, Map<String, List<String>>>(
+        builder: (context, notifs) {
+          return NavigationBar(
+            height: CCWidgetSize.xxsmall,
+            selectedIndex: navigationShell.currentIndex,
+            destinations: mainRouteBodies
+                .map(
+                  (e) => NavigationDestination(
+                    icon: notifs[e.getId()]?.isNotEmpty ?? false
+                        ? badges.Badge(child: e.getIcon())
+                        : e.getIcon(),
+                    label: e.getTitle(context.l10n),
+                  ),
+                )
+                .toList(),
+            onDestinationSelected: _goBranch,
+          );
+        },
       ),
     );
   }
