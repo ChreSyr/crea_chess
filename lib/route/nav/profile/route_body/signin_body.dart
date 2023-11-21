@@ -58,7 +58,7 @@ class _SigninBody extends StatelessWidget {
           case SigninStatus.resetPasswordSuccess:
             snackBarNotify(
               context,
-              'Check your mail box !', // TODO: l10n
+              context.l10n.verifyMailbox,
             );
             signinCubit.clearFailure();
           case _:

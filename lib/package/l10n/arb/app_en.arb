@@ -2,6 +2,7 @@
   "@@locale": "en",
   "alreadyHaveAccount": "Already have an account ?",
   "chooseColor": "Choose a color",
+  "continue_": "Continue",
   "deleteAccount": "Delete this account",
   "disconnect": "Sign out",
   "email": "Email",
@@ -26,6 +27,14 @@
   "signin": "Sign in",
   "signup": "Create an account",
   "timeControl": "Time control",
+  "verifyMailbox": "Check your mailbox !",
+  "verifyEmailExplanation": "Confirm your email by clicking the link sent to {email}, then return to the app and click Continue.",
+  "@verifyEmailExplanation": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "verifyEmailResendLink": "Resend link",
   "welcomeBack": "Welcome back !",
   "welcomeAmongUs": "Welcome among us !"
 }

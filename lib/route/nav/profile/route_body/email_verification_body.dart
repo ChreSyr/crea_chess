@@ -51,7 +51,7 @@ class _EmailVerificationBody extends StatelessWidget {
       
           // sign up button
           Text(
-            'Verify your email',
+            context.l10n.verifyMailbox,
             style: Theme.of(context).textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),
@@ -60,7 +60,9 @@ class _EmailVerificationBody extends StatelessWidget {
       
           // or continue with
           Text(
-            'Please verify your email by clicking the link we just sent to ${context.read<AuthenticationCubit>().state.email}, then return to the app and click "Continue."',
+            context.l10n.verifyEmailExplanation(
+              context.read<AuthenticationCubit>().state.email ?? 'ERROR',
+            ),
             textAlign: TextAlign.center,
           ),
       
@@ -74,7 +76,7 @@ class _EmailVerificationBody extends StatelessWidget {
               CCGap.large,
               FilledButton(
                 onPressed: authenticationCRUD.checkEmailVerified,
-                child: const Text('Continue'),
+                child: Text(context.l10n.continue_),
               ),
             ],
           ),
@@ -141,11 +143,11 @@ class _ResendButtonState extends State<ResendButton> {
               authenticationCRUD.sendEmailVerification();
               _reset();
             },
-            child: const Text('Resend email link'),
+            child: Text(context.l10n.verifyEmailResendLink),
           )
         : ElevatedButton(
             onPressed: null,
-            child: Text('Resend email link ($delay)'),
+            child: Text('${context.l10n.verifyEmailResendLink} ($delay)'),
           );
   }
 }

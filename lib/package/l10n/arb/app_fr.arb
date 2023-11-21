@@ -2,6 +2,7 @@
   "@@locale": "fr",
   "alreadyHaveAccount": "Tu as déjà un compte ?",
   "chooseColor": "Choisis une couleur",
+  "continue_": "Continuer",
   "deleteAccount": "Supprimer ce compte",
   "disconnect": "Se déconnecter",
   "email": "Mail",
@@ -26,6 +27,14 @@
   "signin": "Connexion",
   "signup": "Créer un compte",
   "timeControl": "Cadence",
+  "verifyMailbox": "Vérifiez votre boîte de réception !",
+  "verifyEmailExplanation": "Confirmez votre adresse e-mail en cliquant sur le lien envoyé à {email}, puis revenez à l'application et cliquez sur Continuer.",
+  "@verifyEmailExplanation": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "verifyEmailResendLink": "Renvoyer le lien",
   "welcomeBack": "Bon retour parmi nous !",
   "welcomeAmongUs": "Bienvenue parmi nous !"
 }
