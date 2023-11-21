@@ -6,6 +6,9 @@ class CCColor {
   static Color background(BuildContext context) =>
       Theme.of(context).colorScheme.background;
 
+  static Color onBackground(BuildContext context) =>
+      Theme.of(context).colorScheme.onBackground;
+
   static Color error(BuildContext context) =>
       Theme.of(context).colorScheme.error;
 

@@ -87,17 +87,45 @@ class UserDetails extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CircleAvatar(
-          radius: CCSize.xxxlarge,
-          backgroundColor:
-              user.photoUrl == null ? Colors.grey : Colors.transparent,
-          backgroundImage:
-              user.photoUrl == null ? null : NetworkImage(user.photoUrl!),
+        ListTile(
+          title: SizedBox(
+            height: CCSize.xxxlarge * 2,
+            width: CCSize.xxxlarge * 3,
+            child: Stack(
+              children: [
+                Center(
+                  child: CircleAvatar(
+                    radius: CCSize.xxxlarge,
+                    backgroundColor: user.photoUrl == null
+                        ? Colors.grey
+                        : Colors.transparent,
+                    backgroundImage: user.photoUrl == null
+                        ? null
+                        : NetworkImage(user.photoUrl!),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.edit,
+                      color: CCColor.onBackground(context),
+                    ),
+                    onPressed: () {}, // TODO
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
-        CCGap.large,
         ListTile(
           leading: const Icon(Icons.alternate_email),
           title: Text(user.name ?? 'non renseigné'),
+          trailing: IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {}, // TOOD
+          ),
         ),
         CCGap.small,
         ListTile(
