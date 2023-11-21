@@ -29,6 +29,20 @@ class ProfileBody extends MainRouteBody {
     return l10n.profile;
   }
 
+  @override
+  List<Widget> getActions(BuildContext context) {
+    return [
+      ElevatedButton.icon(
+        onPressed: () {
+          context.go('/profile/sign_methods');
+          context.read<AuthenticationCubit>().signoutRequested();
+        },
+        icon: const Icon(Icons.logout),
+        label: Text(context.l10n.disconnect),
+      ),
+    ];
+  }
+
   static const notifEmailNotVerified = 'email-not-verified';
 
   @override
@@ -70,7 +84,6 @@ class UserDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authCubit = context.read<AuthenticationCubit>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -124,15 +137,6 @@ class UserDetails extends StatelessWidget {
                       );
                     },
                   ),
-        ),
-        CCGap.large,
-        ElevatedButton.icon(
-          onPressed: () {
-            context.go('/profile/sign_methods');
-            authCubit.signoutRequested();
-          },
-          icon: const Icon(Icons.logout),
-          label: Text(context.l10n.disconnect),
         ),
       ],
     );

@@ -22,6 +22,7 @@ class RouteScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(body.getTitle(context.l10n)),
+        actions: body.getActions(context),
       ),
       body: padd(
         Center(

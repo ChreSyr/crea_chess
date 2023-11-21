@@ -5,6 +5,8 @@ abstract class RouteBody extends StatelessWidget {
   const RouteBody({super.key});
 
   String getTitle(AppLocalizations l10n);
+
+  List<Widget>? getActions(BuildContext context) => null;
 }
 
 abstract class MainRouteBody extends RouteBody {
