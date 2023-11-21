@@ -88,6 +88,7 @@ class _SigninBody extends StatelessWidget {
 
               // mail field
               TextFormField(
+                autofocus: true,
                 decoration: CCInputDecoration(
                   hintText: context.l10n.email,
                   errorText: form.errorMessage(form.email, context.l10n),
@@ -95,7 +96,7 @@ class _SigninBody extends StatelessWidget {
                 initialValue: form.email.value,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: signinCubit.emailChanged,
-                onFieldSubmitted: (value) => signinCubit.submit(),
+                textInputAction: TextInputAction.next,
               ),
 
               CCGap.small,

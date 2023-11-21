@@ -86,6 +86,7 @@ class _SignupBody extends StatelessWidget {
 
               // mail field
               TextFormField(
+                autofocus: true,
                 decoration: CCInputDecoration(
                   hintText: context.l10n.email,
                   errorText: form.errorMessage(form.email, context.l10n),
@@ -93,7 +94,7 @@ class _SignupBody extends StatelessWidget {
                 initialValue: form.email.value,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: signupCubit.emailChanged,
-                onFieldSubmitted: (value) => signupCubit.submit(),
+                textInputAction: TextInputAction.next,
               ),
 
               CCGap.small,
@@ -110,28 +111,21 @@ class _SignupBody extends StatelessWidget {
               CCGap.medium,
 
               // conditions
-              Row(
-                children: [
-                  Checkbox(
-                    value: form.acceptConditions.value,
-                    onChanged: signupCubit.acceptedConditionsChanged,
-                  ),
-                  Expanded(
-                    child: Text(
-                      context.l10n.iAcceptConditions,
-                      maxLines: 3,
-                      style: form.errorMessage(
-                                form.acceptConditions,
-                                context.l10n,
-                              ) ==
-                              null
-                          ? null
-                          : TextStyle(color: CCColor.error(context)),
-                    ),
-                  ),
-                ],
+              CheckboxListTile(
+                value: form.acceptConditions.value,
+                onChanged: signupCubit.acceptedConditionsChanged,
+                title: Text(
+                  context.l10n.iAcceptConditions,
+                  style: form.errorMessage(
+                            form.acceptConditions,
+                            context.l10n,
+                          ) ==
+                          null
+                      ? null
+                      : TextStyle(color: CCColor.error(context)),
+                ),
               ),
-
+              
               CCGap.medium,
 
               // sign in button
