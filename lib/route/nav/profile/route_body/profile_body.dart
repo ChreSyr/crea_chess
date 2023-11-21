@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
@@ -54,26 +55,56 @@ class UserDetails extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         CircleAvatar(
-          radius: CCSize.xxlarge,
+          radius: CCSize.xxxlarge,
           backgroundColor:
               user.photoUrl == null ? Colors.grey : Colors.transparent,
           backgroundImage:
               user.photoUrl == null ? null : NetworkImage(user.photoUrl!),
         ),
+        CCGap.large,
+        ListTile(
+          leading: Icon(Icons.alternate_email),
+          title: Text(user.name ?? 'non renseigné'),
+        ),
         CCGap.small,
-        Text('username : ${user.name ?? ''}'),
-        CCGap.small,
-        Text('email : ${user.email ?? ''}'),
-        // email verification
-        if (!(user.emailVerified ?? false)) ...[
-          const Text(
-              'Nous avons besoin de nous assurer que vous êtes bien le propriétaire de cet email.'),
-          CCGap.small,
-          FilledButton(
-            onPressed: () => context.push('/profile/email_verification'),
-            child: const Text('Vérifier mon mail'),
-          ),
-        ],
+        ListTile(
+          leading: const Icon(Icons.email),
+          title: Text(user.email ?? ''),
+          // email verification
+          trailing: (user.emailVerified ?? false)
+              ? null
+              : Icon(
+                  Icons.priority_high,
+                  color: CCColor.error(context),
+                ),
+          // email verification
+          onTap: (user.emailVerified ?? false)
+              ? null
+              : () => showDialog<AlertDialog>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: Text(
+                          context.l10n.verifyEmailExplanation,
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: context.pop,
+                            child: Text(context.l10n.cancel),
+                          ),
+                          FilledButton(
+                            child: Text(context.l10n.verifyEmailSendLink),
+                            onPressed: () {
+                              context
+                                ..pop()
+                                ..push('/profile/email_verification');
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+        ),
         CCGap.large,
         ElevatedButton.icon(
           onPressed: () {

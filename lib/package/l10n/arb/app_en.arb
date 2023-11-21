@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "alreadyHaveAccount": "Already have an account ?",
+  "cancel": "Cancel",
   "chooseColor": "Choose a color",
   "continue_": "Continue",
   "deleteAccount": "Delete this account",
@@ -27,14 +28,16 @@
   "signin": "Sign in",
   "signup": "Create an account",
   "timeControl": "Time control",
-  "verifyMailbox": "Check your mailbox !",
-  "verifyEmailExplanation": "Confirm your email by clicking the link sent to {email}, then return to the app and click Continue.",
-  "@verifyEmailExplanation": {
+  "verifyEmailExplainLink": "Confirm your email by clicking the link sent to {email}, then return to the app and click Continue.",
+  "@verifyEmailExplainLink": {
     "placeholders": {
       "email": {}
     }
   },
+  "verifyEmailExplanation": "An email will be sent to you to confirm that you are the owner of this address.",
   "verifyEmailResendLink": "Resend link",
+  "verifyEmailSendLink": "Send email link",
+  "verifyMailbox": "Check your mailbox !",
   "welcomeBack": "Welcome back !",
   "welcomeAmongUs": "Welcome among us !"
 }

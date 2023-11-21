@@ -60,7 +60,7 @@ class _EmailVerificationBody extends StatelessWidget {
       
           // or continue with
           Text(
-            context.l10n.verifyEmailExplanation(
+            context.l10n.verifyEmailExplainLink(
               context.read<AuthenticationCubit>().state.email ?? 'ERROR',
             ),
             textAlign: TextAlign.center,
