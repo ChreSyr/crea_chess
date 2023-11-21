@@ -48,7 +48,7 @@ class _SigninBody extends StatelessWidget {
     return BlocConsumer<SigninCubit, SigninForm>(
       listener: (context, form) {
         switch (form.status) {
-          case SigninStatus.userNotFound:
+          case SigninStatus.invalidCredentials:
           case SigninStatus.unexpectedError:
             snackBarError(
               context,

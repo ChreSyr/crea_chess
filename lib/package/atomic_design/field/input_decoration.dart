@@ -19,7 +19,6 @@ class CCInputDecoration extends InputDecoration {
     super.error,
     super.errorText,
     super.errorStyle,
-    super.errorMaxLines,
     super.floatingLabelBehavior,
     super.floatingLabelAlignment,
     super.isCollapsed,
@@ -50,6 +49,7 @@ class CCInputDecoration extends InputDecoration {
     super.constraints,
   }) : super(
           border: const OutlineInputBorder(),
+          errorMaxLines: 3,
           filled: true,
           fillColor: CCColor.greySail,
         );

@@ -53,7 +53,7 @@ class SigninCubit extends Cubit<SigninForm> {
         ),
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-login-credentials') {
+      if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
         emit(state.copyWith(status: SigninStatus.invalidCredentials));
       } else {
         emit(state.copyWith(status: SigninStatus.unexpectedError));
@@ -81,8 +81,7 @@ class SigninCubit extends Cubit<SigninForm> {
       );
       emit(state.copyWith(status: SigninStatus.resetPasswordSuccess));
     } catch (_) {
-      // TODO : resetPasswordError
-      emit(state.copyWith(status: SigninStatus.userNotFound));
+      emit(state.copyWith(status: SigninStatus.unexpectedError));
     }
   }
 }

@@ -12,10 +12,9 @@ enum SigninStatus {
 
   // reset password
   invalidMailForResetPassword,
-  userNotFound,
   resetPasswordSuccess,
 
   // snack bar notified errors
-  invalidCredentials, // TODO : l10n
+  invalidCredentials,
   unexpectedError,
 }
