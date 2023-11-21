@@ -107,18 +107,6 @@ class _SignupBody extends StatelessWidget {
                 onFieldSubmitted: (value) => signupCubit.submit(),
               ),
 
-              CCGap.small,
-
-              // confirm password textfield
-              PasswordFromField(
-                hintText: context.l10n.passwordConfirmation,
-                errorText:
-                    form.errorMessage(form.confirmPassword, context.l10n),
-                initialValue: form.confirmPassword.value,
-                onChanged: signupCubit.confirmPasswordChanged,
-                onFieldSubmitted: (value) => signupCubit.submit(),
-              ),
-
               CCGap.medium,
 
               // conditions

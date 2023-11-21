@@ -14,5 +14,4 @@ enum SignupStatus {
 
   // snack bar notified errors
   mailTaken,
-  passwordsDontMatch,
 }

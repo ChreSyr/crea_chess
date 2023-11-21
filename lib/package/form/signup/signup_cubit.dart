@@ -13,7 +13,6 @@ class SignupCubit extends Cubit<SignupForm> {
           SignupForm(
             email: const InputEmail.pure(isRequired: true),
             password: const InputPassword.pure(isRequired: true),
-            confirmPassword: const InputPassword.pure(isRequired: true),
             acceptConditions: const InputBoolean.pure(isRequired: true),
             status: SignupStatus.inProgress,
           ),
@@ -35,14 +34,6 @@ class SignupCubit extends Cubit<SignupForm> {
     emit(state.copyWith(password: state.password.copyWith(string: value)));
   }
 
-  void confirmPasswordChanged(String value) {
-    emit(
-      state.copyWith(
-        confirmPassword: state.confirmPassword.copyWith(string: value),
-      ),
-    );
-  }
-
   // ignore: avoid_positional_boolean_parameters
   void acceptedConditionsChanged(bool? boolean) {
     emit(
@@ -55,10 +46,6 @@ class SignupCubit extends Cubit<SignupForm> {
   Future<void> submit() async {
     if (!state.isValid) {
       return emit(state.copyWith(status: SignupStatus.editError));
-    }
-
-    if (state.password.value != state.confirmPassword.value) {
-      return emit(state.copyWith(status: SignupStatus.passwordsDontMatch));
     }
 
     emit(state.copyWith(status: SignupStatus.waiting));

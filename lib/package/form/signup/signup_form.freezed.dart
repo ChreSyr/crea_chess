@@ -18,7 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SignupForm {
   InputEmail get email => throw _privateConstructorUsedError;
   InputPassword get password => throw _privateConstructorUsedError;
-  InputPassword get confirmPassword => throw _privateConstructorUsedError;
   InputBoolean get acceptConditions => throw _privateConstructorUsedError;
   SignupStatus get status => throw _privateConstructorUsedError;
 
@@ -36,7 +35,6 @@ abstract class $SignupFormCopyWith<$Res> {
   $Res call(
       {InputEmail email,
       InputPassword password,
-      InputPassword confirmPassword,
       InputBoolean acceptConditions,
       SignupStatus status});
 }
@@ -56,7 +54,6 @@ class _$SignupFormCopyWithImpl<$Res, $Val extends SignupForm>
   $Res call({
     Object? email = null,
     Object? password = null,
-    Object? confirmPassword = null,
     Object? acceptConditions = null,
     Object? status = null,
   }) {
@@ -68,10 +65,6 @@ class _$SignupFormCopyWithImpl<$Res, $Val extends SignupForm>
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as InputPassword,
-      confirmPassword: null == confirmPassword
-          ? _value.confirmPassword
-          : confirmPassword // ignore: cast_nullable_to_non_nullable
               as InputPassword,
       acceptConditions: null == acceptConditions
           ? _value.acceptConditions
@@ -96,7 +89,6 @@ abstract class _$$SignupFormImplCopyWith<$Res>
   $Res call(
       {InputEmail email,
       InputPassword password,
-      InputPassword confirmPassword,
       InputBoolean acceptConditions,
       SignupStatus status});
 }
@@ -114,7 +106,6 @@ class __$$SignupFormImplCopyWithImpl<$Res>
   $Res call({
     Object? email = null,
     Object? password = null,
-    Object? confirmPassword = null,
     Object? acceptConditions = null,
     Object? status = null,
   }) {
@@ -126,10 +117,6 @@ class __$$SignupFormImplCopyWithImpl<$Res>
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as InputPassword,
-      confirmPassword: null == confirmPassword
-          ? _value.confirmPassword
-          : confirmPassword // ignore: cast_nullable_to_non_nullable
               as InputPassword,
       acceptConditions: null == acceptConditions
           ? _value.acceptConditions
@@ -149,7 +136,6 @@ class _$SignupFormImpl extends _SignupForm {
   _$SignupFormImpl(
       {required this.email,
       required this.password,
-      required this.confirmPassword,
       required this.acceptConditions,
       required this.status})
       : super._();
@@ -159,15 +145,13 @@ class _$SignupFormImpl extends _SignupForm {
   @override
   final InputPassword password;
   @override
-  final InputPassword confirmPassword;
-  @override
   final InputBoolean acceptConditions;
   @override
   final SignupStatus status;
 
   @override
   String toString() {
-    return 'SignupForm(email: $email, password: $password, confirmPassword: $confirmPassword, acceptConditions: $acceptConditions, status: $status)';
+    return 'SignupForm(email: $email, password: $password, acceptConditions: $acceptConditions, status: $status)';
   }
 
   @override
@@ -178,16 +162,14 @@ class _$SignupFormImpl extends _SignupForm {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
-            (identical(other.confirmPassword, confirmPassword) ||
-                other.confirmPassword == confirmPassword) &&
             (identical(other.acceptConditions, acceptConditions) ||
                 other.acceptConditions == acceptConditions) &&
             (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, email, password, confirmPassword, acceptConditions, status);
+  int get hashCode =>
+      Object.hash(runtimeType, email, password, acceptConditions, status);
 
   @JsonKey(ignore: true)
   @override
@@ -200,7 +182,6 @@ abstract class _SignupForm extends SignupForm {
   factory _SignupForm(
       {required final InputEmail email,
       required final InputPassword password,
-      required final InputPassword confirmPassword,
       required final InputBoolean acceptConditions,
       required final SignupStatus status}) = _$SignupFormImpl;
   _SignupForm._() : super._();
@@ -209,8 +190,6 @@ abstract class _SignupForm extends SignupForm {
   InputEmail get email;
   @override
   InputPassword get password;
-  @override
-  InputPassword get confirmPassword;
   @override
   InputBoolean get acceptConditions;
   @override

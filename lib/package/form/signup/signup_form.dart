@@ -14,7 +14,6 @@ class SignupForm with FormzMixin, _$SignupForm {
   factory SignupForm({
     required InputEmail email,
     required InputPassword password,
-    required InputPassword confirmPassword,
     required InputBoolean acceptConditions,
     required SignupStatus status,
   }) = _SignupForm;
@@ -26,7 +25,6 @@ class SignupForm with FormzMixin, _$SignupForm {
   List<FormzInput<dynamic, dynamic>> get inputs => [
         email,
         password,
-        confirmPassword,
         acceptConditions,
       ];
 
@@ -34,9 +32,6 @@ class SignupForm with FormzMixin, _$SignupForm {
     FormzInput<dynamic, FormError> input,
     AppLocalizations l10n,
   ) {
-    if (input is InputPassword && status == SignupStatus.passwordsDontMatch) {
-      return l10n.formError(SignupStatus.passwordsDontMatch.name);
-    }
     if (input.error == null) return null;
     if (status != SignupStatus.editError) return null;
     if (!inputs.contains(input)) return null;
