@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 // TODO : sort
-// TODO : rethink
 class CCColor {
   static Color background(BuildContext context) =>
       Theme.of(context).colorScheme.background;

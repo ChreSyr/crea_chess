@@ -1,6 +1,7 @@
 // Code from : https://codewithandrea.com/articles/flutter-bottom-navigation-bar-nested-routes-gorouter/
 // TODO : responsive scaffold
 
+import 'package:badges/badges.dart' as badges;
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/nav_notif_cubit.dart';
@@ -18,7 +19,6 @@ import 'package:crea_chess/route/route_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:badges/badges.dart' as badges;
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();

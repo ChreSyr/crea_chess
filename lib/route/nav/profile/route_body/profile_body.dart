@@ -114,7 +114,7 @@ class UserDetails extends StatelessWidget {
                     ),
                     onPressed: () {}, // TODO
                   ),
-                )
+                ),
               ],
             ),
           ),

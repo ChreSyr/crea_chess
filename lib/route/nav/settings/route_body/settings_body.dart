@@ -25,7 +25,6 @@ class SettingsBody extends MainRouteBody {
 
   @override
   String getTitle(AppLocalizations l10n) {
-    // TODO: implement getTitle
     return l10n.settings;
   }
 

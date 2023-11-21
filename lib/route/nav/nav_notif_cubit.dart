@@ -13,8 +13,6 @@ class NavNotifCubit extends Cubit<Map<String, Set<String>>> {
       newState[key]!.add(value);
     }
     emit(newState);
-    print('---------------');
-    print(newState);
   }
 
   void remove(String key, String value) {
@@ -22,7 +20,5 @@ class NavNotifCubit extends Cubit<Map<String, Set<String>>> {
     final newState = Map<String, Set<String>>.from(state);
     newState[key]!.remove(value);
     emit(newState);
-    print('---------------');
-    print(newState);
   }
 }
