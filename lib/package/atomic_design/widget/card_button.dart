@@ -17,7 +17,7 @@ class CardButton extends StatelessWidget {
     return Material(
       borderRadius: CCBorderRadiusCircular.medium,
       clipBehavior: Clip.antiAlias,
-      color: CCColor.fieldBackground(context),
+      color: CCColor.lightGrey,
       child: InkWell(
         onTap: onTap,
         child: child,

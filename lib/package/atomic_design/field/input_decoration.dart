@@ -1,9 +1,7 @@
-import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:flutter/material.dart';
 
 class CCInputDecoration extends InputDecoration {
-  CCInputDecoration({
-    required BuildContext context,
+  const CCInputDecoration({
     super.icon,
     super.iconColor,
     super.label,
@@ -14,7 +12,7 @@ class CCInputDecoration extends InputDecoration {
     super.helperStyle,
     super.helperMaxLines,
     super.hintText,
-    // super.hintStyle,
+    super.hintStyle,
     super.hintTextDirection,
     super.hintMaxLines,
     super.error,
@@ -41,6 +39,8 @@ class CCInputDecoration extends InputDecoration {
     super.counter,
     super.counterText,
     super.counterStyle,
+    super.filled,
+    super.fillColor,
     super.focusColor,
     super.hoverColor,
     super.enabled,
@@ -49,8 +49,5 @@ class CCInputDecoration extends InputDecoration {
     super.constraints,
   }) : super(
           border: const OutlineInputBorder(),
-          fillColor: CCColor.fieldBackground(context),
-          filled: true,
-          hintStyle: TextStyle(color: CCColor.fieldHintColor),
         );
 }

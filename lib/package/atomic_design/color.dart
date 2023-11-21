@@ -12,19 +12,13 @@ class CCColor {
   static Color onError(BuildContext context) =>
       Theme.of(context).colorScheme.onError;
 
-  static Color fieldBackground(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark
-          ? Theme.of(context).colorScheme.inverseSurface
-          : Colors.grey[200]!;
-
-  static Color fieldHintColor = Colors.grey[500]!;
-  static Color fieldTextColor = Colors.black;
-
   static Color inverseSurface(BuildContext context) =>
       Theme.of(context).colorScheme.inverseSurface;
 
   static Color onInverseSurface(BuildContext context) =>
       Theme.of(context).colorScheme.onInverseSurface;
+
+  static Color lightGrey = Colors.grey[200]!;
 }
 
 enum SeedColor {

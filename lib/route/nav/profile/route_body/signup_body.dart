@@ -1,5 +1,6 @@
 import 'package:crea_chess/package/atomic_design/color.dart';
-import 'package:crea_chess/package/atomic_design/decoration.dart';
+import 'package:crea_chess/package/atomic_design/field/input_decoration.dart';
+import 'package:crea_chess/package/atomic_design/field/password_form_field.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
@@ -81,47 +82,35 @@ class _SignupBody extends StatelessWidget {
             // mail field
             TextFormField(
               decoration: CCInputDecoration(
-                context: context,
                 hintText: context.l10n.email,
                 errorText: form.errorMessage(form.email, context.l10n),
               ),
               initialValue: form.email.value,
               keyboardType: TextInputType.emailAddress,
               onChanged: signupCubit.emailChanged,
-              style: TextStyle(color: CCColor.fieldTextColor),
             ),
 
             CCGap.small,
 
             // password textfield
-            TextFormField(
-              obscureText: true,
-              decoration: CCInputDecoration(
-                context: context,
+            PasswordFromField(
                 hintText: context.l10n.password,
                 errorText: form.errorMessage(form.password, context.l10n),
-              ),
+              
               initialValue: form.password.value,
-              keyboardType: TextInputType.visiblePassword,
               onChanged: signupCubit.passwordChanged,
-              style: TextStyle(color: CCColor.fieldTextColor),
             ),
 
             CCGap.small,
 
             // confirm password textfield
-            TextFormField(
-              obscureText: true,
-              decoration: CCInputDecoration(
-                context: context,
+            PasswordFromField(
                 hintText: context.l10n.passwordConfirmation,
                 errorText:
                     form.errorMessage(form.confirmPassword, context.l10n),
-              ),
+              
               initialValue: form.confirmPassword.value,
-              keyboardType: TextInputType.visiblePassword,
               onChanged: signupCubit.confirmPasswordChanged,
-              style: TextStyle(color: CCColor.fieldTextColor),
             ),
 
             CCGap.medium,

@@ -11,18 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class ResendDelayCubit extends Cubit<int> {
-  ResendDelayCubit() : super(15) {
-    reset();
-  }
-
-  void _decrease() => emit(state - 1);
-
-  void reset() {
-    emit(15);
-  }
-}
-
 class EmailVerificationBody extends RouteBody {
   const EmailVerificationBody({super.key});
 
