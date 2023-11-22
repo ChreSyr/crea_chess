@@ -34,8 +34,27 @@ class _AuthenticationCRUD {
     user.reload();
   }
 
-  void delete({required String userId}) {
-    // TODO
+  Future<void> deleteUserAccount({String? userId}) async {
+    final user = _getUser();
+    if (user == null) return;
+
+    try {
+      await user.delete();
+    } on FirebaseAuthException catch (e) {
+      print('------ ${e.code} ------');
+      if (e.code == 'requires-recent-login') {
+        final providerData = user.providerData.first;
+        final googleAuthProvider = GoogleAuthProvider();
+
+        if (googleAuthProvider.providerId == providerData.providerId) {
+          await user.reauthenticateWithProvider(googleAuthProvider);
+        }
+
+        await user.delete();
+      } else {
+        rethrow;
+      }
+    }
   }
 
   /// Get AuthenticationModel

@@ -1,6 +1,8 @@
 import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
@@ -64,6 +66,9 @@ class ProfileBody extends MainRouteBody {
       BlocBuilder<AuthenticationCubit, AuthenticationModel>(
         builder: (context, auth) {
           final isLoggedIn = !auth.isAbsent;
+          void signout() => context
+            ..read<AuthenticationCubit>().signoutRequested()
+            ..go('/profile/sign_methods');
           return MenuAnchor(
             builder: (
               BuildContext context,
@@ -84,12 +89,9 @@ class ProfileBody extends MainRouteBody {
                     onPressed: () {
                       switch (e) {
                         case ProfileMenuChoices.signout:
-                          context
-                              .read<AuthenticationCubit>()
-                              .signoutRequested();
-                          context.go('/profile/sign_methods');
+                          signout();
                         case ProfileMenuChoices.deleteAccount:
-                          return; // TODO: delete confirm dialog
+                          confirmDeleteAccount(context, auth);
                       }
                     },
                     style: switch (e) {
@@ -111,6 +113,42 @@ class ProfileBody extends MainRouteBody {
         },
       ),
     ];
+  }
+
+  Future<AlertDialog?> confirmDeleteAccount(
+    BuildContext context,
+    AuthenticationModel auth,
+  ) {
+    return showDialog<AlertDialog>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(
+            context.l10n.deleteAccountExplanation(auth.email ?? 'ERROR'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: context.pop,
+              child: Text(context.l10n.cancel),
+            ),
+            FilledButton(
+              child: Text(context.l10n.deleteAccount),
+              onPressed: () {
+                try {
+                  authenticationCRUD.deleteUserAccount(userId: auth.id);
+                  snackBarNotify(context, context.l10n.deletedAccount);
+                  context
+                    ..read<AuthenticationCubit>().signoutRequested()
+                    ..pop();
+                } catch (_) {
+                  snackBarError(context, context.l10n.errorOccurred);
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   static const notifEmailNotVerified = 'email-not-verified';
