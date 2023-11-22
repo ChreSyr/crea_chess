@@ -5,7 +5,6 @@
   "chooseColor": "Choisis une couleur",
   "continue_": "Continuer",
   "deleteAccount": "Supprimer ce compte",
-  "disconnect": "Se déconnecter",
   "email": "Mail",
   "formError": "{code, select, other{Erreur inconnue.} empty{Ce champ doit être renseigné.} mailTaken{Cette adresse e-mail est déjà utilisée par un autre compte.} notEmail{Ne semble pas être une adresse e-mail.} notPassword{Trop faible. Un mot de passe doit contenir une minuscule, une majuscule, un chiffre et au moins 8 caractères.} invalidCredentials{Le mail et le mot de passe ne correspondent pas. Réessayez ou cliquez sur \"Mot de passe oublié ?\" pour le réinitialiser.}}",
   "@formError": {
@@ -21,11 +20,11 @@
   "passwordForgot": "Mot de passe oublié ?",
   "play": "Jouer",
   "profile": "Profil",
-  "registerNow": "S'inscrire",
-  "registration": "Inscription",
   "settings": "Réglages",
+  "signCreateAccount": "Créer un compte",
   "signin": "Connexion",
-  "signup": "Créer un compte",
+  "signout": "Se déconnecter",
+  "signup": "Inscription",
   "timeControl": "Cadence",
   "verifyEmailExplainLink": "Confirmez votre adresse e-mail en cliquant sur le lien envoyé à {email}, puis revenez à l'application et cliquez sur Continuer.",
   "@verifyEmailExplainLink": {

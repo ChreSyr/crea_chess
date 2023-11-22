@@ -11,6 +11,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+// TODO: welcome and connect page when it is the first opening of the app
+
+enum ProfileMenuChoices {
+  signout(whenLoggedOut: false),
+  deleteAccount(whenLoggedOut: false);
+
+  const ProfileMenuChoices({required this.whenLoggedOut});
+
+  final bool whenLoggedOut;
+
+  String getLocalization(AppLocalizations l10n) {
+    switch (this) {
+      case ProfileMenuChoices.signout:
+        return l10n.signout;
+      case ProfileMenuChoices.deleteAccount:
+        return l10n.deleteAccount;
+    }
+  }
+
+  IconData getIcon() {
+    switch (this) {
+      case ProfileMenuChoices.signout:
+        return Icons.logout;
+      case ProfileMenuChoices.deleteAccount:
+        return Icons.delete_forever;
+    }
+  }
+}
+
 class ProfileBody extends MainRouteBody {
   const ProfileBody({super.key});
 
@@ -32,13 +61,54 @@ class ProfileBody extends MainRouteBody {
   @override
   List<Widget> getActions(BuildContext context) {
     return [
-      ElevatedButton.icon(
-        onPressed: () {
-          context.go('/profile/sign_methods');
-          context.read<AuthenticationCubit>().signoutRequested();
+      BlocBuilder<AuthenticationCubit, AuthenticationModel>(
+        builder: (context, auth) {
+          final isLoggedIn = !auth.isAbsent;
+          return MenuAnchor(
+            builder: (
+              BuildContext context,
+              MenuController controller,
+              Widget? child,
+            ) {
+              return IconButton(
+                onPressed: () =>
+                    controller.isOpen ? controller.close() : controller.open(),
+                icon: const Icon(Icons.more_vert),
+              );
+            },
+            menuChildren: ProfileMenuChoices.values
+                .where((e) => isLoggedIn || e.whenLoggedOut)
+                .map(
+                  (e) => MenuItemButton(
+                    leadingIcon: Icon(e.getIcon()),
+                    onPressed: () {
+                      switch (e) {
+                        case ProfileMenuChoices.signout:
+                          context
+                              .read<AuthenticationCubit>()
+                              .signoutRequested();
+                          context.go('/profile/sign_methods');
+                        case ProfileMenuChoices.deleteAccount:
+                          return; // TODO: delete confirm dialog
+                      }
+                    },
+                    style: switch (e) {
+                      ProfileMenuChoices.deleteAccount => ButtonStyle(
+                          iconColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.red,
+                          ),
+                          foregroundColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.red,
+                          ),
+                        ),
+                      _ => null,
+                    },
+                    child: Text(e.getLocalization(context.l10n)),
+                  ),
+                )
+                .toList(),
+          );
         },
-        icon: const Icon(Icons.logout),
-        label: Text(context.l10n.disconnect),
       ),
     ];
   }

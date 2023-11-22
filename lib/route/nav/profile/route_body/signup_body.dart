@@ -20,7 +20,7 @@ class SignupBody extends RouteBody {
 
   @override
   String getTitle(AppLocalizations l10n) {
-    return l10n.registration;
+    return l10n.signup;
   }
 
   @override
@@ -131,7 +131,7 @@ class _SignupBody extends StatelessWidget {
               // sign in button
               FilledButton(
                 onPressed: signupCubit.submit,
-                child: Text(context.l10n.signup),
+                child: Text(context.l10n.signCreateAccount),
               ),
             ],
           ),
