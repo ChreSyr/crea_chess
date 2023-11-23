@@ -23,7 +23,7 @@ class EmailVerificationBody extends RouteBody {
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationCubit, AuthenticationModel>(
       listener: (context, auth) {
-        if (auth.emailVerified ?? false) context.pop();
+        if (auth.emailVerified ?? false) context.push('/profile/modify_name');
       },
       child: const _EmailVerificationBody(),
     );

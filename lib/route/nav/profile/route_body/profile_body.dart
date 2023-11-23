@@ -8,7 +8,6 @@ import 'package:crea_chess/package/firebase/authentication/authentication_model.
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/nav_notif_cubit.dart';
-import 'package:crea_chess/route/nav/profile/dialog/modify_name_dialog.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -233,7 +232,7 @@ class UserDetails extends StatelessWidget {
           title: Text(user.name ?? 'non renseigné'),
           trailing: IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () => showModifyNameDialog(context, user.name ?? ''),
+            onPressed: () => context.push('/profile/modify_name'),
           ),
         ),
         CCGap.small,
