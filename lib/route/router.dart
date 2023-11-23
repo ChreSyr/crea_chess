@@ -174,9 +174,9 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar:
-          BlocBuilder<NavNotifCubit, Map<String, Set<String>>>(
+      bottomNavigationBar: BlocBuilder<NavNotifCubit, Map<String, Set<String>>>(
         builder: (context, notifs) {
+          print(notifs);
           return NavigationBar(
             height: CCWidgetSize.xxsmall,
             selectedIndex: navigationShell.currentIndex,

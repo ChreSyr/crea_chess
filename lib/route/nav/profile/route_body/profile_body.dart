@@ -5,7 +5,6 @@ import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
-import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/nav_notif_cubit.dart';
 import 'package:crea_chess/route/route_body.dart';
@@ -152,6 +151,7 @@ class ProfileBody extends MainRouteBody {
   }
 
   static const notifEmailNotVerified = 'email-not-verified';
+  static const notifNameEmpty = 'name-empty';
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +161,11 @@ class ProfileBody extends MainRouteBody {
           context.read<NavNotifCubit>().add(getId(), notifEmailNotVerified);
         } else {
           context.read<NavNotifCubit>().remove(getId(), notifEmailNotVerified);
+        }
+        if (!auth.isAbsent && (auth.name ?? '').isEmpty) {
+          context.read<NavNotifCubit>().add(getId(), notifNameEmpty);
+        } else {
+          context.read<NavNotifCubit>().remove(getId(), notifNameEmpty);
         }
       },
       builder: (context, auth) {
@@ -172,13 +177,7 @@ class ProfileBody extends MainRouteBody {
           );
         }
         return UserDetails(
-          user: UserModel(
-            id: auth.id,
-            name: auth.name,
-            email: auth.email,
-            emailVerified: auth.emailVerified,
-            photoUrl: auth.photo,
-          ),
+          user: auth,
         );
       },
     );
@@ -188,7 +187,7 @@ class ProfileBody extends MainRouteBody {
 class UserDetails extends StatelessWidget {
   const UserDetails({required this.user, super.key});
 
-  final UserModel user;
+  final AuthenticationModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -204,12 +203,10 @@ class UserDetails extends StatelessWidget {
                 Center(
                   child: CircleAvatar(
                     radius: CCSize.xxxlarge,
-                    backgroundColor: user.photoUrl == null
-                        ? Colors.grey
-                        : Colors.transparent,
-                    backgroundImage: user.photoUrl == null
-                        ? null
-                        : NetworkImage(user.photoUrl!),
+                    backgroundColor:
+                        user.photo == null ? Colors.grey : Colors.transparent,
+                    backgroundImage:
+                        user.photo == null ? null : NetworkImage(user.photo!),
                   ),
                 ),
                 Positioned(
@@ -229,11 +226,11 @@ class UserDetails extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.alternate_email),
-          title: Text(user.name ?? 'non renseigné'),
-          trailing: IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => context.push('/profile/modify_name'),
-          ),
+          title: Text(user.name ?? ''),
+          trailing: (user.name ?? '').isEmpty
+              ? const Icon(Icons.priority_high, color: Colors.red)
+              : const Icon(Icons.edit),
+          onTap: () => context.push('/profile/modify_name'),
         ),
         CCGap.small,
         ListTile(
@@ -242,10 +239,7 @@ class UserDetails extends StatelessWidget {
           // email verification
           trailing: (user.emailVerified ?? false)
               ? null
-              : Icon(
-                  Icons.priority_high,
-                  color: CCColor.error(context),
-                ),
+              : const Icon(Icons.priority_high, color: Colors.red),
           // email verification
           onTap: (user.emailVerified ?? false)
               ? null
