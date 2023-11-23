@@ -30,7 +30,8 @@ class TimeControl {
 
   Speed get speed => Speed.fromTimeIncrement(this);
 
-  String get display {
+  @override
+  String toString() {
     var displayTime = '';
     switch (time) {
       case 0:
@@ -61,7 +62,4 @@ class TimeControl {
 
   @override
   int get hashCode => Object.hash(time, increment);
-
-  @override
-  String toString() => 'TimeControl($time+$increment)';
 }

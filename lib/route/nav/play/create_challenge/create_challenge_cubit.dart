@@ -1,6 +1,6 @@
-import 'package:crea_chess/package/atomic_design/modal/board_size_modal.dart';
 import 'package:crea_chess/package/form/input/input_int.dart';
 import 'package:crea_chess/package/form/input/input_select.dart';
+import 'package:crea_chess/package/game/board_size.dart';
 import 'package:crea_chess/package/game/time_control.dart';
 import 'package:crea_chess/route/nav/play/create_challenge/create_challenge_form.dart';
 import 'package:crea_chess/route/nav/play/create_challenge/create_challenge_status.dart';

@@ -1,8 +1,8 @@
-import 'package:crea_chess/package/atomic_design/modal/board_size_modal.dart';
-import 'package:crea_chess/package/atomic_design/modal/budget_modal.dart';
-import 'package:crea_chess/package/atomic_design/modal/time_control_modal.dart';
+import 'package:crea_chess/package/atomic_design/modal/modal_select.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
+import 'package:crea_chess/package/game/board_size.dart';
+import 'package:crea_chess/package/game/speed.dart';
 import 'package:crea_chess/package/game/time_control.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/play/create_challenge/create_challenge_cubit.dart';
@@ -42,58 +42,116 @@ class _CreateChallengeBody extends StatelessWidget {
             _Custom(
               title: context.l10n.timeControl,
               child: OutlinedButton.icon(
-                onPressed: () => showModalBottomSheet<void>(
+                onPressed: () => ModalSelect.show(
                   context: context,
-                  isScrollControlled: true,
-                  builder: (BuildContext context) {
-                    return TimeControlModal(
-                      selected: form.timeControl.value,
-                      onSelected: (TimeControl choice) {
-                        createChallengeCubit.setTimeControl(choice);
-                        Navigator.of(context).pop();
-                      },
-                    );
+                  title: 'Taille du plateau',
+                  choices: [
+                    ModalSelectRowData(
+                      title: 'Bullet', // TODO: l10n ?
+                      titleIcon: Icon(Speed.bullet.icon),
+                      choices: const [
+                        TimeControl(0, 1),
+                        TimeControl(60, 0),
+                        TimeControl(60, 1),
+                        TimeControl(120, 1),
+                      ],
+                    ),
+                    ModalSelectRowData(
+                      title: 'Blitz',
+                      titleIcon: Icon(Speed.blitz.icon),
+                      choices: const [
+                        TimeControl(180, 0),
+                        TimeControl(180, 2),
+                        TimeControl(300, 0),
+                        TimeControl(300, 3),
+                      ],
+                    ),
+                    ModalSelectRowData(
+                      title: 'Rapid',
+                      titleIcon: Icon(Speed.rapid.icon),
+                      choices: const [
+                        TimeControl(600, 0),
+                        TimeControl(600, 5),
+                        TimeControl(900, 0),
+                        TimeControl(900, 10),
+                      ],
+                    ),
+                    ModalSelectRowData(
+                      title: 'Classical',
+                      titleIcon: Icon(Speed.classical.icon),
+                      choices: const [
+                        TimeControl(1500, 0),
+                        TimeControl(1800, 0),
+                        TimeControl(1800, 20),
+                        TimeControl(3600, 0),
+                      ],
+                    ),
+                  ],
+                  selected: form.timeControl.value,
+                  onSelected: (TimeControl choice) {
+                    createChallengeCubit.setTimeControl(choice);
+                    Navigator.of(context).pop();
                   },
                 ),
                 icon: Icon(form.timeControl.value.speed.icon),
-                label: Text(form.timeControl.value.display),
+                label: Text(form.timeControl.value.toString()),
               ),
             ),
             CCGap.large,
             _Custom(
               title: 'Taille du plateau',
               child: OutlinedButton(
-                onPressed: () => showModalBottomSheet<void>(
+                onPressed: () => ModalSelect.show(
                   context: context,
-                  isScrollControlled: true,
-                  builder: (BuildContext context) {
-                    return BoardSizeModal(
-                      selected: form.boardSize.value,
-                      onSelected: (BoardSize choice) {
-                        createChallengeCubit.setBoardSize(choice);
-                        Navigator.of(context).pop();
-                      },
-                    );
+                  title: 'Taille du plateau',
+                  choices: [
+                    ModalSelectRowData(
+                      title: 'Petit',
+                      choices: const [
+                        BoardSize(5, 5),
+                        BoardSize(6, 6),
+                        BoardSize(7, 7),
+                      ],
+                    ),
+                    ModalSelectRowData(
+                      title: 'Grand',
+                      choices: const [
+                        BoardSize(8, 8),
+                        BoardSize(9, 9),
+                        BoardSize(10, 10),
+                      ],
+                    ),
+                  ],
+                  selected: form.boardSize.value,
+                  onSelected: (BoardSize choice) {
+                    createChallengeCubit.setBoardSize(choice);
+                    Navigator.of(context).pop();
                   },
                 ),
-                child: Text(form.boardSize.value.display),
+                child: Text(form.boardSize.value.toString()),
               ),
             ),
             CCGap.large,
             _Custom(
               title: 'Budget',
               child: OutlinedButton(
-                onPressed: () => showModalBottomSheet<void>(
+                onPressed: () => ModalSelect.show(
                   context: context,
-                  isScrollControlled: true,
-                  builder: (BuildContext context) {
-                    return BudgetModal(
-                      selected: form.budget.value,
-                      onSelected: (int choice) {
-                        createChallengeCubit.setBudget(choice);
-                        Navigator.of(context).pop();
-                      },
-                    );
+                  title: 'Budget',
+                  choices: [
+                    ModalSelectRowData(
+                      title: 'Maigre',
+                      choices: const [18, 21, 24, 27, 30],
+                    ),
+                    ModalSelectRowData(
+                      title: 'Normal',
+                      choices: const [33, 36, 39, 42, 45],
+                    ),
+                  ],
+                  selected: form.budget.value,
+                  onSelected: (int choice) {
+                    createChallengeCubit.setBudget(choice);
+                    Navigator.of(context).pop();
                   },
                 ),
                 child: Text(form.budget.value.toString()),
@@ -111,6 +169,7 @@ class _CreateChallengeBody extends StatelessWidget {
   }
 }
 
+// TODO : name
 class _Custom extends StatelessWidget {
   const _Custom({required this.title, required this.child});
 
