@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:chessground/chessground.dart';
+import 'package:crea_chess/frenzy_piece_set.dart';
 import 'package:crea_chess/route/nav/play/chessground/draw_shapes_page.dart';
 import 'package:dartchess_webok/dartchess_webok.dart' as dc;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart'
@@ -29,7 +30,8 @@ class _HomePageState extends State<PlayPage> {
   Move? premove;
   ValidMoves validMoves = IMap(const {});
   Side sideToMove = Side.white;
-  PieceSet pieceSet = PieceSet.merida;
+  PieceSet? pieceSet;
+  PieceAssets pieceAssets = frenzyPieceSet;
   BoardTheme boardTheme = BoardTheme.blue;
   bool immersiveMode = false;
   Mode playMode = Mode.botPlay;
@@ -38,6 +40,7 @@ class _HomePageState extends State<PlayPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    print(pieceAssets);
 
     return Scaffold(
       appBar: AppBar(
@@ -97,7 +100,7 @@ class _HomePageState extends State<PlayPage> {
             Board(
               size: screenWidth,
               settings: BoardSettings(
-                pieceAssets: pieceSet.assets,
+                pieceAssets: pieceSet?.assets ?? pieceAssets,
                 colorScheme: boardTheme.colors,
               ),
               data: BoardData(
@@ -152,11 +155,11 @@ class _HomePageState extends State<PlayPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      child: Text('Piece set: ${pieceSet.label}'),
+                      child: Text('Piece set: ${pieceSet?.label ?? 'frenzy'}'),
                       onPressed: () => _showChoicesPicker<PieceSet>(
                         context,
                         choices: PieceSet.values,
-                        selectedItem: pieceSet,
+                        selectedItem: pieceSet ?? PieceSet.merida,
                         labelBuilder: (t) => Text(t.label),
                         onSelectedItemChanged: (PieceSet? value) {
                           setState(() {

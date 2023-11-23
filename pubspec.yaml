@@ -50,6 +50,7 @@ flutter:
 
   assets:
     - assets/icon/
+    - assets/piece_sets/frenzy/
 
 flutter_launcher_icons:
   android: "launcher_icon"
