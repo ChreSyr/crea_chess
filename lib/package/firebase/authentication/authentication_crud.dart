@@ -27,6 +27,7 @@ class _AuthenticationCRUD {
     return _firebaseAuth.userChanges();
   }
 
+  /// Reload the user, to check if something changed.
   void checkEmailVerified() {
     final user = _getUser();
     if (user == null) return;
@@ -34,6 +35,7 @@ class _AuthenticationCRUD {
     user.reload();
   }
 
+  /// Permanently delete account. Reauthentication possible.
   Future<void> deleteUserAccount({String? userId}) async {
     final user = _getUser();
     if (user == null) return;
@@ -62,6 +64,7 @@ class _AuthenticationCRUD {
     return AuthenticationModel.fromUser(_getUser());
   }
 
+  /// Send an email to verify property
   Future<void> sendEmailVerification() async {
     final user = _getUser();
     if (user == null) return;
@@ -132,6 +135,14 @@ class _AuthenticationCRUD {
       _authenticationStreamController.add(AuthenticationModel.fromUser(user));
     });
     return _authenticationStreamController.stream;
+  }
+
+  /// Update the user data
+  Future<void> updateUser({String? name}) async {
+    final user = _getUser();
+    if (user == null) return;
+
+    if (name != null) await user.updateDisplayName(name);
   }
 }
 
