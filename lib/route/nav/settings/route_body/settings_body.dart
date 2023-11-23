@@ -4,11 +4,11 @@ import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/l10n/get_locale_flag.dart';
 import 'package:crea_chess/package/preferences/preferences_cubit.dart';
 import 'package:crea_chess/package/preferences/preferences_state.dart';
+import 'package:crea_chess/package/atomic_design/modal/seed_color_modal.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 
 class SettingsBody extends MainRouteBody {
   const SettingsBody({super.key});
@@ -58,7 +58,7 @@ class SettingsBody extends MainRouteBody {
                   padding: EdgeInsets.zero,
                   backgroundColor: preferences.seedColor.color,
                 ),
-                onPressed: () => context.go('/settings/color/'),
+                onPressed: () => SeedColorModal.show(context),
                 child: const Text(''),
               ),
             ),

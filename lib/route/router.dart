@@ -13,7 +13,6 @@ import 'package:crea_chess/route/nav/profile/route_body/profile_body.dart';
 import 'package:crea_chess/route/nav/profile/route_body/sign_methods_body.dart';
 import 'package:crea_chess/route/nav/profile/route_body/signin_body.dart';
 import 'package:crea_chess/route/nav/profile/route_body/signup_body.dart';
-import 'package:crea_chess/route/nav/settings/route_body/color_body.dart';
 import 'package:crea_chess/route/nav/settings/route_body/settings_body.dart';
 import 'package:crea_chess/route/route_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -108,14 +107,6 @@ final router = GoRouter(
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: RouteScaffold(body: SettingsBody()),
               ),
-              routes: [
-                // child routes
-                GoRoute(
-                  path: 'color',
-                  builder: (context, state) =>
-                      const RouteScaffold(body: ColorBody()),
-                ),
-              ],
             ),
           ],
         ),
