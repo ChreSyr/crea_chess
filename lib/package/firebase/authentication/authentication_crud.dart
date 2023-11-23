@@ -41,8 +41,8 @@ class _AuthenticationCRUD {
     try {
       await user.delete();
     } on FirebaseAuthException catch (e) {
-      print('------ ${e.code} ------');
-      if (e.code == 'requires-recent-login') {
+      print('------ ${e.code} ------'); // TODO : test
+      if (e.code == 'ERROR_REQUIRES_RECENT_LOGIN') {
         final providerData = user.providerData.first;
         final googleAuthProvider = GoogleAuthProvider();
 
