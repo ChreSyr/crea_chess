@@ -138,11 +138,12 @@ class _AuthenticationCRUD {
   }
 
   /// Update the user data
-  Future<void> updateUser({String? name}) async {
+  Future<void> updateUser({String? name, String? photo}) async {
     final user = _getUser();
     if (user == null) return;
 
     if (name != null) await user.updateDisplayName(name);
+    if (photo != null) await user.updatePhotoURL(photo);
   }
 }
 

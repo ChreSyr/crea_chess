@@ -49,6 +49,7 @@ flutter:
   generate: true
 
   assets:
+    - assets/avatar/
     - assets/icon/
     - assets/piece_sets/frenzy/
 

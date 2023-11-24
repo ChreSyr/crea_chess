@@ -1,4 +1,5 @@
 import 'package:crea_chess/package/atomic_design/color.dart';
+import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
@@ -184,6 +185,41 @@ class ProfileBody extends MainRouteBody {
   }
 }
 
+// TODO : give an avatar by default
+const avatarNames = [
+  'antoine',
+  'cassandra',
+  'catherine',
+  'charles',
+  'claude',
+  'gabrielle',
+  'hugo',
+  'ines',
+  'lea',
+  'leo',
+  'lucas',
+  'madeleine',
+  'maeva',
+  'manu',
+  'mathis',
+  'nathan',
+  'nick',
+  'orion',
+  'ricardo',
+  'victor',
+  'yannick',
+];
+
+ImageProvider<Object>? getPhotoAsset(String? photo) {
+  if (photo == null) {
+    return null;
+  } else if (photo.startsWith('avatar-')) {
+    return AssetImage('assets/${photo.replaceAll('-', '/')}.jpg');
+  } else {
+    return NetworkImage(photo);
+  }
+}
+
 class UserDetails extends StatelessWidget {
   const UserDetails({required this.user, super.key});
 
@@ -205,8 +241,7 @@ class UserDetails extends StatelessWidget {
                     radius: CCSize.xxxlarge,
                     backgroundColor:
                         user.photo == null ? Colors.grey : Colors.transparent,
-                    backgroundImage:
-                        user.photo == null ? null : NetworkImage(user.photo!),
+                    backgroundImage: getPhotoAsset(user.photo),
                   ),
                 ),
                 Positioned(
@@ -217,7 +252,34 @@ class UserDetails extends StatelessWidget {
                       Icons.edit,
                       color: CCColor.onBackground(context),
                     ),
-                    onPressed: () {}, // TODO
+                    onPressed: () => Modal.show(
+                      context: context,
+                      sections: [
+                        GridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: 4,
+                          crossAxisSpacing: CCSize.large,
+                          mainAxisSpacing: CCSize.large,
+                          children: avatarNames
+                              .map(
+                                (e) => GestureDetector(
+                                  onTap: () {
+                                    authenticationCRUD.updateUser(
+                                      photo: 'avatar-$e',
+                                    );
+                                    context.pop();
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                      'assets/avatar/$e.jpg',
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

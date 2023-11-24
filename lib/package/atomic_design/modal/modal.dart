@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class Modal {
   static void show({
     required BuildContext context,
-    required String title,
     required Iterable<Widget> sections,
+    String? title,
   }) {
     showModalBottomSheet<void>(
       context: context,
@@ -17,8 +17,11 @@ class Modal {
             mainAxisSize: MainAxisSize.min,
             children: [
               CCGap.large,
+              if (title != null) ...[
+
               Text(title, style: Theme.of(context).textTheme.titleLarge),
               CCGap.xlarge,
+              ],
               ...sections,
               CCGap.xlarge,
             ],
