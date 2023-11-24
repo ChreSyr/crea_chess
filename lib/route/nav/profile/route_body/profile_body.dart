@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
@@ -158,15 +160,21 @@ class ProfileBody extends MainRouteBody {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationCubit, AuthenticationModel>(
       listener: (context, auth) {
-        if (!auth.isAbsent && (auth.emailVerified != true)) {
-          context.read<NavNotifCubit>().add(getId(), notifEmailNotVerified);
-        } else {
-          context.read<NavNotifCubit>().remove(getId(), notifEmailNotVerified);
+        if (!auth.isAbsent && (auth.photo ?? '').isEmpty) {
+          authenticationCRUD.updateUser(
+            photo:
+                'avatar-${avatarNames[Random().nextInt(avatarNames.length)]}',
+          );
         }
         if (!auth.isAbsent && (auth.name ?? '').isEmpty) {
           context.read<NavNotifCubit>().add(getId(), notifNameEmpty);
         } else {
           context.read<NavNotifCubit>().remove(getId(), notifNameEmpty);
+        }
+        if (!auth.isAbsent && (auth.emailVerified != true)) {
+          context.read<NavNotifCubit>().add(getId(), notifEmailNotVerified);
+        } else {
+          context.read<NavNotifCubit>().remove(getId(), notifEmailNotVerified);
         }
       },
       builder: (context, auth) {
@@ -185,7 +193,6 @@ class ProfileBody extends MainRouteBody {
   }
 }
 
-// TODO : give an avatar by default
 const avatarNames = [
   'antoine',
   'cassandra',
