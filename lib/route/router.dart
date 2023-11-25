@@ -183,8 +183,8 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
                 .map(
                   (e) => NavigationDestination(
                     icon: notifs[e.id]?.isNotEmpty ?? false
-                        ? badges.Badge(child: e.getIcon())
-                        : e.getIcon(),
+                        ? badges.Badge(child: Icon(e.icon))
+                        : Icon(e.icon),
                     label: e.getTitle(context.l10n),
                   ),
                 )

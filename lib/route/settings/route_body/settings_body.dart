@@ -13,12 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class SettingsBody extends MainRouteBody {
-  const SettingsBody({super.key}) : super(id: 'settings');
-
-  @override
-  Icon getIcon() {
-    return const Icon(Icons.settings);
-  }
+  const SettingsBody({super.key}) : super(id: 'settings', icon: Icons.settings);
 
   @override
   String getTitle(AppLocalizations l10n) {

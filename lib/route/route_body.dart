@@ -10,9 +10,8 @@ abstract class RouteBody extends StatelessWidget {
 }
 
 abstract class MainRouteBody extends RouteBody {
-  const MainRouteBody({required this.id, super.key});
+  const MainRouteBody({required this.id, required this.icon, super.key});
 
   final String id;
-
-  Icon getIcon();
+  final IconData icon;
 }

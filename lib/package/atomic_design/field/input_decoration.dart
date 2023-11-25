@@ -1,8 +1,7 @@
-import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:flutter/material.dart';
 
 class CCInputDecoration extends InputDecoration {
-  CCInputDecoration({
+  const CCInputDecoration({
     super.icon,
     super.iconColor,
     super.label,
@@ -51,6 +50,6 @@ class CCInputDecoration extends InputDecoration {
           border: const OutlineInputBorder(),
           errorMaxLines: 3,
           filled: true,
-          fillColor: CCColor.greySail,
+          fillColor: const Color.fromARGB(18, 0, 0, 0),
         );
 }

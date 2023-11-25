@@ -5,12 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeBody extends MainRouteBody {
-  const HomeBody({super.key}) : super(id: 'home');
-
-  @override
-  Icon getIcon() {
-    return const Icon(Icons.play_arrow);
-  }
+  const HomeBody({super.key}) : super(id: 'home', icon: Icons.play_arrow);
 
   @override
   String getTitle(AppLocalizations l10n) {

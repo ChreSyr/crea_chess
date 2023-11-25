@@ -40,13 +40,7 @@ enum ProfileMenuChoices {
 }
 
 class ProfileBody extends MainRouteBody {
-  const ProfileBody({super.key}) : super(id: 'profile');
-
-  @override
-  Icon getIcon() {
-    // TODO : MainRouteBody.icon
-    return const Icon(Icons.person);
-  }
+  const ProfileBody({super.key}) : super(id: 'profile', icon: Icons.person);
 
   @override
   String getTitle(AppLocalizations l10n) {
@@ -241,7 +235,7 @@ class UserDetails extends StatelessWidget {
             child: CircleAvatar(
               radius: CCSize.xxxlarge,
               backgroundColor: user.photoURL == null
-                  ? Colors.red[100] // TODO: notif
+                  ? Colors.red[100]
                   : Colors.transparent,
               backgroundImage: getPhotoAsset(user.photoURL),
             ),

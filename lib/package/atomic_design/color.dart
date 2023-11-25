@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TODO : sort
 class CCColor {
   static Color background(BuildContext context) =>
       Theme.of(context).colorScheme.background;
@@ -19,9 +18,6 @@ class CCColor {
 
   static Color onInverseSurface(BuildContext context) =>
       Theme.of(context).colorScheme.onInverseSurface;
-
-  static Color lightGrey = Colors.grey[200]!;
-  static Color greySail = const Color.fromARGB(18, 0, 0, 0);
 }
 
 enum SeedColor {
