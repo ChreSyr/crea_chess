@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/profile/widget/body_template.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,40 +35,18 @@ class _EmailVerificationBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: CCWidgetSize.large3,
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          // mail icon
-          const Text(
-            '📬',
-            style: TextStyle(fontSize: CCWidgetSize.xxsmall),
-            textAlign: TextAlign.center,
-          ),
-
-          CCGap.large,
-
-          // sign up button
-          Text(
-            context.l10n.verifyMailbox,
-            style: Theme.of(context).textTheme.titleLarge,
-            textAlign: TextAlign.center,
-          ),
-
-          CCGap.xxlarge,
-
-          // or continue with
+    return BodyTemplate(
+      loading: false,
+      emoji: '📬',
+      title: context.l10n.verifyMailbox,
+      children: [
           Text(
             context.l10n.verifyEmailExplainLink(
               context.read<UserCubit>().state?.email ?? 'ERROR',
             ),
             textAlign: TextAlign.center,
-          ),
-
-          CCGap.xxlarge,
-
-          // google + apple sign in buttons
+        ),
+        CCGap.xxlarge,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -80,8 +58,7 @@ class _EmailVerificationBody extends StatelessWidget {
               ),
             ],
           ),
-        ],
-      ),
+      ],
     );
   }
 }

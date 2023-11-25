@@ -1,6 +1,5 @@
 import 'package:crea_chess/package/atomic_design/field/input_decoration.dart';
 import 'package:crea_chess/package/atomic_design/field/password_form_field.dart';
-import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
@@ -8,6 +7,7 @@ import 'package:crea_chess/package/form/signin/signin_cubit.dart';
 import 'package:crea_chess/package/form/signin/signin_form.dart';
 import 'package:crea_chess/package/form/signin/signin_status.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/profile/widget/body_template.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -98,73 +98,57 @@ class _SigninBody extends StatelessWidget {
         }
       },
       builder: (context, form) {
-        return SizedBox(
-          width: CCWidgetSize.large3,
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              if (form.status == SigninStatus.waiting)
-                const LinearProgressIndicator(),
-              // Welcome back !
-              const Text(
-                '😄',
-                style: TextStyle(fontSize: CCWidgetSize.xxsmall),
-                textAlign: TextAlign.center,
+        return BodyTemplate(
+          loading: form.status == SigninStatus.waiting,
+          emoji: '😄',
+          title: context.l10n.welcomeBack,
+          children: [
+            // mail field
+            TextFormField(
+              autofocus: true,
+              decoration: CCInputDecoration(
+                hintText: context.l10n.email,
+                errorText: form.errorMessage(form.email, context.l10n),
               ),
-              Text(
-                context.l10n.welcomeBack,
-                textAlign: TextAlign.center,
-              ),
+              initialValue: form.email.value,
+              keyboardType: TextInputType.emailAddress,
+              onChanged: signinCubit.emailChanged,
+              textInputAction: TextInputAction.next,
+            ),
 
-              CCGap.xlarge,
+            CCGap.small,
 
-              // mail field
-              TextFormField(
-                autofocus: true,
-                decoration: CCInputDecoration(
-                  hintText: context.l10n.email,
-                  errorText: form.errorMessage(form.email, context.l10n),
+            // password textfield
+            PasswordFromField(
+              hintText: context.l10n.password,
+              errorText: form.errorMessage(form.password, context.l10n),
+              initialValue: form.password.value,
+              onChanged: signinCubit.passwordChanged,
+              onFieldSubmitted: (value) => signinCubit.submit(),
+            ),
+
+            CCGap.small,
+
+            // forgot password?
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => confirmResetPassword(
+                  context,
+                  form.email.value,
                 ),
-                initialValue: form.email.value,
-                keyboardType: TextInputType.emailAddress,
-                onChanged: signinCubit.emailChanged,
-                textInputAction: TextInputAction.next,
+                child: Text(context.l10n.passwordForgot),
               ),
+            ),
 
-              CCGap.small,
+            CCGap.medium,
 
-              // password textfield
-              PasswordFromField(
-                hintText: context.l10n.password,
-                errorText: form.errorMessage(form.password, context.l10n),
-                initialValue: form.password.value,
-                onChanged: signinCubit.passwordChanged,
-                onFieldSubmitted: (value) => signinCubit.submit(),
-              ),
-
-              CCGap.small,
-
-              // forgot password?
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () => confirmResetPassword(
-                    context,
-                    form.email.value,
-                  ),
-                  child: Text(context.l10n.passwordForgot),
-                ),
-              ),
-
-              CCGap.medium,
-
-              // sign in button
-              FilledButton(
-                onPressed: signinCubit.submit,
-                child: Text(context.l10n.signin),
-              ),
-            ],
-          ),
+            // sign in button
+            FilledButton(
+              onPressed: signinCubit.submit,
+              child: Text(context.l10n.signin),
+            ),
+          ],
         );
       },
     );
