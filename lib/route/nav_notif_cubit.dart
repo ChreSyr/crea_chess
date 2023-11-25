@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NavNotifCubit extends Cubit<Map<String, Set<String>>> {
   NavNotifCubit()
-      : super({for (var e in mainRouteBodies.map((e) => e.getId())) e: {}});
+      : super({for (var e in mainRouteBodies.map((e) => e.id)) e: {}});
 
   void add(String key, String value) {
     final newState = Map<String, Set<String>>.from(state);

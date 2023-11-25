@@ -13,16 +13,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class SettingsBody extends MainRouteBody {
-  const SettingsBody({super.key});
+  const SettingsBody({super.key}) : super(id: 'settings');
 
   @override
   Icon getIcon() {
     return const Icon(Icons.settings);
-  }
-
-  @override
-  String getId() {
-    return 'settings';
   }
 
   @override

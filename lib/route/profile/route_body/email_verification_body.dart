@@ -15,7 +15,7 @@ class EmailVerificationBody extends RouteBody {
 
   @override
   String getTitle(AppLocalizations l10n) {
-    return l10n.signin; // TODO: change
+    return l10n.signin;
   }
 
   @override

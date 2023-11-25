@@ -14,8 +14,8 @@ import 'package:crea_chess/route/profile/route_body/profile_body.dart';
 import 'package:crea_chess/route/profile/route_body/sign_methods_body.dart';
 import 'package:crea_chess/route/profile/route_body/signin_body.dart';
 import 'package:crea_chess/route/profile/route_body/signup_body.dart';
-import 'package:crea_chess/route/settings/route_body/settings_body.dart';
 import 'package:crea_chess/route/route_scaffold.dart';
+import 'package:crea_chess/route/settings/route_body/settings_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -182,7 +182,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
             destinations: mainRouteBodies
                 .map(
                   (e) => NavigationDestination(
-                    icon: notifs[e.getId()]?.isNotEmpty ?? false
+                    icon: notifs[e.id]?.isNotEmpty ?? false
                         ? badges.Badge(child: e.getIcon())
                         : e.getIcon(),
                     label: e.getTitle(context.l10n),

@@ -7,8 +7,6 @@ class BodyTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [],
-    );
+    return const Column();
   }
 }

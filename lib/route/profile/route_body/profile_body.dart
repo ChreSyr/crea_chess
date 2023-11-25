@@ -44,17 +44,11 @@ enum ProfileMenuChoices {
 }
 
 class ProfileBody extends MainRouteBody {
-  const ProfileBody({super.key});
+  const ProfileBody({super.key}) : super(id: 'profile');
 
   @override
   Icon getIcon() {
     return const Icon(Icons.person);
-  }
-
-  @override
-  String getId() {
-    // TODO : MainRouteBody.id
-    return 'profile';
   }
 
   @override
@@ -153,7 +147,6 @@ class ProfileBody extends MainRouteBody {
     );
   }
 
-  // TODO: defined in listener
   static const notifEmailNotVerified = 'email-not-verified';
   static const notifNameEmpty = 'name-empty';
 
@@ -161,12 +154,9 @@ class ProfileBody extends MainRouteBody {
   Widget build(BuildContext context) {
     return BlocConsumer<UserCubit, User?>(
       listener: (context, user) {
-        print('---------------');
-        print(user);
-        print('---------------');
         if (user == null) {
-          context.read<NavNotifCubit>().remove(getId(), notifNameEmpty);
-          context.read<NavNotifCubit>().remove(getId(), notifEmailNotVerified);
+          context.read<NavNotifCubit>().remove(id, notifNameEmpty);
+          context.read<NavNotifCubit>().remove(id, notifEmailNotVerified);
         } else {
           if ((user.photoURL ?? '').isEmpty) {
             // TODO: remove, notif instead
@@ -176,16 +166,16 @@ class ProfileBody extends MainRouteBody {
             );
           }
           if ((user.displayName ?? '').isEmpty) {
-            context.read<NavNotifCubit>().add(getId(), notifNameEmpty);
+            context.read<NavNotifCubit>().add(id, notifNameEmpty);
           } else {
-            context.read<NavNotifCubit>().remove(getId(), notifNameEmpty);
+            context.read<NavNotifCubit>().remove(id, notifNameEmpty);
           }
           if (user.emailVerified != true) {
-            context.read<NavNotifCubit>().add(getId(), notifEmailNotVerified);
+            context.read<NavNotifCubit>().add(id, notifEmailNotVerified);
           } else {
             context
                 .read<NavNotifCubit>()
-                .remove(getId(), notifEmailNotVerified);
+                .remove(id, notifEmailNotVerified);
           }
         }
       },
