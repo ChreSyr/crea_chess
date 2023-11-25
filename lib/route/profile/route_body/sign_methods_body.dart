@@ -1,5 +1,6 @@
 import 'package:crea_chess/package/atomic_design/padding.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/card_button.dart';
 import 'package:crea_chess/package/atomic_design/widget/divider.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
@@ -66,20 +67,52 @@ class _SignMethodsBody extends StatelessWidget {
               Expanded(child: CCDivider.xthin),
             ],
           ),
+          CCGap.medium,
 
-          CCGap.large,
+          // google or facebook loading animation
+          BlocConsumer<AuthProviderStatusCubit, AuthProviderStatus>(
+            listener: (context, status) {
+              if (status == AuthProviderStatus.error) {
+                snackBarError(context, context.l10n.errorOccurred);
+              }
+            },
+            builder: (context, status) {
+              if (status == AuthProviderStatus.waiting) {
+                return const Column(
+                  children: [
+                    LinearProgressIndicator(),
+                    CCGap.medium,
+                  ],
+                );
+              }
+              return Container();
+            },
+          ),
 
-          // google + apple sign in buttons
-          Center(
-            child: CardButton(
-              onTap: userCRUD.signInWithGoogle,
-              child: CCPadding.allLarge(
-                child: Image.asset(
-                  'assets/icon/google_icon.png',
-                  height: CCSize.xxlarge,
+          // google + facebook sign in buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CardButton(
+                onTap: userCRUD.signInWithGoogle,
+                child: CCPadding.allLarge(
+                  child: Image.asset(
+                    'assets/icon/google_icon.png',
+                    height: CCSize.xxlarge,
+                  ),
                 ),
               ),
-            ),
+              CCGap.large,
+              CardButton(
+                onTap: userCRUD.signInWithFacebook,
+                child: CCPadding.allLarge(
+                  child: Image.asset(
+                    'assets/icon/facebook_icon.png',
+                    height: CCSize.xxlarge,
+                  ),
+                ),
+              ),
+            ],
           ),
 
           CCGap.large,

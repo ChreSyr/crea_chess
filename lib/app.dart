@@ -16,6 +16,9 @@ class CreaChessApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (context) => userCRUD.authProviderStatusCubit,
+        ),
+        BlocProvider(
           create: (context) => userCRUD.userCubit,
         ),
         BlocProvider(
