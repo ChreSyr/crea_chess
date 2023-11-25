@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
@@ -147,23 +144,23 @@ class ProfileBody extends MainRouteBody {
     );
   }
 
-  static const notifEmailNotVerified = 'email-not-verified';
+  static const notifPhotoEmpty = 'photo-empty';
   static const notifNameEmpty = 'name-empty';
+  static const notifEmailNotVerified = 'email-not-verified';
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UserCubit, User?>(
       listener: (context, user) {
         if (user == null) {
+          context.read<NavNotifCubit>().remove(id, notifPhotoEmpty);
           context.read<NavNotifCubit>().remove(id, notifNameEmpty);
           context.read<NavNotifCubit>().remove(id, notifEmailNotVerified);
         } else {
           if ((user.photoURL ?? '').isEmpty) {
-            // TODO: remove, notif instead
-            userCRUD.updateUser(
-              photoURL:
-                  'avatar-${avatarNames[Random().nextInt(avatarNames.length)]}',
-            );
+            context.read<NavNotifCubit>().add(id, notifPhotoEmpty);
+          } else {
+            context.read<NavNotifCubit>().remove(id, notifPhotoEmpty);
           }
           if ((user.displayName ?? '').isEmpty) {
             context.read<NavNotifCubit>().add(id, notifNameEmpty);
@@ -239,61 +236,20 @@ class UserDetails extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-          title: SizedBox(
-            height: CCSize.xxxlarge * 2,
-            width: CCSize.xxxlarge * 3,
-            child: Stack(
-              children: [
-                Center(
-                  child: CircleAvatar(
-                    radius: CCSize.xxxlarge,
-                    backgroundColor: user.photoURL == null
-                        ? Colors.grey // TODO: notif
-                        : Colors.transparent,
-                    backgroundImage: getPhotoAsset(user.photoURL),
-                  ),
-                ),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.edit,
-                      color: CCColor.onBackground(context),
-                    ),
-                    onPressed: () => Modal.show(
-                      context: context,
-                      sections: [
-                        GridView.count(
-                          shrinkWrap: true,
-                          crossAxisCount: 4,
-                          crossAxisSpacing: CCSize.large,
-                          mainAxisSpacing: CCSize.large,
-                          children: avatarNames
-                              .map(
-                                (e) => GestureDetector(
-                                  onTap: () {
-                                    userCRUD.updateUser(
-                                      photoURL: 'avatar-$e',
-                                    );
-                                    context.pop();
-                                  },
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                      'assets/avatar/$e.jpg',
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+          leading: const Icon(Icons.edit, color: Colors.transparent),
+          title: Center(
+            child: CircleAvatar(
+              radius: CCSize.xxxlarge,
+              backgroundColor: user.photoURL == null
+                  ? Colors.red[100] // TODO: notif
+                  : Colors.transparent,
+              backgroundImage: getPhotoAsset(user.photoURL),
             ),
           ),
+          trailing: (user.photoURL ?? '').isEmpty
+              ? const Icon(Icons.priority_high, color: Colors.red)
+              : const Icon(Icons.edit),
+          onTap: () => showAvatarModal(context),
         ),
         ListTile(
           leading: const Icon(Icons.alternate_email),
@@ -337,6 +293,33 @@ class UserDetails extends StatelessWidget {
                       );
                     },
                   ),
+        ),
+      ],
+    );
+  }
+
+  void showAvatarModal(BuildContext context) {
+    return Modal.show(
+      context: context,
+      sections: [
+        GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 4,
+          crossAxisSpacing: CCSize.large,
+          mainAxisSpacing: CCSize.large,
+          children: avatarNames
+              .map(
+                (e) => GestureDetector(
+                  onTap: () {
+                    userCRUD.updateUser(photoURL: 'avatar-$e');
+                    context.pop();
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage('assets/avatar/$e.jpg'),
+                  ),
+                ),
+              )
+              .toList(),
         ),
       ],
     );
