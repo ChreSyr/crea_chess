@@ -5,12 +5,12 @@ import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
-import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/package/form/signup/signup_cubit.dart';
 import 'package:crea_chess/package/form/signup/signup_form.dart';
 import 'package:crea_chess/package/form/signup/signup_status.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/route_body.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -27,11 +27,11 @@ class SignupBody extends RouteBody {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SignupCubit(),
-      child: BlocListener<AuthenticationCubit, AuthenticationModel>(
-        listener: (context, auth) {
-          if (!auth.isAbsent) {
+      child: BlocListener<AuthenticationCubit, User?>(
+        listener: (context, user) {
+          if (user != null) {
             context.pop();
-            if (auth.emailVerified != true) {
+            if (user.emailVerified != true) {
               context.push('/profile/email_verification');
             }
           }

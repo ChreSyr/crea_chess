@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -12,32 +11,18 @@ class _AuthenticationCRUD {
         '737365859201-spnihhusekc0prr23451hdjaj9a6dltc.apps.googleusercontent.com',
   );
 
-  final _authenticationStreamController =
-      StreamController<AuthenticationModel>();
+  // final _userStreamController = StreamController<User>();
 
   // Todo : separate stream & signin methods
 
-  /// Get User (firebase object)
-  User? _getUser() {
-    return _firebaseAuth.currentUser;
-  }
-
   /// Stream User (firebase object) changes
-  Stream<User?> _streamUser() {
+  Stream<User?> stream() {
     return _firebaseAuth.userChanges();
-  }
-
-  /// Reload the user, to check if something changed.
-  void checkEmailVerified() {
-    final user = _getUser();
-    if (user == null) return;
-
-    user.reload();
   }
 
   /// Permanently delete account. Reauthentication possible.
   Future<void> deleteUserAccount({String? userId}) async {
-    final user = _getUser();
+    final user = _firebaseAuth.currentUser;
     if (user == null) return;
 
     try {
@@ -59,14 +44,17 @@ class _AuthenticationCRUD {
     }
   }
 
-  /// Get AuthenticationModel
-  AuthenticationModel get() {
-    return AuthenticationModel.fromUser(_getUser());
+  /// Reload the user, to check if something changed.
+  void reloadUser() {
+    final user = _firebaseAuth.currentUser;
+    if (user == null) return;
+
+    user.reload();
   }
 
   /// Send an email to verify property
   Future<void> sendEmailVerification() async {
-    final user = _getUser();
+    final user = _firebaseAuth.currentUser;
     if (user == null) return;
 
     await user.sendEmailVerification();
@@ -129,17 +117,18 @@ class _AuthenticationCRUD {
     );
   }
 
-  /// Stream AuthenticationModel
-  Stream<AuthenticationModel> stream() {
-    _streamUser().listen((user) {
-      _authenticationStreamController.add(AuthenticationModel.fromUser(user));
-    });
-    return _authenticationStreamController.stream;
-  }
+  // /// Stream User
+  // Stream<User> stream() {
+  //   _streamUser().listen((user) {
+  //     if (user != null) _userStreamController.add(user);
+  //   });
+  //   return _userStreamController.stream;
+  // }
 
   /// Update the user data
   Future<void> updateUser({String? name, String? photo}) async {
-    final user = _getUser();
+    // TODO: UserCubit ?
+    final user = _firebaseAuth.currentUser;
     if (user == null) return;
 
     if (name != null) await user.updateDisplayName(name);

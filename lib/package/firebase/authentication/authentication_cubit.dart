@@ -1,40 +1,19 @@
 import 'dart:async';
 
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
-import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AuthenticationCubit extends Cubit<AuthenticationModel> {
-  AuthenticationCubit() : super(AuthenticationModel()) {
-    setStreamSubscriptionAuthentication();
+class AuthenticationCubit extends Cubit<User?> {
+  AuthenticationCubit() : super(null) {
+    streamSubscriptionAuthentication = authenticationCRUD.stream().listen(emit);
   }
 
-  Future<void> signoutRequested() async {
-    await authenticationCRUD.signOut();
-  }
-
-  void authenticationChanged(AuthenticationModel authentication) {
-    emit(authentication);
-  }
-
-  void setStreamSubscriptionAuthentication() {
-    cancelStreamSubscriptionAuthentication();
-    streamSubscriptionAuthentication = authenticationCRUD.stream().listen(
-      authenticationChanged,
-    );
-  }
-
-  Future<void> cancelStreamSubscriptionAuthentication() async {
-    if (streamSubscriptionAuthentication != null) {
-      await streamSubscriptionAuthentication!.cancel();
-    }
-  }
-
-  StreamSubscription<AuthenticationModel>? streamSubscriptionAuthentication;
+  late StreamSubscription<User?> streamSubscriptionAuthentication;
 
   @override
   Future<void> close() {
-    cancelStreamSubscriptionAuthentication();
+    streamSubscriptionAuthentication.cancel();
     return super.close();
   }
 }

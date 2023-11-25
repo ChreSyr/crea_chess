@@ -22,7 +22,8 @@ class ModifyNameBody extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    final initialName = context.read<AuthenticationCubit>().state.name ?? '';
+    final initialName =
+        context.read<AuthenticationCubit>().state?.displayName ?? '';
     final modifyNameCubit = ModifyNameCubit(initialName);
     final textController = TextEditingController(text: initialName);
 

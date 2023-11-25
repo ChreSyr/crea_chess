@@ -7,10 +7,10 @@ import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
-import 'package:crea_chess/package/firebase/authentication/authentication_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/nav_notif_cubit.dart';
 import 'package:crea_chess/route/route_body.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -54,6 +54,7 @@ class ProfileBody extends MainRouteBody {
 
   @override
   String getId() {
+    // TODO : MainRouteBody.id
     return 'profile';
   }
 
@@ -65,12 +66,14 @@ class ProfileBody extends MainRouteBody {
   @override
   List<Widget> getActions(BuildContext context) {
     return [
-      BlocBuilder<AuthenticationCubit, AuthenticationModel>(
-        builder: (context, auth) {
-          final isLoggedIn = !auth.isAbsent;
-          void signout() => context
-            ..read<AuthenticationCubit>().signoutRequested()
-            ..go('/profile/sign_methods');
+      BlocBuilder<AuthenticationCubit, User?>(
+        builder: (context, user) {
+          final isLoggedIn = user != null;
+          void signout() {
+            authenticationCRUD.signOut();
+            context.go('/profile/sign_methods');
+          }
+
           return MenuAnchor(
             builder: (
               BuildContext context,
@@ -93,7 +96,7 @@ class ProfileBody extends MainRouteBody {
                         case ProfileMenuChoices.signout:
                           signout();
                         case ProfileMenuChoices.deleteAccount:
-                          confirmDeleteAccount(context, auth);
+                          confirmDeleteAccount(context, user!);
                       }
                     },
                     style: switch (e) {
@@ -117,16 +120,13 @@ class ProfileBody extends MainRouteBody {
     ];
   }
 
-  Future<AlertDialog?> confirmDeleteAccount(
-    BuildContext context,
-    AuthenticationModel auth,
-  ) {
+  Future<AlertDialog?> confirmDeleteAccount(BuildContext context, User user) {
     return showDialog<AlertDialog>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           content: Text(
-            context.l10n.deleteAccountExplanation(auth.email ?? 'ERROR'),
+            context.l10n.deleteAccountExplanation(user.email ?? 'ERROR'),
           ),
           actions: [
             TextButton(
@@ -137,11 +137,12 @@ class ProfileBody extends MainRouteBody {
               child: Text(context.l10n.deleteAccount),
               onPressed: () {
                 try {
-                  authenticationCRUD.deleteUserAccount(userId: auth.id);
+                  authenticationCRUD.deleteUserAccount(userId: user.uid);
                   snackBarNotify(context, context.l10n.deletedAccount);
-                  context
-                    ..read<AuthenticationCubit>().signoutRequested()
-                    ..pop();
+                  // pop menu
+                  context.pop();
+                  // sigout
+                  authenticationCRUD.signOut();
                 } catch (_) {
                   snackBarError(context, context.l10n.errorOccurred);
                 }
@@ -153,41 +154,51 @@ class ProfileBody extends MainRouteBody {
     );
   }
 
+  // TODO: defined in listener
   static const notifEmailNotVerified = 'email-not-verified';
   static const notifNameEmpty = 'name-empty';
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthenticationCubit, AuthenticationModel>(
-      listener: (context, auth) {
-        if (!auth.isAbsent && (auth.photo ?? '').isEmpty) {
-          authenticationCRUD.updateUser(
-            photo:
-                'avatar-${avatarNames[Random().nextInt(avatarNames.length)]}',
-          );
-        }
-        if (!auth.isAbsent && (auth.name ?? '').isEmpty) {
-          context.read<NavNotifCubit>().add(getId(), notifNameEmpty);
-        } else {
+    return BlocConsumer<AuthenticationCubit, User?>(
+      listener: (context, user) {
+        print('---------------');
+        print(user);
+        print('---------------');
+        if (user == null) {
           context.read<NavNotifCubit>().remove(getId(), notifNameEmpty);
-        }
-        if (!auth.isAbsent && (auth.emailVerified != true)) {
-          context.read<NavNotifCubit>().add(getId(), notifEmailNotVerified);
-        } else {
           context.read<NavNotifCubit>().remove(getId(), notifEmailNotVerified);
+        } else {
+          if ((user.photoURL ?? '').isEmpty) {
+            // TODO: remove, notif instead
+            authenticationCRUD.updateUser(
+              photo:
+                  'avatar-${avatarNames[Random().nextInt(avatarNames.length)]}',
+            );
+          }
+          if ((user.displayName ?? '').isEmpty) {
+            context.read<NavNotifCubit>().add(getId(), notifNameEmpty);
+          } else {
+            context.read<NavNotifCubit>().remove(getId(), notifNameEmpty);
+          }
+          if (user.emailVerified != true) {
+            context.read<NavNotifCubit>().add(getId(), notifEmailNotVerified);
+          } else {
+            context
+                .read<NavNotifCubit>()
+                .remove(getId(), notifEmailNotVerified);
+          }
         }
       },
-      builder: (context, auth) {
-        if (auth.isAbsent) {
+      builder: (context, user) {
+        if (user == null) {
           return FilledButton.icon(
             onPressed: () => context.go('/profile/sign_methods'),
             icon: const Icon(Icons.login),
             label: Text(context.l10n.signin),
           );
         }
-        return UserDetails(
-          user: auth,
-        );
+        return UserDetails(user: user);
       },
     );
   }
@@ -230,7 +241,7 @@ ImageProvider<Object>? getPhotoAsset(String? photo) {
 class UserDetails extends StatelessWidget {
   const UserDetails({required this.user, super.key});
 
-  final AuthenticationModel user;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -246,9 +257,10 @@ class UserDetails extends StatelessWidget {
                 Center(
                   child: CircleAvatar(
                     radius: CCSize.xxxlarge,
-                    backgroundColor:
-                        user.photo == null ? Colors.grey : Colors.transparent,
-                    backgroundImage: getPhotoAsset(user.photo),
+                    backgroundColor: user.photoURL == null
+                        ? Colors.grey // TODO: notif
+                        : Colors.transparent,
+                    backgroundImage: getPhotoAsset(user.photoURL),
                   ),
                 ),
                 Positioned(
@@ -295,8 +307,8 @@ class UserDetails extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.alternate_email),
-          title: Text(user.name ?? ''),
-          trailing: (user.name ?? '').isEmpty
+          title: Text(user.displayName ?? ''),
+          trailing: (user.displayName ?? '').isEmpty
               ? const Icon(Icons.priority_high, color: Colors.red)
               : const Icon(Icons.edit),
           onTap: () => context.push('/profile/modify_name'),
@@ -306,11 +318,11 @@ class UserDetails extends StatelessWidget {
           leading: const Icon(Icons.email),
           title: Text(user.email ?? ''),
           // email verification
-          trailing: (user.emailVerified ?? false)
+          trailing: (user.emailVerified)
               ? null
               : const Icon(Icons.priority_high, color: Colors.red),
           // email verification
-          onTap: (user.emailVerified ?? false)
+          onTap: (user.emailVerified)
               ? null
               : () => showDialog<AlertDialog>(
                     context: context,
