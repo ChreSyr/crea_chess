@@ -4,7 +4,6 @@ import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
-import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav_notif_cubit.dart';
@@ -48,6 +47,7 @@ class ProfileBody extends MainRouteBody {
 
   @override
   Icon getIcon() {
+    // TODO : MainRouteBody.icon
     return const Icon(Icons.person);
   }
 
@@ -170,12 +170,10 @@ class ProfileBody extends MainRouteBody {
           } else {
             context.read<NavNotifCubit>().remove(id, notifNameEmpty);
           }
-          if (user.emailVerified != true) {
+          if (user.emailVerifiedOrProvided != true) {
             context.read<NavNotifCubit>().add(id, notifEmailNotVerified);
           } else {
-            context
-                .read<NavNotifCubit>()
-                .remove(id, notifEmailNotVerified);
+            context.read<NavNotifCubit>().remove(id, notifEmailNotVerified);
           }
         }
       },
@@ -228,7 +226,10 @@ ImageProvider<Object>? getPhotoAsset(String? photo) {
 }
 
 class UserDetails extends StatelessWidget {
-  const UserDetails({required this.user, super.key});
+  const UserDetails({
+    required this.user,
+    super.key,
+  });
 
   final User user;
 
@@ -302,16 +303,15 @@ class UserDetails extends StatelessWidget {
               : const Icon(Icons.edit),
           onTap: () => context.push('/profile/modify_name'),
         ),
-        CCGap.small,
         ListTile(
           leading: const Icon(Icons.email),
           title: Text(user.email ?? ''),
           // email verification
-          trailing: (user.emailVerified)
+          trailing: user.emailVerifiedOrProvided
               ? null
               : const Icon(Icons.priority_high, color: Colors.red),
           // email verification
-          onTap: (user.emailVerified)
+          onTap: user.emailVerifiedOrProvided
               ? null
               : () => showDialog<AlertDialog>(
                     context: context,

@@ -201,4 +201,13 @@ class UserCubit extends Cubit<User?> {
   }
 }
 
+extension UserEmailVerifiedOrProvided on User {
+  /// true if the email is verified or has been provided by google or facebook
+  bool get emailVerifiedOrProvided {
+    print(providerData);
+    return emailVerified ||
+        providerData.where((e) => e.providerId != 'password').isNotEmpty;
+  }
+}
+
 final userCRUD = _UserCRUD();
