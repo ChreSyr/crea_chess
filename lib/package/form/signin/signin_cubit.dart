@@ -39,8 +39,6 @@ class SigninCubit extends Cubit<SigninForm> {
 
     emit(state.copyWith(status: SigninStatus.waiting));
 
-    // TODO : can only signin if signin method is mail / password
-
     try {
       await userCRUD.signInWithEmailAndPassword(
         email: state.email.value,
@@ -71,9 +69,6 @@ class SigninCubit extends Cubit<SigninForm> {
     }
 
     emit(state.copyWith(status: SigninStatus.waiting));
-
-    // TODO : error if email doesn't exist
-    // TODO : can only reset password if signin method is mail / password
 
     try {
       await userCRUD.sendPasswordResetEmail(

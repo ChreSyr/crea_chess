@@ -336,7 +336,7 @@ class UserDetails extends StatelessWidget {
                             child: Text(context.l10n.cancel),
                           ),
                           FilledButton(
-                            child: Text(context.l10n.verifyEmailSendLink),
+                            child: Text(context.l10n.sendEmail),
                             onPressed: () {
                               context
                                 ..pop()

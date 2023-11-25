@@ -30,7 +30,14 @@
   "passwordForgot": "Mot de passe oublié ?",
   "play": "Jouer",
   "profile": "Profil",
+  "resetPasswordExplanation": "Voulez-vous réinitialiser votre mot de passe ?\n\nUn mail sera envoté à {email}",
+  "@resetPasswordExplanation": {
+    "placeholders": {
+      "email": {}
+    }
+  },
   "save": "Enregistrer",
+  "sendEmail": "Envoyer un mail",
   "settings": "Réglages",
   "signCreateAccount": "Créer un compte",
   "signin": "Connexion",
@@ -45,7 +52,6 @@
   },
   "verifyEmailExplanation": "Un mail vous sera envoyé pour confirmer que vous êtes le propriétaire de cette adresse.",
   "verifyEmailResendLink": "Renvoyer le lien",
-  "verifyEmailSendLink": "Envoyer un mail",
   "verifyMailbox": "Vérifiez votre boîte de réception !",
   "welcomeBack": "Bon retour parmi nous !",
   "welcomeAmongUs": "Bienvenue parmi nous !"

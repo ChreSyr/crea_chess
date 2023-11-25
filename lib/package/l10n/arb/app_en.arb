@@ -30,7 +30,14 @@
   "passwordForgot": "Forgot password ?",
   "play": "Play",
   "profile": "Profile",
+  "resetPasswordExplanation": "Do you want to reset your password ?\n\nAn email will be sent to {email}",
+  "@resetPasswordExplanation": {
+    "placeholders": {
+      "email": {}
+    }
+  },
   "save": "Save",
+  "sendEmail": "Send email",
   "settings": "Settings",
   "signCreateAccount": "Create an account",
   "signin": "Log in",
@@ -45,7 +52,6 @@
   },
   "verifyEmailExplanation": "An email will be sent to you to confirm that you are the owner of this address.",
   "verifyEmailResendLink": "Resend link",
-  "verifyEmailSendLink": "Send email link",
   "verifyMailbox": "Check your mailbox !",
   "welcomeBack": "Welcome back !",
   "welcomeAmongUs": "Welcome among us !"
