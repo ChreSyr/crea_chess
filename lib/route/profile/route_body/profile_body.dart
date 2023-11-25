@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
@@ -6,9 +8,11 @@ import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav_notif_cubit.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 // TODO: welcome and connect page when it is the first opening of the app
 
@@ -234,9 +238,8 @@ class UserDetails extends StatelessWidget {
           title: Center(
             child: CircleAvatar(
               radius: CCSize.xxxlarge,
-              backgroundColor: user.photoURL == null
-                  ? Colors.red[100]
-                  : Colors.transparent,
+              backgroundColor:
+                  user.photoURL == null ? Colors.red[100] : Colors.transparent,
               backgroundImage: getPhotoAsset(user.photoURL),
             ),
           ),
@@ -296,26 +299,79 @@ class UserDetails extends StatelessWidget {
     return Modal.show(
       context: context,
       sections: [
-        GridView.count(
-          shrinkWrap: true,
-          crossAxisCount: 4,
-          crossAxisSpacing: CCSize.large,
-          mainAxisSpacing: CCSize.large,
-          children: avatarNames
-              .map(
-                (e) => GestureDetector(
-                  onTap: () {
-                    userCRUD.updateUser(photoURL: 'avatar-$e');
-                    context.pop();
-                  },
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage('assets/avatar/$e.jpg'),
-                  ),
+        ListTile(
+          leading: const Icon(Icons.add_a_photo),
+          title: const Text('Prendre une photo'),
+          onTap: () {
+            context.pop();
+            uploadProfilePhoto(ImageSource.camera);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.drive_folder_upload),
+          title: const Text('Importer une photo'),
+          onTap: () {
+            context.pop();
+            uploadProfilePhoto(ImageSource.gallery);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.person),
+          title: const Text('Choisir un avatar'),
+          onTap: () {
+            context.pop();
+            Modal.show(
+              context: context,
+              sections: [
+                GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 4,
+                  crossAxisSpacing: CCSize.large,
+                  mainAxisSpacing: CCSize.large,
+                  children: avatarNames
+                      .map(
+                        (e) => GestureDetector(
+                          onTap: () {
+                            userCRUD.updateUser(photoURL: 'avatar-$e');
+                            context.pop();
+                          },
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage('assets/avatar/$e.jpg'),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
-              )
-              .toList(),
+              ],
+            );
+          },
         ),
       ],
     );
+  }
+
+  Future<void> uploadProfilePhoto(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+
+    // TODO: fix for the web
+    print('picked $pickedFile');
+    if (pickedFile == null) return;
+
+    print('File name : ${pickedFile.name}');
+    print('File path : ${pickedFile.path}');
+
+    try {
+      final photoRef = FirebaseStorage.instance
+          .ref()
+          .child('image')
+          .child('profilePhoto')
+          .child(user.uid);
+      await photoRef.putFile(File(pickedFile.path));
+      await userCRUD.updateUser(photoURL: await photoRef.getDownloadURL());
+    } catch (e) {
+      // snackBarError(context, context.l10n.errorOccurred);
+      print('ERROR OCCURED');
+      rethrow;
+    }
   }
 }
