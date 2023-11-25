@@ -1,4 +1,4 @@
-import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/user/user_crud.dart';
 import 'package:crea_chess/package/form/input/input_email.dart';
 import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/package/form/signin/signin_form.dart';
@@ -42,7 +42,7 @@ class SigninCubit extends Cubit<SigninForm> {
     // TODO : can only signin if signin method is mail / password
 
     try {
-      await authenticationCRUD.signInWithEmailAndPassword(
+      await userCRUD.signInWithEmailAndPassword(
         email: state.email.value,
         password: state.password.value,
       );
@@ -76,7 +76,7 @@ class SigninCubit extends Cubit<SigninForm> {
     // TODO : can only reset password if signin method is mail / password
 
     try {
-      await authenticationCRUD.sendPasswordResetEmail(
+      await userCRUD.sendPasswordResetEmail(
         email: state.email.value,
       );
       emit(state.copyWith(status: SigninStatus.resetPasswordSuccess));

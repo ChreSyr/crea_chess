@@ -1,4 +1,4 @@
-import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/user/user_crud.dart';
 import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/package/form/modify_name/modify_name_form.dart';
 import 'package:crea_chess/package/form/modify_name/modify_name_status.dart';
@@ -32,7 +32,7 @@ class ModifyNameCubit extends Cubit<ModifyNameForm> {
     emit(state.copyWith(status: ModifyNameStatus.waiting));
 
     try {
-      await authenticationCRUD.updateUser(name: state.name.value);
+      await userCRUD.updateUser(displayName: state.name.value);
       emit(state.copyWith(status: ModifyNameStatus.success));
     } catch (_) {
       emit(state.copyWith(status: ModifyNameStatus.unexpectedError));

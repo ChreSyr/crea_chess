@@ -5,7 +5,7 @@ import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/user/user_crud.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/nav_notif_cubit.dart';
 import 'package:crea_chess/route/route_body.dart';
@@ -69,7 +69,7 @@ class ProfileBody extends MainRouteBody {
         builder: (context, user) {
           final isLoggedIn = user != null;
           void signout() {
-            authenticationCRUD.signOut();
+            userCRUD.signOut();
             context.go('/profile/sign_methods');
           }
 
@@ -136,12 +136,12 @@ class ProfileBody extends MainRouteBody {
               child: Text(context.l10n.deleteAccount),
               onPressed: () {
                 try {
-                  authenticationCRUD.deleteUserAccount(userId: user.uid);
+                  userCRUD.deleteUserAccount(userId: user.uid);
                   snackBarNotify(context, context.l10n.deletedAccount);
                   // pop menu
                   context.pop();
                   // sigout
-                  authenticationCRUD.signOut();
+                  userCRUD.signOut();
                 } catch (_) {
                   snackBarError(context, context.l10n.errorOccurred);
                 }
@@ -170,8 +170,8 @@ class ProfileBody extends MainRouteBody {
         } else {
           if ((user.photoURL ?? '').isEmpty) {
             // TODO: remove, notif instead
-            authenticationCRUD.updateUser(
-              photo:
+            userCRUD.updateUser(
+              photoURL:
                   'avatar-${avatarNames[Random().nextInt(avatarNames.length)]}',
             );
           }
@@ -282,8 +282,8 @@ class UserDetails extends StatelessWidget {
                               .map(
                                 (e) => GestureDetector(
                                   onTap: () {
-                                    authenticationCRUD.updateUser(
-                                      photo: 'avatar-$e',
+                                    userCRUD.updateUser(
+                                      photoURL: 'avatar-$e',
                                     );
                                     context.pop();
                                   },

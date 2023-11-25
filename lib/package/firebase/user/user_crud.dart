@@ -11,7 +11,7 @@ final GoogleSignIn _googleAuth = GoogleSignIn(
       '737365859201-spnihhusekc0prr23451hdjaj9a6dltc.apps.googleusercontent.com',
 );
 
-class _AuthenticationCRUD {
+class _UserCRUD {
   final userCubit = UserCubit._();
 
   /// Permanently delete account. Reauthentication possible.
@@ -112,12 +112,12 @@ class _AuthenticationCRUD {
   }
 
   /// Update the user data
-  Future<void> updateUser({String? name, String? photo}) async {
+  Future<void> updateUser({String? displayName, String? photoURL}) async {
     final user = _firebaseAuth.currentUser;
     if (user == null) return;
 
-    if (name != null) await user.updateDisplayName(name);
-    if (photo != null) await user.updatePhotoURL(photo);
+    if (displayName != null) await user.updateDisplayName(displayName);
+    if (photoURL != null) await user.updatePhotoURL(photoURL);
   }
 }
 
@@ -135,4 +135,4 @@ class UserCubit extends Cubit<User?> {
   }
 }
 
-final authenticationCRUD = _AuthenticationCRUD();
+final userCRUD = _UserCRUD();

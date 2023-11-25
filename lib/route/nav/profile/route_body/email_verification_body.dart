@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/user/user_crud.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -75,7 +75,7 @@ class _EmailVerificationBody extends StatelessWidget {
               const ResendButton(),
               CCGap.large,
               FilledButton(
-                onPressed: authenticationCRUD.reloadUser,
+                onPressed: userCRUD.reloadUser,
                 child: Text(context.l10n.continue_),
               ),
             ],
@@ -100,7 +100,7 @@ class _ResendButtonState extends State<ResendButton> {
   @override
   void initState() {
     super.initState();
-    authenticationCRUD.sendEmailVerification();
+    userCRUD.sendEmailVerification();
     delay = 15;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _decrease();
@@ -140,7 +140,7 @@ class _ResendButtonState extends State<ResendButton> {
     return delay == 0
         ? ElevatedButton(
             onPressed: () {
-              authenticationCRUD.sendEmailVerification();
+              userCRUD.sendEmailVerification();
               _reset();
             },
             child: Text(context.l10n.verifyEmailResendLink),
