@@ -1,24 +1,18 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+final GoogleSignIn _googleAuth = GoogleSignIn(
+  clientId:
+      // ignore: lines_longer_than_80_chars
+      '737365859201-spnihhusekc0prr23451hdjaj9a6dltc.apps.googleusercontent.com',
+);
+
 class _AuthenticationCRUD {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleAuth = GoogleSignIn(
-    clientId:
-        // ignore: lines_longer_than_80_chars
-        '737365859201-spnihhusekc0prr23451hdjaj9a6dltc.apps.googleusercontent.com',
-  );
-
-  // final _userStreamController = StreamController<User>();
-
-  // Todo : separate stream & signin methods
-
-  /// Stream User (firebase object) changes
-  Stream<User?> stream() {
-    return _firebaseAuth.userChanges();
-  }
+  final userCubit = UserCubit._();
 
   /// Permanently delete account. Reauthentication possible.
   Future<void> deleteUserAccount({String? userId}) async {
@@ -117,22 +111,27 @@ class _AuthenticationCRUD {
     );
   }
 
-  // /// Stream User
-  // Stream<User> stream() {
-  //   _streamUser().listen((user) {
-  //     if (user != null) _userStreamController.add(user);
-  //   });
-  //   return _userStreamController.stream;
-  // }
-
   /// Update the user data
   Future<void> updateUser({String? name, String? photo}) async {
-    // TODO: UserCubit ?
     final user = _firebaseAuth.currentUser;
     if (user == null) return;
 
     if (name != null) await user.updateDisplayName(name);
     if (photo != null) await user.updatePhotoURL(photo);
+  }
+}
+
+class UserCubit extends Cubit<User?> {
+  UserCubit._() : super(_firebaseAuth.currentUser) {
+    userStreamSubscription = _firebaseAuth.userChanges().listen(emit);
+  }
+
+  late StreamSubscription<User?> userStreamSubscription;
+
+  @override
+  Future<void> close() {
+    userStreamSubscription.cancel();
+    return super.close();
   }
 }
 

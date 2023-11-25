@@ -3,7 +3,7 @@ import 'package:crea_chess/package/atomic_design/field/password_form_field.dart'
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/form/signin/signin_cubit.dart';
 import 'package:crea_chess/package/form/signin/signin_form.dart';
 import 'package:crea_chess/package/form/signin/signin_status.dart';
@@ -24,7 +24,7 @@ class SigninBody extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationCubit, User?>(
+    return BlocListener<UserCubit, User?>(
       listener: (context, user) {
         if (user != null) context.pop();
       },

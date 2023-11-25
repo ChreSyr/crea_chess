@@ -6,7 +6,6 @@ import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
-import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav/nav_notif_cubit.dart';
 import 'package:crea_chess/route/route_body.dart';
@@ -66,7 +65,7 @@ class ProfileBody extends MainRouteBody {
   @override
   List<Widget> getActions(BuildContext context) {
     return [
-      BlocBuilder<AuthenticationCubit, User?>(
+      BlocBuilder<UserCubit, User?>(
         builder: (context, user) {
           final isLoggedIn = user != null;
           void signout() {
@@ -160,7 +159,7 @@ class ProfileBody extends MainRouteBody {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthenticationCubit, User?>(
+    return BlocConsumer<UserCubit, User?>(
       listener: (context, user) {
         print('---------------');
         print(user);

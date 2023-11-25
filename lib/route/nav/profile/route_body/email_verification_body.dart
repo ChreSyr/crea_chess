@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
-import 'package:crea_chess/package/firebase/authentication/authentication_cubit.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +20,7 @@ class EmailVerificationBody extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationCubit, User?>(
+    return BlocListener<UserCubit, User?>(
       listener: (context, user) {
         if (user == null) return;
         if (user.emailVerified) context.push('/profile/modify_name');
@@ -62,7 +61,7 @@ class _EmailVerificationBody extends StatelessWidget {
           // or continue with
           Text(
             context.l10n.verifyEmailExplainLink(
-              context.read<AuthenticationCubit>().state?.email ?? 'ERROR',
+              context.read<UserCubit>().state?.email ?? 'ERROR',
             ),
             textAlign: TextAlign.center,
           ),
