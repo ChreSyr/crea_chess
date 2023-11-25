@@ -2,7 +2,7 @@ import 'package:crea_chess/package/atomic_design/field/input_decoration.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/user/user_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
 import 'package:crea_chess/package/form/modify_name/modify_name_cubit.dart';
 import 'package:crea_chess/package/form/modify_name/modify_name_form.dart';
 import 'package:crea_chess/package/form/modify_name/modify_name_status.dart';
@@ -22,8 +22,7 @@ class ModifyNameBody extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    final initialName =
-        context.read<UserCubit>().state?.displayName ?? '';
+    final initialName = context.read<UserCubit>().state?.displayName ?? '';
     final modifyNameCubit = ModifyNameCubit(initialName);
     final textController = TextEditingController(text: initialName);
 

@@ -4,7 +4,7 @@ import 'package:crea_chess/package/atomic_design/field/password_form_field.dart'
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/user/user_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
 import 'package:crea_chess/package/form/signup/signup_cubit.dart';
 import 'package:crea_chess/package/form/signup/signup_form.dart';
 import 'package:crea_chess/package/form/signup/signup_status.dart';
@@ -125,7 +125,7 @@ class _SignupBody extends StatelessWidget {
                       : TextStyle(color: CCColor.error(context)),
                 ),
               ),
-              
+
               CCGap.medium,
 
               // sign in button
