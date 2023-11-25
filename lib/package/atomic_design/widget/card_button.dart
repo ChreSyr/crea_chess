@@ -14,10 +14,15 @@ class CardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      borderRadius: CCBorderRadiusCircular.medium,
+    return Card(
       clipBehavior: Clip.antiAlias,
-      color: CCColor.lightGrey,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: CCColor.inverseSurface(context),
+          width: .5,
+        ),
+      borderRadius: CCBorderRadiusCircular.medium,
+      ),
       child: InkWell(
         onTap: onTap,
         child: child,
