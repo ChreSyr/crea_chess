@@ -182,7 +182,6 @@ class ProfileBody extends MainRouteBody {
         return BlocConsumer<UserCubit, UserModel?>(
           listener: (context, user) {
             if (user == null) {
-              // TODO : move to auth listener ?
               context.read<NavNotifCubit>().remove(id, notifPhotoEmpty);
               context.read<NavNotifCubit>().remove(id, notifNameEmpty);
             } else {

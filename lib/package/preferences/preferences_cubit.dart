@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:crea_chess/package/atomic_design/color.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/package/preferences/preferences_state.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -33,9 +34,11 @@ class PreferencesCubit extends HydratedCubit<PreferencesState> {
     emit(state.copyWith(seedColor: seedColor));
   }
 
-  void toggleLocale() => emit(
-        state.copyWith(languageCode: state.languageCode == 'fr' ? 'en' : 'fr'),
-      );
+  void toggleLocale() {
+    final newLanguageCode = state.languageCode == 'fr' ? 'en' : 'fr';
+    emit(state.copyWith(languageCode: newLanguageCode));
+    authenticationCRUD.setLanguageCode(newLanguageCode);
+  }
 
   @override
   PreferencesState? fromJson(Map<String, dynamic> json) {

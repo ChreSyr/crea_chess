@@ -17,8 +17,6 @@ final _googleAuthProvider = GoogleAuthProvider();
 final _facebookAuth = FacebookLogin(debug: true);
 final _facebookAuthProvider = FacebookAuthProvider();
 
-// TODO: await FirebaseAuth.instance.setLanguageCode("fr");
-
 class _AuthenticationCRUD {
   final authenticationCubit = AuthenticationCubit._();
   final authProviderStatusCubit = AuthProviderStatusCubit();
@@ -73,6 +71,8 @@ class _AuthenticationCRUD {
   Future<void> sendPasswordResetEmail({required String email}) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
+
+  void setLanguageCode(String code) => _firebaseAuth.setLanguageCode(code);
 
   /// SignIn with email and password
   Future<void> signInWithEmailAndPassword({
