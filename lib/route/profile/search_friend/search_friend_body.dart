@@ -1,37 +1,123 @@
 import 'package:crea_chess/package/atomic_design/field/input_decoration.dart';
+import 'package:crea_chess/package/atomic_design/widget/gap.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/profile/body_template.dart';
+import 'package:crea_chess/route/profile/route_body/profile_body.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class UsersCubit extends Cubit<List<UserModel>> {
+  UsersCubit() : super([]) {
+    _init();
+  }
+
+  Future<void> _init() async {
+    try {
+      final users = await userCRUD.readWhere(
+        wheres: [], // Get all users
+        orderBy: 'username',
+      );
+      emit(users);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  late final List<UserModel> allUsers;
+}
+
+class SearchCubit extends Cubit<String> {
+  SearchCubit() : super('');
+
+  void search(String search) => emit(search);
+}
 
 class SearchFriendBody extends RouteBody {
   const SearchFriendBody({super.key});
 
   @override
   String getTitle(AppLocalizations l10n) {
-    return 'Rechercher un ami'; // TODO: l10n
+    return 'Ajouter un ami'; // TODO: l10n
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = context.read<UserCubit>().state;
     final textController = TextEditingController();
-    return BodyTemplate(
-      loading: false,
-      emoji: '🔍',
-      title: "Enter your friend's name.",
-      children: [
-        TextFormField(
-          autofocus: true,
-          controller: textController,
-          decoration: CCInputDecoration(
-            suffixIcon: IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () => null, // modifyUsernameCubit.setName(''),
-            ),
-          ),
-          // onChanged: modifyUsernameCubit.setName,
+    final usersCubit = UsersCubit();
+    final searchCubit = SearchCubit();
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => usersCubit,
+        ),
+        BlocProvider(
+          create: (context) => searchCubit,
         ),
       ],
+      child: BlocBuilder<SearchCubit, String>(
+        builder: (context, search) {
+          return BodyTemplate(
+            loading: false,
+            emoji: '🔍',
+            title: "Enter your friend's username.",
+            children: [
+              TextFormField(
+                autofocus: true,
+                controller: textController,
+                decoration: CCInputDecoration(
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => searchCubit.search(''),
+                  ),
+                ),
+                onChanged: searchCubit.search,
+              ),
+              CCGap.large,
+              BlocBuilder<UsersCubit, List<UserModel>>(
+                builder: (context, users) {
+                  print('Got users : $users');
+                  if (users.isEmpty) return const LinearProgressIndicator();
+                  if (search.isEmpty) return Container();
+                  return Column(
+                    children: users
+                        .where(
+                          (user) =>
+                              user != currentUser &&
+                              (user.username?.startsWith(search) ?? false),
+                        )
+                        .map<Widget>(UserTile.new)
+                        .toList(),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class UserTile extends StatelessWidget {
+  const UserTile(this.user, {super.key});
+
+  final UserModel user;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: CircleAvatar(backgroundImage: getPhotoAsset(user.photo)),
+      title: Text(user.username ?? ''),
+      trailing: IconButton(
+        icon: const Icon(Icons.person_add),
+        onPressed: () {},
+      ),
     );
   }
 }

@@ -446,7 +446,7 @@ class UserDetails extends StatelessWidget {
     final pickedFile = await ImagePicker().pickImage(source: source);
 
     // TODO: fix for the web
-    // TODO: compress image before storing
+    // TODO: compress image before storing ?
     if (pickedFile == null) return;
 
     final photoRef = FirebaseStorage.instance.getUserPhotoRef(user.id!);
