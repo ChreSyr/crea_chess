@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
+import 'package:crea_chess/package/firebase/storage/extension.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,11 +57,7 @@ class _AuthenticationCRUD {
     await userCRUD.delete(documentId: user.uid);
 
     // Delete profile photo in firebase storage
-    final photoRef = FirebaseStorage.instance
-        .ref()
-        .child('image')
-        .child('userPhoto')
-        .child(user.uid);
+    final photoRef = FirebaseStorage.instance.getUserPhotoRef(user.uid);
     await photoRef.delete();
   }
 

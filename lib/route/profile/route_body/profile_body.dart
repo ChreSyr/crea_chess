@@ -8,6 +8,7 @@ import 'package:crea_chess/package/firebase/authentication/authentication_crud.d
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
+import 'package:crea_chess/package/firebase/storage/extension.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav_notif_cubit.dart';
 import 'package:crea_chess/route/route_body.dart';
@@ -354,6 +355,10 @@ class UserDetails extends StatelessWidget {
                 : const Icon(Icons.edit),
             onTap: () => context.push('/profile/modify_name'),
           ),
+          ListTile(
+            leading: const Icon(Icons.email),
+            title: Text(context.read<AuthenticationCubit>().state?.email ?? ''),
+          ),
           CCDivider.xthin,
           const ListTile(
             leading: Icon(Icons.groups),
@@ -442,25 +447,11 @@ class UserDetails extends StatelessWidget {
 
     // TODO: fix for the web
     // TODO: compress image before storing
-    print('picked $pickedFile');
     if (pickedFile == null) return;
 
-    print('File name : ${pickedFile.name}');
-    print('File path : ${pickedFile.path}');
-
-    try {
-      final photoRef = FirebaseStorage.instance
-          .ref()
-          .child('image')
-          .child('userPhoto')
-          .child(user.id!);
-      await photoRef.putFile(File(pickedFile.path));
-      await userCRUD.userCubit.setPhoto(photo: await photoRef.getDownloadURL());
-    } catch (e) {
-      // snackBarError(context, context.l10n.errorOccurred);
-      print('ERROR OCCURED');
-      rethrow;
-    }
+    final photoRef = FirebaseStorage.instance.getUserPhotoRef(user.id!);
+    await photoRef.putFile(File(pickedFile.path));
+    await userCRUD.userCubit.setPhoto(photo: await photoRef.getDownloadURL());
   }
 }
 
