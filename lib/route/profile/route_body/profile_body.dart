@@ -372,7 +372,7 @@ class UserDetails extends StatelessWidget {
       final photoRef = FirebaseStorage.instance
           .ref()
           .child('image')
-          .child('profilePhoto')
+          .child('userPhoto')
           .child(user.uid);
       await photoRef.putFile(File(pickedFile.path));
       await userCRUD.updateUser(photoURL: await photoRef.getDownloadURL());
