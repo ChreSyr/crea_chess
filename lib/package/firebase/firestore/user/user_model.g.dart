@@ -10,18 +10,17 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
     _$UserModelImpl(
       id: json['id'] as String?,
       ref: json['ref'] as String?,
-      name: json['name'] as String?,
-      email: json['email'] as String?,
-      emailVerified: json['emailVerified'] as bool?,
-      photoUrl: json['photoUrl'] as String?,
+      username: json['username'] as String?,
+      photo: json['photo'] as String?,
+      friends:
+          (json['friends'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'ref': instance.ref,
-      'name': instance.name,
-      'email': instance.email,
-      'emailVerified': instance.emailVerified,
-      'photoUrl': instance.photoUrl,
+      'username': instance.username,
+      'photo': instance.photo,
+      'friends': instance.friends,
     };

@@ -2,12 +2,12 @@ import 'package:crea_chess/package/atomic_design/field/input_decoration.dart';
 import 'package:crea_chess/package/atomic_design/field/password_form_field.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/form/signin/signin_cubit.dart';
 import 'package:crea_chess/package/form/signin/signin_form.dart';
 import 'package:crea_chess/package/form/signin/signin_status.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/widget/body_template.dart';
+import 'package:crea_chess/route/profile/body_template.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class SigninBody extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserCubit, User?>(
+    return BlocListener<AuthenticationCubit, User?>(
       listener: (context, user) {
         if (user != null) context.pop();
       },
@@ -59,7 +59,7 @@ class _SigninBody extends StatelessWidget {
               child: Text(context.l10n.sendEmail),
               onPressed: () {
                 try {
-                  userCRUD.sendPasswordResetEmail(email: email);
+                  authenticationCRUD.sendPasswordResetEmail(email: email);
                   snackBarNotify(context, context.l10n.verifyMailbox);
                   context.pop();
                 } catch (_) {

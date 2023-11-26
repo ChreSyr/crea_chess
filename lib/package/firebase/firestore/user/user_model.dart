@@ -6,17 +6,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
-// TODO: use for ratings and other stuff
-
 @freezed
 class UserModel with _$UserModel {
   factory UserModel({
-    String? id,
+    String? id, // same as auth
     String? ref,
-    String? name,
-    String? email,
-    bool? emailVerified,
-    String? photoUrl,
+    String? username,
+    String? photo,
+    List<String>? friends, // the id of the friends
   }) = _UserModel;
 
   /// Required for the override getter

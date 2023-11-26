@@ -1,4 +1,5 @@
-import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/package/preferences/preferences_cubit.dart';
 import 'package:crea_chess/package/preferences/preferences_state.dart';
@@ -16,7 +17,10 @@ class CreaChessApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => userCRUD.authProviderStatusCubit,
+          create: (context) => authenticationCRUD.authProviderStatusCubit,
+        ),
+        BlocProvider(
+          create: (context) => authenticationCRUD.authenticationCubit,
         ),
         BlocProvider(
           create: (context) => userCRUD.userCubit,

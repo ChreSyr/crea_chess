@@ -1,4 +1,4 @@
-import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/form/input/input_boolean.dart';
 import 'package:crea_chess/package/form/input/input_email.dart';
 import 'package:crea_chess/package/form/input/input_password.dart';
@@ -51,7 +51,7 @@ class SignupCubit extends Cubit<SignupForm> {
     emit(state.copyWith(status: SignupStatus.waiting));
 
     try {
-      await userCRUD.signUpWithEmailAndPassword(
+      await authenticationCRUD.signUpWithEmailAndPassword(
         email: state.email.value,
         password: state.password.value,
       );

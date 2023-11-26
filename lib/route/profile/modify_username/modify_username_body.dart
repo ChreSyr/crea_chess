@@ -1,12 +1,12 @@
 import 'package:crea_chess/package/atomic_design/field/input_decoration.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
-import 'package:crea_chess/package/form/modify_name/modify_name_cubit.dart';
-import 'package:crea_chess/package/form/modify_name/modify_name_form.dart';
-import 'package:crea_chess/package/form/modify_name/modify_name_status.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/widget/body_template.dart';
+import 'package:crea_chess/route/profile/modify_username/modify_username_cubit.dart';
+import 'package:crea_chess/route/profile/modify_username/modify_username_form.dart';
+import 'package:crea_chess/route/profile/modify_username/modify_username_status.dart';
+import 'package:crea_chess/route/profile/body_template.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,8 +14,8 @@ import 'package:go_router/go_router.dart';
 
 // TODO: in web, field doesn't work correctly
 
-class ModifyNameBody extends RouteBody {
-  const ModifyNameBody({super.key});
+class ModifyUsernameBody extends RouteBody {
+  const ModifyUsernameBody({super.key});
 
   @override
   String getTitle(AppLocalizations l10n) {
@@ -24,22 +24,22 @@ class ModifyNameBody extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    final initialName = context.read<UserCubit>().state?.displayName ?? '';
-    final modifyNameCubit = ModifyNameCubit(initialName);
+    final initialName = context.read<UserCubit>().state?.username ?? '';
+    final modifyUsernameCubit = ModifyUsernameCubit(initialName);
     final textController = TextEditingController(text: initialName);
 
     return BlocProvider(
-      create: (context) => modifyNameCubit,
-      child: BlocConsumer<ModifyNameCubit, ModifyNameForm>(
+      create: (context) => modifyUsernameCubit,
+      child: BlocConsumer<ModifyUsernameCubit, ModifyUsernameForm>(
         listener: (context, form) {
           switch (form.status) {
-            case ModifyNameStatus.unexpectedError:
+            case ModifyUsernameStatus.unexpectedError:
               snackBarError(
                 context,
                 context.l10n.formError(form.status.name),
               );
-              modifyNameCubit.clearFailure();
-            case ModifyNameStatus.success:
+              modifyUsernameCubit.clearFailure();
+            case ModifyUsernameStatus.success:
               while (context.canPop()) {
                 context.pop();
               }
@@ -51,7 +51,7 @@ class ModifyNameBody extends RouteBody {
           textController.text = form.name.value;
 
           return BodyTemplate(
-            loading: form.status == ModifyNameStatus.waiting,
+            loading: form.status == ModifyUsernameStatus.waiting,
             emoji: '👀',
             title: context.l10n.chooseGoodUsername,
             children: [
@@ -63,10 +63,10 @@ class ModifyNameBody extends RouteBody {
                   errorText: form.errorMessage(form.name, context.l10n),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.close),
-                    onPressed: () => modifyNameCubit.setName(''),
+                    onPressed: () => modifyUsernameCubit.setName(''),
                   ),
                 ),
-                onChanged: modifyNameCubit.setName,
+                onChanged: modifyUsernameCubit.setName,
               ),
 
               CCGap.xlarge,
@@ -75,7 +75,7 @@ class ModifyNameBody extends RouteBody {
               Align(
                 alignment: Alignment.centerRight,
                 child: FilledButton(
-                  onPressed: modifyNameCubit.submit,
+                  onPressed: modifyUsernameCubit.submit,
                   child: Text(context.l10n.save),
                 ),
               ),

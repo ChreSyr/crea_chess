@@ -1,4 +1,4 @@
-enum ModifyNameStatus {
+enum ModifyUsernameStatus {
   inProgress,
 
   // show progress indicator

@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
-import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
+import 'package:crea_chess/package/atomic_design/widget/divider.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav_notif_cubit.dart';
 import 'package:crea_chess/route/route_body.dart';
@@ -57,11 +61,11 @@ class ProfileBody extends MainRouteBody {
   @override
   List<Widget> getActions(BuildContext context) {
     return [
-      BlocBuilder<UserCubit, User?>(
+      BlocBuilder<AuthenticationCubit, User?>(
         builder: (context, user) {
           final isLoggedIn = user != null;
           void signout() {
-            userCRUD.signOut();
+            authenticationCRUD.signOut();
             context.go('/profile/sign_methods');
           }
 
@@ -128,12 +132,12 @@ class ProfileBody extends MainRouteBody {
               child: Text(context.l10n.deleteAccount),
               onPressed: () {
                 try {
-                  userCRUD.deleteUserAccount(userId: user.uid);
+                  authenticationCRUD.deleteUserAccount(userId: user.uid);
                   snackBarNotify(context, context.l10n.deletedAccount);
                   // pop menu
                   context.pop();
                   // sigout
-                  userCRUD.signOut();
+                  authenticationCRUD.signOut();
                 } catch (_) {
                   snackBarError(context, context.l10n.errorOccurred);
                 }
@@ -145,45 +149,62 @@ class ProfileBody extends MainRouteBody {
     );
   }
 
+  static const notifNotFullyAuthenticated = 'not-fully-authenticated';
   static const notifPhotoEmpty = 'photo-empty';
   static const notifNameEmpty = 'name-empty';
-  static const notifEmailNotVerified = 'email-not-verified';
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserCubit, User?>(
-      listener: (context, user) {
-        if (user == null) {
-          context.read<NavNotifCubit>().remove(id, notifPhotoEmpty);
-          context.read<NavNotifCubit>().remove(id, notifNameEmpty);
-          context.read<NavNotifCubit>().remove(id, notifEmailNotVerified);
+    return BlocConsumer<AuthenticationCubit, User?>(
+      listener: (context, auth) {
+        if (auth == null) {
+          context.read<NavNotifCubit>().remove(id, notifNotFullyAuthenticated);
         } else {
-          if ((user.photoURL ?? '').isEmpty) {
-            context.read<NavNotifCubit>().add(id, notifPhotoEmpty);
+          if (auth.isFullyAuthenticated != true) {
+            context.read<NavNotifCubit>().add(id, notifNotFullyAuthenticated);
           } else {
-            context.read<NavNotifCubit>().remove(id, notifPhotoEmpty);
-          }
-          if ((user.displayName ?? '').isEmpty) {
-            context.read<NavNotifCubit>().add(id, notifNameEmpty);
-          } else {
-            context.read<NavNotifCubit>().remove(id, notifNameEmpty);
-          }
-          if (user.emailVerifiedOrProvided != true) {
-            context.read<NavNotifCubit>().add(id, notifEmailNotVerified);
-          } else {
-            context.read<NavNotifCubit>().remove(id, notifEmailNotVerified);
+            context
+                .read<NavNotifCubit>()
+                .remove(id, notifNotFullyAuthenticated);
           }
         }
       },
-      builder: (context, user) {
-        if (user == null) {
+      builder: (context, auth) {
+        if (auth == null) {
           return FilledButton.icon(
             onPressed: () => context.go('/profile/sign_methods'),
             icon: const Icon(Icons.login),
             label: Text(context.l10n.signin),
           );
+        } else if (!auth.isFullyAuthenticated) {
+          return NotFullyAuthenticated(auth: auth);
         }
-        return UserDetails(user: user);
+        return BlocConsumer<UserCubit, UserModel?>(
+          listener: (context, user) {
+            if (user == null) {
+              // TODO : move to auth listener ?
+              context.read<NavNotifCubit>().remove(id, notifPhotoEmpty);
+              context.read<NavNotifCubit>().remove(id, notifNameEmpty);
+            } else {
+              if ((user.photo ?? '').isEmpty) {
+                context.read<NavNotifCubit>().add(id, notifPhotoEmpty);
+              } else {
+                context.read<NavNotifCubit>().remove(id, notifPhotoEmpty);
+              }
+              if ((user.username ?? '').isEmpty) {
+                context.read<NavNotifCubit>().add(id, notifNameEmpty);
+              } else {
+                context.read<NavNotifCubit>().remove(id, notifNameEmpty);
+              }
+            }
+          },
+          builder: (context, user) {
+            // creating the user
+            if (user == null) return const CircularProgressIndicator();
+
+            return UserDetails(user: user);
+          },
+        );
       },
     );
   }
@@ -223,79 +244,137 @@ ImageProvider<Object>? getPhotoAsset(String? photo) {
   }
 }
 
-class UserDetails extends StatelessWidget {
-  const UserDetails({
-    required this.user,
+class NotFullyAuthenticated extends StatelessWidget {
+  const NotFullyAuthenticated({
+    required this.auth,
     super.key,
   });
 
-  final User user;
+  final User auth;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: CCWidgetSize.large3,
       child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ListTile(
-          leading: const Icon(Icons.edit, color: Colors.transparent),
-          title: Center(
-            child: CircleAvatar(
-              radius: CCSize.xxxlarge,
-              backgroundColor:
-                  user.photoURL == null ? Colors.red[100] : Colors.transparent,
-              backgroundImage: getPhotoAsset(user.photoURL),
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            title: Center(
+              child: CircleAvatar(
+                radius: CCSize.xxxlarge,
+                backgroundColor: auth.photoURL == null
+                    ? Colors.red[100]
+                    : Colors.transparent,
+                backgroundImage: getPhotoAsset(auth.photoURL),
+              ),
             ),
           ),
-          trailing: (user.photoURL ?? '').isEmpty
-              ? const Icon(Icons.priority_high, color: Colors.red)
-              : const Icon(Icons.edit),
+          ListTile(
+            leading: const Icon(Icons.alternate_email),
+            title: Text(auth.displayName ?? ''),
+          ),
+          ListTile(
+            leading: const Icon(Icons.email),
+            title: Text(auth.email ?? ''),
+            // email verification
+            trailing: auth.isFullyAuthenticated
+                ? null
+                : const Icon(Icons.priority_high, color: Colors.red),
+            // email verification
+            onTap: auth.isFullyAuthenticated
+                ? null
+                : () => showDialog<AlertDialog>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            context.l10n.verifyEmailExplanation,
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: context.pop,
+                              child: Text(context.l10n.cancel),
+                            ),
+                            FilledButton(
+                              child: Text(context.l10n.sendEmail),
+                              onPressed: () {
+                                context
+                                  ..pop()
+                                  ..push('/profile/email_verification');
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class UserDetails extends StatelessWidget {
+  const UserDetails({
+    required this.user,
+    super.key,
+  });
+
+  final UserModel user;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: CCWidgetSize.large3,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.edit, color: Colors.transparent),
+            title: Center(
+              child: CircleAvatar(
+                radius: CCSize.xxxlarge,
+                backgroundColor:
+                    user.photo == null ? Colors.red[100] : Colors.transparent,
+                backgroundImage: getPhotoAsset(user.photo),
+              ),
+            ),
+            trailing: (user.photo ?? '').isEmpty
+                ? const Icon(Icons.priority_high, color: Colors.red)
+                : const Icon(Icons.edit),
             onTap: () => showPhotoModal(context),
-        ),
-        ListTile(
-          leading: const Icon(Icons.alternate_email),
-          title: Text(user.displayName ?? ''),
-          trailing: (user.displayName ?? '').isEmpty
-              ? const Icon(Icons.priority_high, color: Colors.red)
-              : const Icon(Icons.edit),
-          onTap: () => context.push('/profile/modify_name'),
-        ),
-        ListTile(
-          leading: const Icon(Icons.email),
-          title: Text(user.email ?? ''),
-          // email verification
-          trailing: user.emailVerifiedOrProvided
-              ? null
-              : const Icon(Icons.priority_high, color: Colors.red),
-          // email verification
-          onTap: user.emailVerifiedOrProvided
-              ? null
-              : () => showDialog<AlertDialog>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Text(
-                          context.l10n.verifyEmailExplanation,
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: context.pop,
-                            child: Text(context.l10n.cancel),
-                          ),
-                          FilledButton(
-                            child: Text(context.l10n.sendEmail),
-                            onPressed: () {
-                              context
-                                ..pop()
-                                ..push('/profile/email_verification');
-                            },
-                          ),
-                        ],
-                      );
-                    },
+          ),
+          ListTile(
+            leading: const Icon(Icons.alternate_email),
+            title: Text(user.username ?? ''),
+            trailing: (user.username ?? '').isEmpty
+                ? const Icon(Icons.priority_high, color: Colors.red)
+                : const Icon(Icons.edit),
+            onTap: () => context.push('/profile/modify_name'),
+          ),
+          CCDivider.xthin,
+          const ListTile(
+            leading: Icon(Icons.groups),
+            title: Text('Friends'), // TODO: l10n
+            // email verification
+          ),
+          BlocBuilder<UserCubit, UserModel?>(
+            builder: (context, details) {
+              return Wrap(
+                children: [
+                  ...details?.friends
+                          ?.map((friendId) => FriendPreview(friendId: friendId))
+                          .toList() ??
+                      [],
+                  ColoredCircleButton(
+                    onTap: () => context.push('/profile/search_friend'),
+                    child: const Icon(Icons.person_add),
                   ),
-        ),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );
@@ -307,13 +386,13 @@ class UserDetails extends StatelessWidget {
       sections: [
         if (!kIsWeb)
           ListTile(
-          leading: const Icon(Icons.add_a_photo),
-          title: const Text('Prendre une photo'),
-          onTap: () {
-            context.pop();
-            uploadProfilePhoto(ImageSource.camera);
-          },
-        ),
+            leading: const Icon(Icons.add_a_photo),
+            title: const Text('Prendre une photo'),
+            onTap: () {
+              context.pop();
+              uploadProfilePhoto(ImageSource.camera);
+            },
+          ),
         ListTile(
           leading: const Icon(Icons.drive_folder_upload),
           title: const Text('Importer une photo'),
@@ -339,7 +418,7 @@ class UserDetails extends StatelessWidget {
                       .map(
                         (e) => GestureDetector(
                           onTap: () {
-                            userCRUD.updateUser(photoURL: 'avatar-$e');
+                            userCRUD.userCubit.setPhoto(photo: 'avatar-$e');
                             context.pop();
                           },
                           child: CircleAvatar(
@@ -357,6 +436,7 @@ class UserDetails extends StatelessWidget {
     );
   }
 
+  // TODO: delete photo when deleting user
   Future<void> uploadProfilePhoto(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
 
@@ -373,13 +453,53 @@ class UserDetails extends StatelessWidget {
           .ref()
           .child('image')
           .child('userPhoto')
-          .child(user.uid);
+          .child(user.id!);
       await photoRef.putFile(File(pickedFile.path));
-      await userCRUD.updateUser(photoURL: await photoRef.getDownloadURL());
+      await userCRUD.userCubit.setPhoto(photo: await photoRef.getDownloadURL());
     } catch (e) {
       // snackBarError(context, context.l10n.errorOccurred);
       print('ERROR OCCURED');
       rethrow;
     }
+  }
+}
+
+class ColoredCircleButton extends StatelessWidget {
+  const ColoredCircleButton({required this.child, this.onTap, super.key});
+
+  final Widget child;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: CircleAvatar(
+        child: child,
+      ),
+    );
+  }
+}
+
+class FriendPreview extends StatelessWidget {
+  const FriendPreview({required this.friendId, super.key});
+
+  final String friendId;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
+      child: Column(
+        children: [
+          const CircleAvatar(),
+          Text(
+            friendId,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+          ),
+        ],
+      ),
+    );
   }
 }

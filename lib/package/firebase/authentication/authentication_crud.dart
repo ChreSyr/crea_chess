@@ -17,8 +17,10 @@ final _googleAuthProvider = GoogleAuthProvider();
 final _facebookAuth = FacebookLogin(debug: true);
 final _facebookAuthProvider = FacebookAuthProvider();
 
-class _UserCRUD {
-  final userCubit = UserCubit._();
+// TODO: await FirebaseAuth.instance.setLanguageCode("fr");
+
+class _AuthenticationCRUD {
+  final authenticationCubit = AuthenticationCubit._();
   final authProviderStatusCubit = AuthProviderStatusCubit();
 
   /// Permanently delete account. Reauthentication possible.
@@ -165,15 +167,6 @@ class _UserCRUD {
       password: password,
     );
   }
-
-  /// Update the user data
-  Future<void> updateUser({String? displayName, String? photoURL}) async {
-    final user = _firebaseAuth.currentUser;
-    if (user == null) return;
-
-    if (displayName != null) await user.updateDisplayName(displayName);
-    if (photoURL != null) await user.updatePhotoURL(photoURL);
-  }
 }
 
 enum AuthProviderStatus { idle, waiting, success, error }
@@ -187,8 +180,8 @@ class AuthProviderStatusCubit extends Cubit<AuthProviderStatus> {
   void waiting() => emit(AuthProviderStatus.waiting);
 }
 
-class UserCubit extends Cubit<User?> {
-  UserCubit._() : super(_firebaseAuth.currentUser) {
+class AuthenticationCubit extends Cubit<User?> {
+  AuthenticationCubit._() : super(_firebaseAuth.currentUser) {
     userStreamSubscription = _firebaseAuth.userChanges().listen(emit);
   }
 
@@ -201,12 +194,12 @@ class UserCubit extends Cubit<User?> {
   }
 }
 
-extension UserEmailVerifiedOrProvided on User {
+extension UserIsFullyAuthenticated on User {
   /// true if the email is verified or has been provided by google or facebook
-  bool get emailVerifiedOrProvided {
+  bool get isFullyAuthenticated {
     return emailVerified ||
         providerData.where((e) => e.providerId != 'password').isNotEmpty;
   }
 }
 
-final userCRUD = _UserCRUD();
+final authenticationCRUD = _AuthenticationCRUD();

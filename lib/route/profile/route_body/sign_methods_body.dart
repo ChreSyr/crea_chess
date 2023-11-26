@@ -4,7 +4,7 @@ import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/card_button.dart';
 import 'package:crea_chess/package/atomic_design/widget/divider.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +22,7 @@ class SignMethodsBody extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserCubit, User?>(
+    return BlocListener<AuthenticationCubit, User?>(
       listener: (context, user) {
         if (user != null) context.pop();
       },
@@ -94,7 +94,7 @@ class _SignMethodsBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CardButton(
-                onTap: userCRUD.signInWithGoogle,
+                onTap: authenticationCRUD.signInWithGoogle,
                 child: CCPadding.allLarge(
                   child: Image.asset(
                     'assets/icon/google_icon.png',
@@ -104,7 +104,7 @@ class _SignMethodsBody extends StatelessWidget {
               ),
               CCGap.large,
               CardButton(
-                onTap: userCRUD.signInWithFacebook,
+                onTap: authenticationCRUD.signInWithFacebook,
                 child: CCPadding.allLarge(
                   child: Image.asset(
                     'assets/icon/facebook_icon.png',

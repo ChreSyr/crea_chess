@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/firebase/authentication/user_crud.dart';
+import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/widget/body_template.dart';
+import 'package:crea_chess/route/profile/body_template.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class EmailVerificationBody extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserCubit, User?>(
+    return BlocListener<AuthenticationCubit, User?>(
       listener: (context, user) {
         if (user == null) return;
         if (user.emailVerified) context.push('/profile/modify_name');
@@ -42,7 +42,7 @@ class _EmailVerificationBody extends StatelessWidget {
       children: [
           Text(
             context.l10n.verifyEmailExplainLink(
-              context.read<UserCubit>().state?.email ?? 'ERROR',
+            context.read<AuthenticationCubit>().state?.email ?? 'ERROR',
             ),
             textAlign: TextAlign.center,
         ),
@@ -53,7 +53,7 @@ class _EmailVerificationBody extends StatelessWidget {
               const ResendButton(),
               CCGap.large,
               FilledButton(
-                onPressed: userCRUD.reloadUser,
+              onPressed: authenticationCRUD.reloadUser,
                 child: Text(context.l10n.continue_),
               ),
             ],
@@ -77,7 +77,7 @@ class _ResendButtonState extends State<ResendButton> {
   @override
   void initState() {
     super.initState();
-    userCRUD.sendEmailVerification();
+    authenticationCRUD.sendEmailVerification();
     delay = 15;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _decrease();
@@ -117,7 +117,7 @@ class _ResendButtonState extends State<ResendButton> {
     return delay == 0
         ? ElevatedButton(
             onPressed: () {
-              userCRUD.sendEmailVerification();
+              authenticationCRUD.sendEmailVerification();
               _reset();
             },
             child: Text(context.l10n.verifyEmailResendLink),

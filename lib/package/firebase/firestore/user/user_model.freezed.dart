@@ -20,12 +20,11 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
-  String? get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError; // same as auth
   String? get ref => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
-  String? get email => throw _privateConstructorUsedError;
-  bool? get emailVerified => throw _privateConstructorUsedError;
-  String? get photoUrl => throw _privateConstructorUsedError;
+  String? get username => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
+  List<String>? get friends => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,10 +40,9 @@ abstract class $UserModelCopyWith<$Res> {
   $Res call(
       {String? id,
       String? ref,
-      String? name,
-      String? email,
-      bool? emailVerified,
-      String? photoUrl});
+      String? username,
+      String? photo,
+      List<String>? friends});
 }
 
 /// @nodoc
@@ -62,10 +60,9 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   $Res call({
     Object? id = freezed,
     Object? ref = freezed,
-    Object? name = freezed,
-    Object? email = freezed,
-    Object? emailVerified = freezed,
-    Object? photoUrl = freezed,
+    Object? username = freezed,
+    Object? photo = freezed,
+    Object? friends = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -76,22 +73,18 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.ref
           : ref // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
               as String?,
-      emailVerified: freezed == emailVerified
-          ? _value.emailVerified
-          : emailVerified // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
+      friends: freezed == friends
+          ? _value.friends
+          : friends // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ) as $Val);
   }
 }
@@ -107,10 +100,9 @@ abstract class _$$UserModelImplCopyWith<$Res>
   $Res call(
       {String? id,
       String? ref,
-      String? name,
-      String? email,
-      bool? emailVerified,
-      String? photoUrl});
+      String? username,
+      String? photo,
+      List<String>? friends});
 }
 
 /// @nodoc
@@ -126,10 +118,9 @@ class __$$UserModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? ref = freezed,
-    Object? name = freezed,
-    Object? email = freezed,
-    Object? emailVerified = freezed,
-    Object? photoUrl = freezed,
+    Object? username = freezed,
+    Object? photo = freezed,
+    Object? friends = freezed,
   }) {
     return _then(_$UserModelImpl(
       id: freezed == id
@@ -140,22 +131,18 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.ref
           : ref // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
               as String?,
-      emailVerified: freezed == emailVerified
-          ? _value.emailVerified
-          : emailVerified // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
+      friends: freezed == friends
+          ? _value._friends
+          : friends // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -166,31 +153,37 @@ class _$UserModelImpl extends _UserModel {
   _$UserModelImpl(
       {this.id,
       this.ref,
-      this.name,
-      this.email,
-      this.emailVerified,
-      this.photoUrl})
-      : super._();
+      this.username,
+      this.photo,
+      final List<String>? friends})
+      : _friends = friends,
+        super._();
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
 
   @override
   final String? id;
+// same as auth
   @override
   final String? ref;
   @override
-  final String? name;
+  final String? username;
   @override
-  final String? email;
+  final String? photo;
+  final List<String>? _friends;
   @override
-  final bool? emailVerified;
-  @override
-  final String? photoUrl;
+  List<String>? get friends {
+    final value = _friends;
+    if (value == null) return null;
+    if (_friends is EqualUnmodifiableListView) return _friends;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'UserModel(id: $id, ref: $ref, name: $name, email: $email, emailVerified: $emailVerified, photoUrl: $photoUrl)';
+    return 'UserModel(id: $id, ref: $ref, username: $username, photo: $photo, friends: $friends)';
   }
 
   @override
@@ -200,18 +193,16 @@ class _$UserModelImpl extends _UserModel {
             other is _$UserModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.ref, ref) || other.ref == ref) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.emailVerified, emailVerified) ||
-                other.emailVerified == emailVerified) &&
-            (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl));
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
+            const DeepCollectionEquality().equals(other._friends, _friends));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, ref, name, email, emailVerified, photoUrl);
+  int get hashCode => Object.hash(runtimeType, id, ref, username, photo,
+      const DeepCollectionEquality().hash(_friends));
 
   @JsonKey(ignore: true)
   @override
@@ -231,10 +222,9 @@ abstract class _UserModel extends UserModel {
   factory _UserModel(
       {final String? id,
       final String? ref,
-      final String? name,
-      final String? email,
-      final bool? emailVerified,
-      final String? photoUrl}) = _$UserModelImpl;
+      final String? username,
+      final String? photo,
+      final List<String>? friends}) = _$UserModelImpl;
   _UserModel._() : super._();
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -242,16 +232,14 @@ abstract class _UserModel extends UserModel {
 
   @override
   String? get id;
-  @override
+  @override // same as auth
   String? get ref;
   @override
-  String? get name;
+  String? get username;
   @override
-  String? get email;
+  String? get photo;
   @override
-  bool? get emailVerified;
-  @override
-  String? get photoUrl;
+  List<String>? get friends;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
