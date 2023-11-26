@@ -32,7 +32,7 @@ class ModifyUsernameCubit extends Cubit<ModifyUsernameForm> {
     emit(state.copyWith(status: ModifyUsernameStatus.waiting));
 
     try {
-      userCRUD.userCubit.setUsername(username: state.name.value);
+      await userCRUD.userCubit.setUsername(username: state.name.value);
       emit(state.copyWith(status: ModifyUsernameStatus.success));
     } catch (_) {
       emit(state.copyWith(status: ModifyUsernameStatus.unexpectedError));

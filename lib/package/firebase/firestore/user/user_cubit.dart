@@ -22,7 +22,6 @@ class UserCubit extends Cubit<UserModel?> {
     cancelUserStreamSubscription();
     userStreamSubscription =
         userCRUD.stream(documentId: auth.uid).listen((user) {
-      print(user);
       if (user.id?.isEmpty ?? true) {
         // Create user
         userCRUD.create(

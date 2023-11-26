@@ -322,6 +322,8 @@ class UserDetails extends StatelessWidget {
 
   final UserModel user;
 
+  // TODO: show email
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -435,7 +437,6 @@ class UserDetails extends StatelessWidget {
     );
   }
 
-  // TODO: delete photo when deleting user
   Future<void> uploadProfilePhoto(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
 

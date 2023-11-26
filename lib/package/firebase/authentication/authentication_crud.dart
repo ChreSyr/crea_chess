@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,7 +23,7 @@ class _AuthenticationCRUD {
   final authenticationCubit = AuthenticationCubit._();
   final authProviderStatusCubit = AuthProviderStatusCubit();
 
-  /// Permanently delete account. Reauthentication possible.
+  /// Permanently delete account. Reauthentication may be required.
   Future<void> deleteUserAccount({String? userId}) async {
     final user = _firebaseAuth.currentUser;
     if (user == null) return;
@@ -49,6 +51,17 @@ class _AuthenticationCRUD {
         rethrow;
       }
     }
+
+    // Delete user in firestore
+    await userCRUD.delete(documentId: user.uid);
+
+    // Delete profile photo in firebase storage
+    final photoRef = FirebaseStorage.instance
+        .ref()
+        .child('image')
+        .child('userPhoto')
+        .child(user.uid);
+    await photoRef.delete();
   }
 
   /// Reload the user, to check if something changed.
