@@ -10,6 +10,7 @@ import 'package:crea_chess/route/play/create_challenge/create_challenge_form.dar
 import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateChallengeBody extends RouteBody {
   const CreateChallengeBody({super.key});
@@ -36,133 +37,136 @@ class _CreateChallengeBody extends StatelessWidget {
     final createChallengeCubit = context.read<CreateChallengeCubit>();
     return BlocBuilder<CreateChallengeCubit, CreateChallengeForm>(
       builder: (context, form) {
-        return ListView(
-          shrinkWrap: true,
-          children: [
-            _Custom(
-              title: context.l10n.timeControl,
-              child: OutlinedButton.icon(
-                onPressed: () => ModalSelect.show(
-                  context: context,
-                  title: 'Taille du plateau',
-                  choices: [
-                    ModalSelectRowData(
-                      title: 'Bullet', // TODO: l10n ?
-                      titleIcon: Icon(Speed.bullet.icon),
-                      choices: const [
-                        TimeControl(0, 1),
-                        TimeControl(60, 0),
-                        TimeControl(60, 1),
-                        TimeControl(120, 1),
-                      ],
-                    ),
-                    ModalSelectRowData(
-                      title: 'Blitz',
-                      titleIcon: Icon(Speed.blitz.icon),
-                      choices: const [
-                        TimeControl(180, 0),
-                        TimeControl(180, 2),
-                        TimeControl(300, 0),
-                        TimeControl(300, 3),
-                      ],
-                    ),
-                    ModalSelectRowData(
-                      title: 'Rapid',
-                      titleIcon: Icon(Speed.rapid.icon),
-                      choices: const [
-                        TimeControl(600, 0),
-                        TimeControl(600, 5),
-                        TimeControl(900, 0),
-                        TimeControl(900, 10),
-                      ],
-                    ),
-                    ModalSelectRowData(
-                      title: 'Classical',
-                      titleIcon: Icon(Speed.classical.icon),
-                      choices: const [
-                        TimeControl(1500, 0),
-                        TimeControl(1800, 0),
-                        TimeControl(1800, 20),
-                        TimeControl(3600, 0),
-                      ],
-                    ),
-                  ],
-                  selected: form.timeControl.value,
-                  onSelected: (TimeControl choice) {
-                    createChallengeCubit.setTimeControl(choice);
-                    Navigator.of(context).pop();
-                  },
+        return SizedBox(
+          width: CCWidgetSize.large3,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              _Custom(
+                title: context.l10n.timeControl,
+                child: OutlinedButton.icon(
+                  onPressed: () => ModalSelect.show(
+                    context: context,
+                    title: 'Taille du plateau',
+                    choices: [
+                      ModalSelectRowData(
+                        title: 'Bullet', // TODO: l10n ?
+                        titleIcon: Icon(Speed.bullet.icon),
+                        choices: const [
+                          TimeControl(0, 1),
+                          TimeControl(60, 0),
+                          TimeControl(60, 1),
+                          TimeControl(120, 1),
+                        ],
+                      ),
+                      ModalSelectRowData(
+                        title: 'Blitz',
+                        titleIcon: Icon(Speed.blitz.icon),
+                        choices: const [
+                          TimeControl(180, 0),
+                          TimeControl(180, 2),
+                          TimeControl(300, 0),
+                          TimeControl(300, 3),
+                        ],
+                      ),
+                      ModalSelectRowData(
+                        title: 'Rapid',
+                        titleIcon: Icon(Speed.rapid.icon),
+                        choices: const [
+                          TimeControl(600, 0),
+                          TimeControl(600, 5),
+                          TimeControl(900, 0),
+                          TimeControl(900, 10),
+                        ],
+                      ),
+                      ModalSelectRowData(
+                        title: 'Classical',
+                        titleIcon: Icon(Speed.classical.icon),
+                        choices: const [
+                          TimeControl(1500, 0),
+                          TimeControl(1800, 0),
+                          TimeControl(1800, 20),
+                          TimeControl(3600, 0),
+                        ],
+                      ),
+                    ],
+                    selected: form.timeControl.value,
+                    onSelected: (TimeControl choice) {
+                      createChallengeCubit.setTimeControl(choice);
+                      context.pop();
+                    },
+                  ),
+                  icon: Icon(form.timeControl.value.speed.icon),
+                  label: Text(form.timeControl.value.toString()),
                 ),
-                icon: Icon(form.timeControl.value.speed.icon),
-                label: Text(form.timeControl.value.toString()),
               ),
-            ),
-            CCGap.large,
-            _Custom(
-              title: 'Taille du plateau',
-              child: OutlinedButton(
-                onPressed: () => ModalSelect.show(
-                  context: context,
-                  title: 'Taille du plateau',
-                  choices: [
-                    ModalSelectRowData(
-                      title: 'Petit',
-                      choices: const [
-                        BoardSize(5, 5),
-                        BoardSize(6, 6),
-                        BoardSize(7, 7),
-                      ],
-                    ),
-                    ModalSelectRowData(
-                      title: 'Grand',
-                      choices: const [
-                        BoardSize(8, 8),
-                        BoardSize(9, 9),
-                        BoardSize(10, 10),
-                      ],
-                    ),
-                  ],
-                  selected: form.boardSize.value,
-                  onSelected: (BoardSize choice) {
-                    createChallengeCubit.setBoardSize(choice);
-                    Navigator.of(context).pop();
-                  },
+              CCGap.large,
+              _Custom(
+                title: 'Taille du plateau',
+                child: OutlinedButton(
+                  onPressed: () => ModalSelect.show(
+                    context: context,
+                    title: 'Taille du plateau',
+                    choices: [
+                      ModalSelectRowData(
+                        title: 'Petit',
+                        choices: const [
+                          BoardSize(5, 5),
+                          BoardSize(6, 6),
+                          BoardSize(7, 7),
+                        ],
+                      ),
+                      ModalSelectRowData(
+                        title: 'Grand',
+                        choices: const [
+                          BoardSize(8, 8),
+                          BoardSize(9, 9),
+                          BoardSize(10, 10),
+                        ],
+                      ),
+                    ],
+                    selected: form.boardSize.value,
+                    onSelected: (BoardSize choice) {
+                      createChallengeCubit.setBoardSize(choice);
+                      context.pop();
+                    },
+                  ),
+                  child: Text(form.boardSize.value.toString()),
                 ),
-                child: Text(form.boardSize.value.toString()),
               ),
-            ),
-            CCGap.large,
-            _Custom(
-              title: 'Budget',
-              child: OutlinedButton(
-                onPressed: () => ModalSelect.show(
-                  context: context,
-                  title: 'Budget',
-                  choices: [
-                    ModalSelectRowData(
-                      title: 'Maigre',
-                      choices: const [18, 21, 24, 27, 30],
-                    ),
-                    ModalSelectRowData(
-                      title: 'Normal',
-                      choices: const [33, 36, 39, 42, 45],
-                    ),
-                  ],
-                  selected: form.budget.value,
-                  onSelected: (int choice) {
-                    createChallengeCubit.setBudget(choice);
-                    Navigator.of(context).pop();
-                  },
+              CCGap.large,
+              _Custom(
+                title: 'Budget',
+                child: OutlinedButton(
+                  onPressed: () => ModalSelect.show(
+                    context: context,
+                    title: 'Budget',
+                    choices: [
+                      ModalSelectRowData(
+                        title: 'Maigre',
+                        choices: const [18, 21, 24, 27, 30],
+                      ),
+                      ModalSelectRowData(
+                        title: 'Normal',
+                        choices: const [33, 36, 39, 42, 45],
+                      ),
+                    ],
+                    selected: form.budget.value,
+                    onSelected: (int choice) {
+                      createChallengeCubit.setBudget(choice);
+                      context.pop();
+                    },
+                  ),
+                  child: Text(form.budget.value.toString()),
                 ),
-                child: Text(form.budget.value.toString()),
               ),
-            ),
-            CCGap.large,
-            FilledButton(
-              onPressed: () {}, // TODO
-              child: const Text('Create challenge'), // TODO
-            ),
-          ],
+              CCGap.large,
+              FilledButton(
+                onPressed: () {}, // TODO
+                child: const Text('Create challenge'), // TODO
+              ),
+            ],
+          ),
         );
       },
     );

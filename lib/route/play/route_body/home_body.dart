@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
@@ -14,22 +15,25 @@ class HomeBody extends MainRouteBody {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        const Text('The challenges appear here'),
-        CCGap.large,
-        FilledButton(
-          onPressed: () => context.go('/play/chessground'),
-          child: const Text('Play'),
-        ),
-        CCGap.large,
-        FilledButton.icon(
-          onPressed: () => context.go('/play/create_challenge'),
-          icon: const Icon(Icons.add),
-          label: const Text('Create challenge'),
-        ),
-      ],
+    return SizedBox(
+      width: CCWidgetSize.large3,
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          const Text('The challenges appear here'),
+          CCGap.large,
+          FilledButton(
+            onPressed: () => context.go('/play/chessground'),
+            child: const Text('Play'),
+          ),
+          CCGap.large,
+          FilledButton.icon(
+            onPressed: () => context.go('/play/create_challenge'),
+            icon: const Icon(Icons.add),
+            label: const Text('Create challenge'),
+          ),
+        ],
+      ),
     );
   }
 }

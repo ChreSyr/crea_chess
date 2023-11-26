@@ -9,6 +9,7 @@ import 'package:crea_chess/route/nav_notif_cubit.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -230,7 +231,9 @@ class UserDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SizedBox(
+      width: CCWidgetSize.large3,
+      child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
@@ -246,7 +249,7 @@ class UserDetails extends StatelessWidget {
           trailing: (user.photoURL ?? '').isEmpty
               ? const Icon(Icons.priority_high, color: Colors.red)
               : const Icon(Icons.edit),
-          onTap: () => showAvatarModal(context),
+            onTap: () => showPhotoModal(context),
         ),
         ListTile(
           leading: const Icon(Icons.alternate_email),
@@ -291,15 +294,17 @@ class UserDetails extends StatelessWidget {
                     },
                   ),
         ),
-      ],
+        ],
+      ),
     );
   }
 
-  void showAvatarModal(BuildContext context) {
+  void showPhotoModal(BuildContext context) {
     return Modal.show(
       context: context,
       sections: [
-        ListTile(
+        if (!kIsWeb)
+          ListTile(
           leading: const Icon(Icons.add_a_photo),
           title: const Text('Prendre une photo'),
           onTap: () {
@@ -354,6 +359,7 @@ class UserDetails extends StatelessWidget {
     final pickedFile = await ImagePicker().pickImage(source: source);
 
     // TODO: fix for the web
+    // TODO: compress image before storing
     print('picked $pickedFile');
     if (pickedFile == null) return;
 
