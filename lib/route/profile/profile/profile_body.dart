@@ -16,6 +16,7 @@ import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/firebase/storage/extension.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav_notif_cubit.dart';
+import 'package:crea_chess/route/profile/profile/profile_photo.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -334,40 +335,6 @@ class ProfileBody extends MainRouteBody {
   }
 }
 
-const avatarNames = [
-  'antoine',
-  'cassandra',
-  'catherine',
-  'charles',
-  'claude',
-  'gabrielle',
-  'hugo',
-  'ines',
-  'lea',
-  'leo',
-  'lucas',
-  'madeleine',
-  'maeva',
-  'manu',
-  'mathis',
-  'nathan',
-  'nick',
-  'orion',
-  'ricardo',
-  'victor',
-  'yannick',
-];
-
-ImageProvider<Object>? getPhotoAsset(String? photo) {
-  if (photo == null) {
-    return null;
-  } else if (photo.startsWith('avatar-')) {
-    return AssetImage('assets/${photo.replaceAll('-', '/')}.jpg');
-  } else {
-    return NetworkImage(photo);
-  }
-}
-
 class NotFullyAuthenticated extends StatelessWidget {
   const NotFullyAuthenticated({
     required this.auth,
@@ -516,7 +483,6 @@ class UserDetails extends StatelessWidget {
                               )
                               .toList() ??
                           [],
-                      
                     ],
                   );
                 },

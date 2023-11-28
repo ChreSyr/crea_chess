@@ -7,7 +7,7 @@ import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/profile/body_template.dart';
-import 'package:crea_chess/route/profile/route_body/profile_body.dart';
+import 'package:crea_chess/route/profile/profile/profile_photo.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

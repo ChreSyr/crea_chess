@@ -10,7 +10,7 @@ import 'package:crea_chess/route/play/route_body/create_challenge_body.dart';
 import 'package:crea_chess/route/play/route_body/home_body.dart';
 import 'package:crea_chess/route/profile/modify_username/modify_username_body.dart';
 import 'package:crea_chess/route/profile/route_body/email_verification_body.dart';
-import 'package:crea_chess/route/profile/route_body/profile_body.dart';
+import 'package:crea_chess/route/profile/profile/profile_body.dart';
 import 'package:crea_chess/route/profile/route_body/sign_methods_body.dart';
 import 'package:crea_chess/route/profile/route_body/signin_body.dart';
 import 'package:crea_chess/route/profile/route_body/signup_body.dart';
