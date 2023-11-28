@@ -484,10 +484,13 @@ class UserDetails extends StatelessWidget {
             title: Text(context.read<AuthenticationCubit>().state?.email ?? ''),
           ),
           CCDivider.xthin,
-          const ListTile(
-            leading: Icon(Icons.groups),
-            title: Text('Friends'), // TODO: l10n
-            // email verification
+          ListTile(
+            leading: const Icon(Icons.groups),
+            title: const Text('Friends'), // TODO: l10n
+            trailing: ColoredCircleButton(
+              onTap: () => context.push('/profile/search_friend'),
+              child: const Icon(Icons.person_add),
+            ),
           ),
           BlocBuilder<UserCubit, UserModel?>(
             builder: (context, user) {
@@ -500,6 +503,8 @@ class UserDetails extends StatelessWidget {
                 builder: (context, snapshot) {
                   final relations = snapshot.data;
                   return Wrap(
+                    runSpacing: CCSize.medium,
+                    spacing: CCSize.medium,
                     children: [
                       ...relations
                               ?.map(
@@ -511,10 +516,7 @@ class UserDetails extends StatelessWidget {
                               )
                               .toList() ??
                           [],
-                      ColoredCircleButton(
-                        onTap: () => context.push('/profile/search_friend'),
-                        child: const Icon(Icons.person_add),
-                      ),
+                      
                     ],
                   );
                 },
@@ -626,17 +628,9 @@ class FriendPreview extends StatelessWidget {
         if (friend == null) return const CircularProgressIndicator();
         return InkWell(
           onTap: () {},
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundImage: getPhotoAsset(friend.photo),
-              ),
-              Text(
-                friend.username ?? '',
-                textAlign: TextAlign.center,
-                maxLines: 2,
-              ),
-            ],
+          child: CircleAvatar(
+            radius: CCSize.xlarge,
+            backgroundImage: getPhotoAsset(friend.photo),
           ),
         );
       },
