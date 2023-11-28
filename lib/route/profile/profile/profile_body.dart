@@ -31,6 +31,7 @@ import 'package:image_picker/image_picker.dart';
 // TODO: App Check
 
 enum ProfileMenuChoices {
+  signin(whenLoggedOut: true),
   signout(whenLoggedOut: false),
   deleteAccount(whenLoggedOut: false);
 
@@ -40,6 +41,8 @@ enum ProfileMenuChoices {
 
   String getLocalization(AppLocalizations l10n) {
     switch (this) {
+      case ProfileMenuChoices.signin:
+        return l10n.signin;
       case ProfileMenuChoices.signout:
         return l10n.signout;
       case ProfileMenuChoices.deleteAccount:
@@ -49,6 +52,8 @@ enum ProfileMenuChoices {
 
   IconData getIcon() {
     switch (this) {
+      case ProfileMenuChoices.signin:
+        return Icons.login;
       case ProfileMenuChoices.signout:
         return Icons.logout;
       case ProfileMenuChoices.deleteAccount:
@@ -136,7 +141,7 @@ class ProfileBody extends MainRouteBody {
           ),
           BlocBuilder<AuthenticationCubit, User?>(
             builder: (context, auth) {
-              final isLoggedIn = auth != null;
+              final isLoggedOut = auth == null;
               void signout() {
                 authenticationCRUD.signOut();
                 context.go('/profile/sign_methods');
@@ -156,12 +161,14 @@ class ProfileBody extends MainRouteBody {
                   );
                 },
                 menuChildren: ProfileMenuChoices.values
-                    .where((e) => isLoggedIn || e.whenLoggedOut)
+                    .where((e) => isLoggedOut == e.whenLoggedOut)
                     .map(
                       (e) => MenuItemButton(
                         leadingIcon: Icon(e.getIcon()),
                         onPressed: () {
                           switch (e) {
+                            case ProfileMenuChoices.signin:
+                              context.push('/profile/sign_methods');
                             case ProfileMenuChoices.signout:
                               signout();
                             case ProfileMenuChoices.deleteAccount:
