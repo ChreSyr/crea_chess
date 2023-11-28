@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:badges/badges.dart' as badges;
-import 'package:crea_chess/package/atomic_design/button/filled_circle_button.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
@@ -455,10 +454,8 @@ class UserDetails extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.groups),
             title: const Text('Friends'), // TODO: l10n
-            trailing: FilledCircleButton.icon(
-              icon: Icons.person_add,
-              onPressed: () => context.push('/profile/search_friend'),
-            ),
+            trailing: const Icon(Icons.person_add),
+            onTap: () => context.push('/profile/search_friend'),
           ),
           BlocBuilder<UserCubit, UserModel?>(
             builder: (context, user) {
