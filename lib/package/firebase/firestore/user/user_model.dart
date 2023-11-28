@@ -12,6 +12,7 @@ class UserModel with _$UserModel {
     String? id, // same as auth
     String? ref,
     String? username,
+    String? usernameLowercase,
     String? photo,
     List<String>? relationships,
   }) = _UserModel;

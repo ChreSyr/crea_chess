@@ -85,7 +85,10 @@ class UserCubit extends Cubit<UserModel?> {
 
     await userCRUD.update(
       documentId: state!.id!,
-      data: state!.copyWith(username: username),
+      data: state!.copyWith(
+        username: username,
+        usernameLowercase: username.toLowerCase(),
+      ),
     );
   }
 }

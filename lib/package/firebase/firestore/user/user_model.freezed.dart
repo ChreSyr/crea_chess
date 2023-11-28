@@ -23,6 +23,7 @@ mixin _$UserModel {
   String? get id => throw _privateConstructorUsedError; // same as auth
   String? get ref => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
+  String? get usernameLowercase => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
   List<String>? get relationships => throw _privateConstructorUsedError;
 
@@ -41,6 +42,7 @@ abstract class $UserModelCopyWith<$Res> {
       {String? id,
       String? ref,
       String? username,
+      String? usernameLowercase,
       String? photo,
       List<String>? relationships});
 }
@@ -61,6 +63,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? id = freezed,
     Object? ref = freezed,
     Object? username = freezed,
+    Object? usernameLowercase = freezed,
     Object? photo = freezed,
     Object? relationships = freezed,
   }) {
@@ -76,6 +79,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      usernameLowercase: freezed == usernameLowercase
+          ? _value.usernameLowercase
+          : usernameLowercase // ignore: cast_nullable_to_non_nullable
               as String?,
       photo: freezed == photo
           ? _value.photo
@@ -101,6 +108,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       {String? id,
       String? ref,
       String? username,
+      String? usernameLowercase,
       String? photo,
       List<String>? relationships});
 }
@@ -119,6 +127,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? ref = freezed,
     Object? username = freezed,
+    Object? usernameLowercase = freezed,
     Object? photo = freezed,
     Object? relationships = freezed,
   }) {
@@ -134,6 +143,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
       username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      usernameLowercase: freezed == usernameLowercase
+          ? _value.usernameLowercase
+          : usernameLowercase // ignore: cast_nullable_to_non_nullable
               as String?,
       photo: freezed == photo
           ? _value.photo
@@ -154,6 +167,7 @@ class _$UserModelImpl extends _UserModel {
       {this.id,
       this.ref,
       this.username,
+      this.usernameLowercase,
       this.photo,
       final List<String>? relationships})
       : _relationships = relationships,
@@ -170,6 +184,8 @@ class _$UserModelImpl extends _UserModel {
   @override
   final String? username;
   @override
+  final String? usernameLowercase;
+  @override
   final String? photo;
   final List<String>? _relationships;
   @override
@@ -183,7 +199,7 @@ class _$UserModelImpl extends _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, ref: $ref, username: $username, photo: $photo, relationships: $relationships)';
+    return 'UserModel(id: $id, ref: $ref, username: $username, usernameLowercase: $usernameLowercase, photo: $photo, relationships: $relationships)';
   }
 
   @override
@@ -195,6 +211,8 @@ class _$UserModelImpl extends _UserModel {
             (identical(other.ref, ref) || other.ref == ref) &&
             (identical(other.username, username) ||
                 other.username == username) &&
+            (identical(other.usernameLowercase, usernameLowercase) ||
+                other.usernameLowercase == usernameLowercase) &&
             (identical(other.photo, photo) || other.photo == photo) &&
             const DeepCollectionEquality()
                 .equals(other._relationships, _relationships));
@@ -202,7 +220,13 @@ class _$UserModelImpl extends _UserModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, ref, username, photo,
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      ref,
+      username,
+      usernameLowercase,
+      photo,
       const DeepCollectionEquality().hash(_relationships));
 
   @JsonKey(ignore: true)
@@ -224,6 +248,7 @@ abstract class _UserModel extends UserModel {
       {final String? id,
       final String? ref,
       final String? username,
+      final String? usernameLowercase,
       final String? photo,
       final List<String>? relationships}) = _$UserModelImpl;
   _UserModel._() : super._();
@@ -237,6 +262,8 @@ abstract class _UserModel extends UserModel {
   String? get ref;
   @override
   String? get username;
+  @override
+  String? get usernameLowercase;
   @override
   String? get photo;
   @override

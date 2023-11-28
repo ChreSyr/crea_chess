@@ -34,7 +34,7 @@ class UsersCubit extends Cubit<List<UserModel>> {
 class SearchCubit extends Cubit<String> {
   SearchCubit() : super('');
 
-  void search(String search) => emit(search);
+  void search(String search) => emit(search.toLowerCase());
 }
 
 class SearchFriendBody extends RouteBody {
@@ -89,7 +89,8 @@ class SearchFriendBody extends RouteBody {
                         .where(
                           (user) =>
                               user != currentUser &&
-                              (user.username?.startsWith(search) ?? false),
+                              (user.usernameLowercase?.startsWith(search) ??
+                                  false),
                         )
                         .map<Widget>(UserTile.new)
                         .toList(),

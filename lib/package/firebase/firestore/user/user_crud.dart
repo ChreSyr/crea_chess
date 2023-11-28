@@ -30,6 +30,14 @@ class _UserCRUD extends BaseCRUD<UserModel> {
 
   final userCubit = UserCubit();
 
+  @override
+  Future<void> create({required String? documentId, required UserModel data}) {
+    return super.create(
+      documentId: documentId,
+      data: data.copyWith(usernameLowercase: data.username?.toLowerCase()),
+    );
+  }
+
   /// Delete the user & its relationships
   @override
   Future<void> delete({required String? documentId}) async {
@@ -47,7 +55,10 @@ class _UserCRUD extends BaseCRUD<UserModel> {
   Future<bool> usernameIsTaken(String username) async {
     final users = await readFiltered(
         filter: (collection) =>
-            collection.where('username', isEqualTo: username),
+            collection.where(
+        'usernameLowercase',
+        isEqualTo: username.toLowerCase(),
+      ),
     );
     return users.isNotEmpty;
   }
