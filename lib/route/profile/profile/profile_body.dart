@@ -95,7 +95,7 @@ class ProfileBody extends MainRouteBody {
                       if (notifications.isEmpty) {
                         return iconButton;
                       } else {
-                        // TODO: notif in nav bar
+                        // TODO: notif in nav bar or accessible everywhere
                         return badges.Badge(
                           position: badges.BadgePosition.topEnd(top: 3, end: 3),
                           child: iconButton,
@@ -415,8 +415,6 @@ class UserDetails extends StatelessWidget {
 
   final UserModel user;
 
-  // TODO: show email
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -550,7 +548,6 @@ class UserDetails extends StatelessWidget {
     final pickedFile = await ImagePicker().pickImage(source: source);
 
     // TODO: fix for the web
-    // TODO: compress image before storing ?
     if (pickedFile == null) return;
 
     final photoRef = FirebaseStorage.instance.getUserPhotoRef(user.id!);

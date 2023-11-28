@@ -47,7 +47,8 @@ class _UserCRUD extends BaseCRUD<UserModel> {
   Future<bool> usernameIsTaken(String username) async {
     final users = await readFiltered(
         filter: (collection) =>
-            collection.where('username', isEqualTo: username));
+            collection.where('username', isEqualTo: username),
+    );
     return users.isNotEmpty;
   }
 }

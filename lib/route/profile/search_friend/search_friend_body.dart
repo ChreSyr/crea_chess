@@ -82,7 +82,6 @@ class SearchFriendBody extends RouteBody {
               CCGap.large,
               BlocBuilder<UsersCubit, List<UserModel>>(
                 builder: (context, users) {
-                  print('Got users : $users');
                   if (users.isEmpty) return const LinearProgressIndicator();
                   if (search.isEmpty) return Container();
                   return Column(
