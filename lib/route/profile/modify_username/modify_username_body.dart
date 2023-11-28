@@ -24,7 +24,8 @@ class ModifyUsernameBody extends RouteBody {
 
   @override
   Widget build(BuildContext context) {
-    final initialName = context.read<UserCubit>().state?.username ?? '';
+    final user = context.read<UserCubit>().state;
+    final initialName = user?.username == user?.id ? '' : user?.username ?? '';
     final modifyUsernameCubit = ModifyUsernameCubit(initialName);
     final textController = TextEditingController(text: initialName);
 
@@ -33,6 +34,7 @@ class ModifyUsernameBody extends RouteBody {
       child: BlocConsumer<ModifyUsernameCubit, ModifyUsernameForm>(
         listener: (context, form) {
           switch (form.status) {
+            case ModifyUsernameStatus.usernameTaken:
             case ModifyUsernameStatus.unexpectedError:
               snackBarError(
                 context,

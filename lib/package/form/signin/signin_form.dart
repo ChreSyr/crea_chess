@@ -1,5 +1,4 @@
 import 'package:crea_chess/package/form/form_error.dart';
-import 'package:crea_chess/package/form/input/input_email.dart';
 import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/package/form/signin/signin_status.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
@@ -11,7 +10,7 @@ part 'signin_form.freezed.dart';
 @freezed
 class SigninForm with FormzMixin, _$SigninForm {
   factory SigninForm({
-    required InputEmail email,
+    required InputString email,
     required InputString password,
     required SigninStatus status,
   }) = _SigninForm;
@@ -35,6 +34,10 @@ class SigninForm with FormzMixin, _$SigninForm {
     }
     if (status != SigninStatus.editError) return null;
     if (!inputs.contains(input)) return null;
+
+    if (input.error == FormError.invalid && input == email) {
+      return l10n.formError('notEmail');
+    }
 
     return l10n.formError(input.error!.name);
   }

@@ -28,6 +28,13 @@ class _UserCRUD extends BaseCRUD<UserModel> {
   _UserCRUD() : super('user', _UserModelConverter());
 
   final userCubit = UserCubit();
+
+  Future<UserModel?> readUsername(String username) async {
+    final users = await readFiltered(
+        filter: (collection) =>
+            collection.where('username', isEqualTo: username));
+    return users.isEmpty ? null : users.first;
+  }
 }
 
 final userCRUD = _UserCRUD();

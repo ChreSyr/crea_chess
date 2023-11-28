@@ -3,18 +3,22 @@ import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/route/profile/modify_username/modify_username_form.dart';
 import 'package:crea_chess/route/profile/modify_username/modify_username_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:regexpattern/regexpattern.dart';
 
 class ModifyUsernameCubit extends Cubit<ModifyUsernameForm> {
-  ModifyUsernameCubit(String initialName)
+  ModifyUsernameCubit(this.initialName)
       : super(
           ModifyUsernameForm(
             name: InputString.dirty(
               string: initialName,
               isRequired: true,
+              regexPattern: RegexPattern.usernameV2,
             ),
             status: ModifyUsernameStatus.inProgress,
           ),
         );
+
+  final String initialName;
 
   void clearFailure() {
     emit(state.copyWith(status: ModifyUsernameStatus.inProgress));
@@ -25,6 +29,10 @@ class ModifyUsernameCubit extends Cubit<ModifyUsernameForm> {
   }
 
   Future<void> submit() async {
+    if (state.name.value == initialName) {
+      return emit(state.copyWith(status: ModifyUsernameStatus.success));
+    }
+    
     if (state.isNotValid) {
       return emit(state.copyWith(status: ModifyUsernameStatus.editError));
     }
@@ -32,6 +40,12 @@ class ModifyUsernameCubit extends Cubit<ModifyUsernameForm> {
     emit(state.copyWith(status: ModifyUsernameStatus.waiting));
 
     try {
+      final user = await userCRUD.readUsername(state.name.value);
+      if (user != null) {
+        emit(state.copyWith(status: ModifyUsernameStatus.usernameTaken));
+        return;
+      }
+
       await userCRUD.userCubit.setUsername(username: state.name.value);
       emit(state.copyWith(status: ModifyUsernameStatus.success));
     } catch (_) {

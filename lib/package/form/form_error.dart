@@ -3,6 +3,5 @@ enum FormError {
   empty,
   maxBound,
   minBound,
-  notEmail,
-  notPassword,
+  invalid,
 }

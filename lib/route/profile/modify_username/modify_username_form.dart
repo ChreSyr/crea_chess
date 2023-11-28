@@ -28,6 +28,10 @@ class ModifyUsernameForm with FormzMixin, _$ModifyUsernameForm {
     if (status != ModifyUsernameStatus.editError) return null;
     if (!inputs.contains(input)) return null;
 
+    if (input.error == FormError.invalid) {
+      if (input == name) return l10n.formError('notUsername');
+    } 
+
     return l10n.formError(input.error!.name);
   }
 }

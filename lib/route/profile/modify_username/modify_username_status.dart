@@ -8,6 +8,7 @@ enum ModifyUsernameStatus {
   editError,
 
   // show error in snack bar
+  usernameTaken,
   unexpectedError,
 
   // name modified

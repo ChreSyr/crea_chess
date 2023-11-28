@@ -1,18 +1,24 @@
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/form/input/input_boolean.dart';
-import 'package:crea_chess/package/form/input/input_email.dart';
-import 'package:crea_chess/package/form/input/input_password.dart';
+import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/package/form/signup/signup_form.dart';
 import 'package:crea_chess/package/form/signup/signup_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:regexpattern/regexpattern.dart';
 
 class SignupCubit extends Cubit<SignupForm> {
   SignupCubit()
       : super(
           SignupForm(
-            email: const InputEmail.pure(isRequired: true),
-            password: const InputPassword.pure(isRequired: true),
+            email: InputString.pure(
+              isRequired: true,
+              regexPattern: RegexPattern.email,
+            ),
+            password: InputString.pure(
+              isRequired: true,
+              regexPattern: RegexPattern.passwordNormal3,
+            ),
             acceptConditions: const InputBoolean.pure(isRequired: true),
             status: SignupStatus.inProgress,
           ),

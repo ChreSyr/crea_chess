@@ -5,6 +5,7 @@ import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:regexpattern/regexpattern.dart';
 
 class UserCubit extends Cubit<UserModel?> {
   UserCubit() : super(null) {
@@ -21,14 +22,26 @@ class UserCubit extends Cubit<UserModel?> {
 
     cancelUserStreamSubscription();
     userStreamSubscription =
-        userCRUD.stream(documentId: auth.uid).listen((user) {
+        userCRUD.stream(documentId: auth.uid).listen((user) async {
       if (user == null) {
         // Create user
-        userCRUD.create(
+        var username = auth.displayName ?? auth.uid;
+        username = username.replaceAll(' ', '_');
+        if (!RegExp(RegexPattern.usernameV2).hasMatch(username)) {
+          username = auth.uid;
+        }
+        if (username != auth.uid) {
+          final otherUser = await userCRUD.readUsername(username);
+          if (otherUser != null) {
+            username = auth.uid;
+          }
+        }
+
+        await userCRUD.create(
           documentId: auth.uid,
           data: UserModel(
             id: auth.uid,
-            username: auth.displayName,
+            username: username,
             photo: auth.photoURL,
           ),
         );

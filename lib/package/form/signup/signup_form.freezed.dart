@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SignupForm {
-  InputEmail get email => throw _privateConstructorUsedError;
-  InputPassword get password => throw _privateConstructorUsedError;
+  InputString get email => throw _privateConstructorUsedError;
+  InputString get password => throw _privateConstructorUsedError;
   InputBoolean get acceptConditions => throw _privateConstructorUsedError;
   SignupStatus get status => throw _privateConstructorUsedError;
 
@@ -33,8 +33,8 @@ abstract class $SignupFormCopyWith<$Res> {
       _$SignupFormCopyWithImpl<$Res, SignupForm>;
   @useResult
   $Res call(
-      {InputEmail email,
-      InputPassword password,
+      {InputString email,
+      InputString password,
       InputBoolean acceptConditions,
       SignupStatus status});
 }
@@ -61,11 +61,11 @@ class _$SignupFormCopyWithImpl<$Res, $Val extends SignupForm>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as InputEmail,
+              as InputString,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as InputPassword,
+              as InputString,
       acceptConditions: null == acceptConditions
           ? _value.acceptConditions
           : acceptConditions // ignore: cast_nullable_to_non_nullable
@@ -87,8 +87,8 @@ abstract class _$$SignupFormImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {InputEmail email,
-      InputPassword password,
+      {InputString email,
+      InputString password,
       InputBoolean acceptConditions,
       SignupStatus status});
 }
@@ -113,11 +113,11 @@ class __$$SignupFormImplCopyWithImpl<$Res>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as InputEmail,
+              as InputString,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as InputPassword,
+              as InputString,
       acceptConditions: null == acceptConditions
           ? _value.acceptConditions
           : acceptConditions // ignore: cast_nullable_to_non_nullable
@@ -141,9 +141,9 @@ class _$SignupFormImpl extends _SignupForm {
       : super._();
 
   @override
-  final InputEmail email;
+  final InputString email;
   @override
-  final InputPassword password;
+  final InputString password;
   @override
   final InputBoolean acceptConditions;
   @override
@@ -180,16 +180,16 @@ class _$SignupFormImpl extends _SignupForm {
 
 abstract class _SignupForm extends SignupForm {
   factory _SignupForm(
-      {required final InputEmail email,
-      required final InputPassword password,
+      {required final InputString email,
+      required final InputString password,
       required final InputBoolean acceptConditions,
       required final SignupStatus status}) = _$SignupFormImpl;
   _SignupForm._() : super._();
 
   @override
-  InputEmail get email;
+  InputString get email;
   @override
-  InputPassword get password;
+  InputString get password;
   @override
   InputBoolean get acceptConditions;
   @override

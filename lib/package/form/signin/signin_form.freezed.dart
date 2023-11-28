@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SigninForm {
-  InputEmail get email => throw _privateConstructorUsedError;
+  InputString get email => throw _privateConstructorUsedError;
   InputString get password => throw _privateConstructorUsedError;
   SigninStatus get status => throw _privateConstructorUsedError;
 
@@ -31,7 +31,7 @@ abstract class $SigninFormCopyWith<$Res> {
           SigninForm value, $Res Function(SigninForm) then) =
       _$SigninFormCopyWithImpl<$Res, SigninForm>;
   @useResult
-  $Res call({InputEmail email, InputString password, SigninStatus status});
+  $Res call({InputString email, InputString password, SigninStatus status});
 }
 
 /// @nodoc
@@ -55,7 +55,7 @@ class _$SigninFormCopyWithImpl<$Res, $Val extends SigninForm>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as InputEmail,
+              as InputString,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -76,7 +76,7 @@ abstract class _$$SigninFormImplCopyWith<$Res>
       __$$SigninFormImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({InputEmail email, InputString password, SigninStatus status});
+  $Res call({InputString email, InputString password, SigninStatus status});
 }
 
 /// @nodoc
@@ -98,7 +98,7 @@ class __$$SigninFormImplCopyWithImpl<$Res>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as InputEmail,
+              as InputString,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -119,7 +119,7 @@ class _$SigninFormImpl extends _SigninForm {
       : super._();
 
   @override
-  final InputEmail email;
+  final InputString email;
   @override
   final InputString password;
   @override
@@ -153,13 +153,13 @@ class _$SigninFormImpl extends _SigninForm {
 
 abstract class _SigninForm extends SigninForm {
   factory _SigninForm(
-      {required final InputEmail email,
+      {required final InputString email,
       required final InputString password,
       required final SigninStatus status}) = _$SigninFormImpl;
   _SigninForm._() : super._();
 
   @override
-  InputEmail get email;
+  InputString get email;
   @override
   InputString get password;
   @override

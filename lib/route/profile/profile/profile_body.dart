@@ -316,7 +316,7 @@ class ProfileBody extends MainRouteBody {
               } else {
                 context.read<NavNotifCubit>().remove(id, notifPhotoEmpty);
               }
-              if ((user.username ?? '').isEmpty) {
+              if ((user.username ?? '').isEmpty || user.username == user.id) {
                 context.read<NavNotifCubit>().add(id, notifNameEmpty);
               } else {
                 context.read<NavNotifCubit>().remove(id, notifNameEmpty);
@@ -441,7 +441,7 @@ class UserDetails extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.alternate_email),
             title: Text(user.username ?? ''),
-            trailing: (user.username ?? '').isEmpty
+            trailing: (user.username ?? '').isEmpty || user.username == user.id
                 ? const Icon(Icons.priority_high, color: Colors.red)
                 : const Icon(Icons.edit),
             onTap: () => context.push('/profile/modify_name'),
