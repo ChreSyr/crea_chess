@@ -25,6 +25,12 @@
   "iAcceptConditions": "Je n'ai lu ni les Conditions d'utilisation, ni la Politique de confidentialité.",
   "needAccount": "Besoin d'un compte ?",
   "next": "Suivant",
+  "notificationType": "{type, select, other{Notification} friendRequest{Demande en ami}}",
+  "@notificationType": {
+    "placeholders": {
+      "type": {}
+    }
+  },
   "orContinueWith": "Ou continuer avec",
   "password": "Mot de passe",
   "passwordForgot": "Mot de passe oublié ?",

@@ -22,7 +22,7 @@ class UserCubit extends Cubit<UserModel?> {
     cancelUserStreamSubscription();
     userStreamSubscription =
         userCRUD.stream(documentId: auth.uid).listen((user) {
-      if (user.id?.isEmpty ?? true) {
+      if (user == null) {
         // Create user
         userCRUD.create(
           documentId: auth.uid,
@@ -46,7 +46,7 @@ class UserCubit extends Cubit<UserModel?> {
     }
   }
 
-  StreamSubscription<UserModel>? userStreamSubscription;
+  StreamSubscription<UserModel?>? userStreamSubscription;
   late StreamSubscription<User?> authenticationStreamSubscription;
 
   @override

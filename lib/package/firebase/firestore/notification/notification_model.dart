@@ -3,29 +3,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user_model.freezed.dart';
-part 'user_model.g.dart';
+part 'notification_model.freezed.dart';
+part 'notification_model.g.dart';
+
+enum NotificationType {
+  friendRequest,
+}
 
 @freezed
-class UserModel with _$UserModel {
-  factory UserModel({
-    String? id, // same as auth
+class NotificationModel with _$NotificationModel {
+  factory NotificationModel({
+    String? id,
     String? ref,
-    String? username,
-    String? photo,
-    List<String>? relationships,
-  }) = _UserModel;
+    NotificationType? type,
+    String? from,
+    String? to,
+  }) = _NotificationModel;
 
   /// Required for the override getter
-  const UserModel._();
+  const NotificationModel._();
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
+  factory NotificationModel.fromJson(Map<String, dynamic> json) =>
+      _$NotificationModelFromJson(json);
 
-  factory UserModel.fromFirestore(
+  factory NotificationModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> doc,
   ) {
-    return UserModel.fromJson(doc.data() ?? {})
+    return NotificationModel.fromJson(doc.data() ?? {})
         .copyWith(id: doc.id, ref: doc.reference.path);
   }
 

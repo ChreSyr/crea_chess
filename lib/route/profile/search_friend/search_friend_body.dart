@@ -1,5 +1,6 @@
 import 'package:crea_chess/package/atomic_design/field/input_decoration.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
+import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
@@ -18,7 +19,7 @@ class UsersCubit extends Cubit<List<UserModel>> {
   Future<void> _init() async {
     try {
       final users = await userCRUD.readWhere(
-        wheres: [], // Get all users
+        filters: [], // Get all users
         orderBy: 'username',
       );
       emit(users);
@@ -116,7 +117,14 @@ class UserTile extends StatelessWidget {
       title: Text(user.username ?? ''),
       trailing: IconButton(
         icon: const Icon(Icons.person_add),
-        onPressed: () {},
+        onPressed: () {
+          final currentUser = context.read<UserCubit>().state;
+          if (currentUser == null) return;
+          notificationCRUD.sendFriendRequest(
+            fromUserId: currentUser.id,
+            toUserId: user.id,
+          );
+        },
       ),
     );
   }

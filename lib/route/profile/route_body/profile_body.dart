@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:badges/badges.dart' as badges;
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/divider.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/notification/notification_model.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
@@ -62,58 +66,179 @@ class ProfileBody extends MainRouteBody {
   @override
   List<Widget> getActions(BuildContext context) {
     return [
-      BlocBuilder<AuthenticationCubit, User?>(
-        builder: (context, user) {
-          final isLoggedIn = user != null;
-          void signout() {
-            authenticationCRUD.signOut();
-            context.go('/profile/sign_methods');
-          }
-
-          return MenuAnchor(
-            builder: (
-              BuildContext context,
-              MenuController controller,
-              Widget? child,
-            ) {
-              return IconButton(
-                onPressed: () =>
-                    controller.isOpen ? controller.close() : controller.open(),
-                icon: const Icon(Icons.more_vert),
-              );
-            },
-            menuChildren: ProfileMenuChoices.values
-                .where((e) => isLoggedIn || e.whenLoggedOut)
-                .map(
-                  (e) => MenuItemButton(
-                    leadingIcon: Icon(e.getIcon()),
-                    onPressed: () {
-                      switch (e) {
-                        case ProfileMenuChoices.signout:
-                          signout();
-                        case ProfileMenuChoices.deleteAccount:
-                          confirmDeleteAccount(context, user!);
+      Row(
+        children: [
+          BlocBuilder<UserCubit, UserModel?>(
+            builder: (context, user) {
+              if (user == null) return Container();
+              return StreamBuilder<Iterable<NotificationModel>>(
+                stream: notificationCRUD.streamWhere(
+                  filters: [
+                    (query) => query.where('to', isEqualTo: user.id),
+                  ],
+                  orderBy: 'to',
+                ),
+                builder: (context, snapshot) {
+                  final notifications = snapshot.data ?? [];
+                  return MenuAnchor(
+                    builder: (
+                      BuildContext context,
+                      MenuController controller,
+                      Widget? _,
+                    ) {
+                      final iconButton = IconButton(
+                        onPressed: () => controller.isOpen
+                            ? controller.close()
+                            : controller.open(),
+                        icon: const Icon(Icons.notifications),
+                      );
+                      if (notifications.isEmpty) {
+                        return iconButton;
+                      } else {
+                        // TODO: notif in nav bar
+                        return badges.Badge(
+                          position: badges.BadgePosition.topEnd(top: 3, end: 3),
+                          child: iconButton,
+                        );
                       }
                     },
-                    style: switch (e) {
-                      ProfileMenuChoices.deleteAccount => ButtonStyle(
-                          iconColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.red,
-                          ),
-                          foregroundColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.red,
-                          ),
-                        ),
-                      _ => null,
-                    },
-                    child: Text(e.getLocalization(context.l10n)),
-                  ),
-                )
-                .toList(),
-          );
-        },
+                    menuChildren: notifications.isEmpty
+                        ? [
+                            MenuItemButton(
+                              leadingIcon: const Icon(Icons.done_all),
+                              onPressed: () {},
+                              child: const Text('Aucune notification'),
+                            ),
+                          ]
+                        : notifications
+                            .map(
+                              (e) => MenuItemButton(
+                                leadingIcon: const Icon(Icons.mail),
+                                onPressed: () {
+                                  switch (e.type) {
+                                    case NotificationType.friendRequest:
+                                      answerFriendRequest(context, e);
+                                    case null:
+                                      return;
+                                  }
+                                },
+                                child: Text(
+                                  context.l10n
+                                      .notificationType(e.type?.name ?? ''),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                  );
+                },
+              );
+            },
+          ),
+          BlocBuilder<AuthenticationCubit, User?>(
+            builder: (context, auth) {
+              final isLoggedIn = auth != null;
+              void signout() {
+                authenticationCRUD.signOut();
+                context.go('/profile/sign_methods');
+              }
+
+              return MenuAnchor(
+                builder: (
+                  BuildContext context,
+                  MenuController controller,
+                  Widget? _,
+                ) {
+                  return IconButton(
+                    onPressed: () => controller.isOpen
+                        ? controller.close()
+                        : controller.open(),
+                    icon: const Icon(Icons.more_vert),
+                  );
+                },
+                menuChildren: ProfileMenuChoices.values
+                    .where((e) => isLoggedIn || e.whenLoggedOut)
+                    .map(
+                      (e) => MenuItemButton(
+                        leadingIcon: Icon(e.getIcon()),
+                        onPressed: () {
+                          switch (e) {
+                            case ProfileMenuChoices.signout:
+                              signout();
+                            case ProfileMenuChoices.deleteAccount:
+                              confirmDeleteAccount(context, auth!);
+                          }
+                        },
+                        style: switch (e) {
+                          ProfileMenuChoices.deleteAccount => ButtonStyle(
+                              iconColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.red,
+                              ),
+                              foregroundColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.red,
+                              ),
+                            ),
+                          _ => null,
+                        },
+                        child: Text(e.getLocalization(context.l10n)),
+                      ),
+                    )
+                    .toList(),
+              );
+            },
+          ),
+        ],
       ),
     ];
+  }
+
+  void answerFriendRequest(BuildContext context, NotificationModel notif) {
+    if (notif.from == null || notif.to == null) return;
+    showDialog<AlertDialog>(
+      context: context,
+      builder: (BuildContext context) {
+        void deleteNotification() {
+          notificationCRUD.delete(documentId: notif.id);
+        }
+
+        return AlertDialog(
+          title: const Text('Nouvelle demande en ami !'),
+          content: FutureBuilder<UserModel?>(
+            future: userCRUD.read(documentId: notif.from!),
+            builder: (context, snapshot) {
+              final friend = snapshot.data;
+              if (friend == null) {
+                return const CircularProgressIndicator();
+              }
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: getPhotoAsset(friend.photo),
+                ),
+                title: Text(friend.username ?? ''),
+              );
+            },
+          ),
+          actions: [
+            ElevatedButton.icon(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                context.pop();
+                deleteNotification();
+              },
+              label: const Text('Refuser'),
+            ),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.check),
+              onPressed: () {
+                context.pop();
+                // notification is automatically deleted
+                relationshipCRUD.makeFriends(notif.from!, notif.to!);
+              },
+              label: const Text('Accepter'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<AlertDialog?> confirmDeleteAccount(BuildContext context, User user) {
@@ -366,11 +491,18 @@ class UserDetails extends StatelessWidget {
             // email verification
           ),
           BlocBuilder<UserCubit, UserModel?>(
-            builder: (context, details) {
+            builder: (context, user) {
               return Wrap(
                 children: [
-                  ...details?.friends
-                          ?.map((friendId) => FriendPreview(friendId: friendId))
+                  ...user?.relationships
+                          ?.map(
+                            (relationshipId) => FriendPreview(
+                              friendId: relationshipId
+                                  .split('-')
+                                  .where((id) => id != user.id)
+                                  .first,
+                            ),
+                          )
                           .toList() ??
                       [],
                   ColoredCircleButton(

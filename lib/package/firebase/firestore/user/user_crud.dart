@@ -4,7 +4,7 @@ import 'package:crea_chess/package/firebase/firestore/crud/model_converter.dart'
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 
-class UserModelConverter implements ModelConverter<UserModel> {
+class _UserModelConverter implements ModelConverter<UserModel> {
   @override
   UserModel fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -25,7 +25,7 @@ class UserModelConverter implements ModelConverter<UserModel> {
 }
 
 class _UserCRUD extends BaseCRUD<UserModel> {
-  _UserCRUD() : super('user', UserModelConverter());
+  _UserCRUD() : super('user', _UserModelConverter());
 
   final userCubit = UserCubit();
 }

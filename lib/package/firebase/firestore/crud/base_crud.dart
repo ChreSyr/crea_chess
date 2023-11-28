@@ -2,7 +2,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crea_chess/package/firebase/firestore/crud/firestore_where.dart';
 import 'package:crea_chess/package/firebase/firestore/crud/model_converter.dart';
 
 abstract class BaseCRUD<T> {
@@ -17,56 +16,39 @@ abstract class BaseCRUD<T> {
   final CollectionReference<T> _collection;
   final ModelConverter<T> _converter;
 
-  Query<T> _applyWhereQuery(Query<T> query, FirestoreWhereModel where) {
-    return query.where(
-      where.field,
-      isEqualTo: where.isEqualTo,
-      isNotEqualTo: where.isNotEqualTo,
-      isLessThan: where.isLessThan,
-      isLessThanOrEqualTo: where.isLessThanOrEqualTo,
-      isGreaterThan: where.isGreaterThan,
-      isGreaterThanOrEqualTo: where.isGreaterThanOrEqualTo,
-      arrayContains: where.arrayContains,
-      arrayContainsAny: where.arrayContainsAny,
-      whereIn: where.whereIn,
-      whereNotIn: where.whereNotIn,
-      isNull: where.isNull,
-    );
-  }
-
   Future<void> create({required String? documentId, required T data}) async {
     await _collection.doc(documentId).set(data);
   }
 
-  Future<T> read({required String documentId}) async {
+  Future<T?> read({required String documentId}) async {
     return _collection.doc(documentId).get().then(
-          (snapshot) => snapshot.data() ?? _converter.emptyModel(),
+          (snapshot) => snapshot.data(),
         );
   }
 
   Future<List<T>> readWhere({
-    required List<FirestoreWhereModel> wheres,
+    required List<Query<T> Function(Query<T>)> filters,
     String orderBy = 'name',
   }) {
     var query = _collection.orderBy(orderBy);
 
-    for (final where in wheres) {
-      query = _applyWhereQuery(query, where);
+    for (final filter in filters) {
+      query = filter(query);
     }
 
     return query.get().then(
-          (documents) => documents.docs.map((doc) => doc.data()).toList(),
+          (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
         );
   }
 
-  Stream<T> stream({required String documentId}) {
-    final streamController = StreamController<T>();
+  Stream<T?> stream({required String documentId}) {
+    final streamController = StreamController<T?>();
 
     if (documentId.isEmpty) {
       streamController.add(_converter.emptyModel());
     } else {
       _collection.doc(documentId).snapshots().listen((snapshot) {
-        streamController.add(snapshot.data() ?? _converter.emptyModel());
+        streamController.add(snapshot.data());
       });
     }
 
@@ -74,17 +56,17 @@ abstract class BaseCRUD<T> {
   }
 
   Stream<List<T>> streamWhere({
-    required List<FirestoreWhereModel> wheres,
-    String orderBy = 'name',
+    required List<Query<T> Function(Query<T>)> filters,
+    String orderBy = 'documentId',
   }) {
     var query = _collection.orderBy(orderBy);
 
-    for (final where in wheres) {
-      query = _applyWhereQuery(query, where);
+    for (final filter in filters) {
+      query = filter(query);
     }
 
     return query.snapshots().map(
-          (event) => event.docs.map((doc) => doc.data()).toList(),
+          (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
         );
   }
 
@@ -94,7 +76,7 @@ abstract class BaseCRUD<T> {
         .update(_converter.toFirestore(data, null));
   }
 
-  Future<void> delete({required String documentId}) async {
+  Future<void> delete({required String? documentId}) async {
     await _collection.doc(documentId).delete();
   }
 }
