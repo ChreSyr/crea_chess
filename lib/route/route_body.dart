@@ -28,7 +28,7 @@ abstract class MainRouteBody extends RouteBody {
 
   final String id;
   final IconData icon;
-  
+
   @override
   List<Widget> getActions(BuildContext context) {
     return [
@@ -159,7 +159,6 @@ abstract class MainRouteBody extends RouteBody {
 }
 
 void answerFriendRequest(BuildContext context, NotificationModel notif) {
-  // TODO : snackBar confirmations
   if (notif.from == null || notif.to == null) return;
   showDialog<AlertDialog>(
     context: context,
@@ -192,6 +191,7 @@ void answerFriendRequest(BuildContext context, NotificationModel notif) {
             onPressed: () {
               context.pop();
               deleteNotification();
+              snackBarNotify(context, 'Demande en ami refusée.');
             },
             label: const Text('Refuser'),
           ),
@@ -201,6 +201,7 @@ void answerFriendRequest(BuildContext context, NotificationModel notif) {
               context.pop();
               deleteNotification();
               relationshipCRUD.makeFriends(notif.from!, notif.to!);
+              snackBarNotify(context, 'Demande en ami acceptée !');
             },
             label: const Text('Accepter'),
           ),
