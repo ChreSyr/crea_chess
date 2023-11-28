@@ -211,6 +211,7 @@ class ProfileBody extends MainRouteBody {
               }
               return ListTile(
                 leading: CircleAvatar(
+                  backgroundColor: Colors.transparent,
                   backgroundImage: getPhotoAsset(friend.photo),
                 ),
                 title: Text(friend.username ?? ''),
@@ -591,6 +592,7 @@ class FriendPreview extends StatelessWidget {
           onTap: () {},
           child: CircleAvatar(
             radius: CCSize.xlarge,
+            backgroundColor: Colors.transparent,
             backgroundImage: getPhotoAsset(friend.photo),
           ),
         );
