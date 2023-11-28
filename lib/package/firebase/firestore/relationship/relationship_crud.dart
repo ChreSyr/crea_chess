@@ -39,17 +39,13 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
         );
       }
     } else {
-      print('creating $relationshipId');
-      try {
         await super.create(
           documentId: relationshipId,
           data: RelationshipModel(
-            user1: user1,
-            user2: user2,
+            users: [user1, user2],
             status: RelationshipStatus.friends,
           ),
         );
-        print('created');
 
         final friendRequest1 = await notificationCRUD.read(
           documentId: [user1, user2].join(),
@@ -64,10 +60,6 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
         if (friendRequest2 != null) {
           await notificationCRUD.delete(documentId: friendRequest2.id);
         }
-      } catch (e) {
-        print(e);
-        rethrow;
-      }
     }
   }
 

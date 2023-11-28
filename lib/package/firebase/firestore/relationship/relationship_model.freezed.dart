@@ -22,8 +22,7 @@ RelationshipModel _$RelationshipModelFromJson(Map<String, dynamic> json) {
 mixin _$RelationshipModel {
   String? get id => throw _privateConstructorUsedError;
   String? get ref => throw _privateConstructorUsedError;
-  String? get user1 => throw _privateConstructorUsedError;
-  String? get user2 => throw _privateConstructorUsedError;
+  List<String>? get users => throw _privateConstructorUsedError;
   RelationshipStatus? get status => throw _privateConstructorUsedError;
   List<String>? get games => throw _privateConstructorUsedError;
 
@@ -42,8 +41,7 @@ abstract class $RelationshipModelCopyWith<$Res> {
   $Res call(
       {String? id,
       String? ref,
-      String? user1,
-      String? user2,
+      List<String>? users,
       RelationshipStatus? status,
       List<String>? games});
 }
@@ -63,8 +61,7 @@ class _$RelationshipModelCopyWithImpl<$Res, $Val extends RelationshipModel>
   $Res call({
     Object? id = freezed,
     Object? ref = freezed,
-    Object? user1 = freezed,
-    Object? user2 = freezed,
+    Object? users = freezed,
     Object? status = freezed,
     Object? games = freezed,
   }) {
@@ -77,14 +74,10 @@ class _$RelationshipModelCopyWithImpl<$Res, $Val extends RelationshipModel>
           ? _value.ref
           : ref // ignore: cast_nullable_to_non_nullable
               as String?,
-      user1: freezed == user1
-          ? _value.user1
-          : user1 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      user2: freezed == user2
-          ? _value.user2
-          : user2 // ignore: cast_nullable_to_non_nullable
-              as String?,
+      users: freezed == users
+          ? _value.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -108,8 +101,7 @@ abstract class _$$RelationshipModelImplCopyWith<$Res>
   $Res call(
       {String? id,
       String? ref,
-      String? user1,
-      String? user2,
+      List<String>? users,
       RelationshipStatus? status,
       List<String>? games});
 }
@@ -127,8 +119,7 @@ class __$$RelationshipModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? ref = freezed,
-    Object? user1 = freezed,
-    Object? user2 = freezed,
+    Object? users = freezed,
     Object? status = freezed,
     Object? games = freezed,
   }) {
@@ -141,14 +132,10 @@ class __$$RelationshipModelImplCopyWithImpl<$Res>
           ? _value.ref
           : ref // ignore: cast_nullable_to_non_nullable
               as String?,
-      user1: freezed == user1
-          ? _value.user1
-          : user1 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      user2: freezed == user2
-          ? _value.user2
-          : user2 // ignore: cast_nullable_to_non_nullable
-              as String?,
+      users: freezed == users
+          ? _value._users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -167,11 +154,11 @@ class _$RelationshipModelImpl extends _RelationshipModel {
   _$RelationshipModelImpl(
       {this.id,
       this.ref,
-      this.user1,
-      this.user2,
+      final List<String>? users,
       this.status,
       final List<String>? games})
-      : _games = games,
+      : _users = users,
+        _games = games,
         super._();
 
   factory _$RelationshipModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -181,10 +168,16 @@ class _$RelationshipModelImpl extends _RelationshipModel {
   final String? id;
   @override
   final String? ref;
+  final List<String>? _users;
   @override
-  final String? user1;
-  @override
-  final String? user2;
+  List<String>? get users {
+    final value = _users;
+    if (value == null) return null;
+    if (_users is EqualUnmodifiableListView) return _users;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final RelationshipStatus? status;
   final List<String>? _games;
@@ -199,7 +192,7 @@ class _$RelationshipModelImpl extends _RelationshipModel {
 
   @override
   String toString() {
-    return 'RelationshipModel(id: $id, ref: $ref, user1: $user1, user2: $user2, status: $status, games: $games)';
+    return 'RelationshipModel(id: $id, ref: $ref, users: $users, status: $status, games: $games)';
   }
 
   @override
@@ -209,15 +202,19 @@ class _$RelationshipModelImpl extends _RelationshipModel {
             other is _$RelationshipModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.ref, ref) || other.ref == ref) &&
-            (identical(other.user1, user1) || other.user1 == user1) &&
-            (identical(other.user2, user2) || other.user2 == user2) &&
+            const DeepCollectionEquality().equals(other._users, _users) &&
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality().equals(other._games, _games));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, ref, user1, user2, status,
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      ref,
+      const DeepCollectionEquality().hash(_users),
+      status,
       const DeepCollectionEquality().hash(_games));
 
   @JsonKey(ignore: true)
@@ -239,8 +236,7 @@ abstract class _RelationshipModel extends RelationshipModel {
   factory _RelationshipModel(
       {final String? id,
       final String? ref,
-      final String? user1,
-      final String? user2,
+      final List<String>? users,
       final RelationshipStatus? status,
       final List<String>? games}) = _$RelationshipModelImpl;
   _RelationshipModel._() : super._();
@@ -253,9 +249,7 @@ abstract class _RelationshipModel extends RelationshipModel {
   @override
   String? get ref;
   @override
-  String? get user1;
-  @override
-  String? get user2;
+  List<String>? get users;
   @override
   RelationshipStatus? get status;
   @override

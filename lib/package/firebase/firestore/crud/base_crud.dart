@@ -26,17 +26,10 @@ abstract class BaseCRUD<T> {
         );
   }
 
-  Future<List<T>> readWhere({
-    required List<Query<T> Function(Query<T>)> filters,
-    String orderBy = 'name',
+  Future<List<T>> readFiltered({
+    required Query<T> Function(CollectionReference<T>) filter,
   }) {
-    var query = _collection.orderBy(orderBy);
-
-    for (final filter in filters) {
-      query = filter(query);
-    }
-
-    return query.get().then(
+    return filter(_collection).get().then(
           (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
         );
   }
@@ -55,17 +48,10 @@ abstract class BaseCRUD<T> {
     return streamController.stream;
   }
 
-  Stream<List<T>> streamWhere({
-    required List<Query<T> Function(Query<T>)> filters,
-    String orderBy = 'documentId',
+  Stream<List<T>> streamFiltered({
+    required Query<T> Function(CollectionReference<T>) filter,
   }) {
-    var query = _collection.orderBy(orderBy);
-
-    for (final filter in filters) {
-      query = filter(query);
-    }
-
-    return query.snapshots().map(
+    return filter(_collection).snapshots().map(
           (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
         );
   }

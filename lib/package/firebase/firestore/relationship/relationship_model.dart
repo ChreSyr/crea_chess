@@ -19,8 +19,7 @@ class RelationshipModel with _$RelationshipModel {
   factory RelationshipModel({
     String? id,
     String? ref,
-    String? user1,
-    String? user2,
+    List<String>? users,
     RelationshipStatus? status,
     List<String>? games,
   }) = _RelationshipModel;

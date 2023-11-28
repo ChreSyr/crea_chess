@@ -1,4 +1,5 @@
 import 'package:crea_chess/package/atomic_design/field/input_decoration.dart';
+import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
@@ -18,9 +19,8 @@ class UsersCubit extends Cubit<List<UserModel>> {
 
   Future<void> _init() async {
     try {
-      final users = await userCRUD.readWhere(
-        filters: [], // Get all users
-        orderBy: 'username',
+      final users = await userCRUD.readFiltered(
+        filter: (collection) => collection,
       );
       emit(users);
     } catch (_) {
@@ -112,6 +112,7 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO : different if friend, blocked, unknown...
     return ListTile(
       leading: CircleAvatar(backgroundImage: getPhotoAsset(user.photo)),
       title: Text(user.username ?? ''),
@@ -124,6 +125,7 @@ class UserTile extends StatelessWidget {
             fromUserId: currentUser.id,
             toUserId: user.id,
           );
+          snackBarNotify(context, 'Demande en ami envoyée'); // TODO: l10n
         },
       ),
     );

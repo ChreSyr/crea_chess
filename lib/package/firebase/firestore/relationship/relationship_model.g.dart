@@ -11,8 +11,8 @@ _$RelationshipModelImpl _$$RelationshipModelImplFromJson(
     _$RelationshipModelImpl(
       id: json['id'] as String?,
       ref: json['ref'] as String?,
-      user1: json['user1'] as String?,
-      user2: json['user2'] as String?,
+      users:
+          (json['users'] as List<dynamic>?)?.map((e) => e as String).toList(),
       status: $enumDecodeNullable(_$RelationshipStatusEnumMap, json['status']),
       games:
           (json['games'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -23,8 +23,7 @@ Map<String, dynamic> _$$RelationshipModelImplToJson(
     <String, dynamic>{
       'id': instance.id,
       'ref': instance.ref,
-      'user1': instance.user1,
-      'user2': instance.user2,
+      'users': instance.users,
       'status': _$RelationshipStatusEnumMap[instance.status],
       'games': instance.games,
     };

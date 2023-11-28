@@ -9,6 +9,7 @@ import 'package:crea_chess/package/firebase/authentication/authentication_crud.d
 import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/notification/notification_model.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
@@ -72,11 +73,9 @@ class ProfileBody extends MainRouteBody {
             builder: (context, user) {
               if (user == null) return Container();
               return StreamBuilder<Iterable<NotificationModel>>(
-                stream: notificationCRUD.streamWhere(
-                  filters: [
-                    (query) => query.where('to', isEqualTo: user.id),
-                  ],
-                  orderBy: 'to',
+                stream: notificationCRUD.streamFiltered(
+                  filter: (colection) =>
+                      colection.where('to', isEqualTo: user.id),
                 ),
                 builder: (context, snapshot) {
                   final notifications = snapshot.data ?? [];
@@ -230,7 +229,7 @@ class ProfileBody extends MainRouteBody {
               icon: const Icon(Icons.check),
               onPressed: () {
                 context.pop();
-                // notification is automatically deleted
+                deleteNotification();
                 relationshipCRUD.makeFriends(notif.from!, notif.to!);
               },
               label: const Text('Accepter'),
@@ -492,24 +491,33 @@ class UserDetails extends StatelessWidget {
           ),
           BlocBuilder<UserCubit, UserModel?>(
             builder: (context, user) {
-              return Wrap(
-                children: [
-                  ...user?.relationships
-                          ?.map(
-                            (relationshipId) => FriendPreview(
-                              friendId: relationshipId
-                                  .split('-')
-                                  .where((id) => id != user.id)
-                                  .first,
-                            ),
-                          )
-                          .toList() ??
-                      [],
-                  ColoredCircleButton(
-                    onTap: () => context.push('/profile/search_friend'),
-                    child: const Icon(Icons.person_add),
-                  ),
-                ],
+              if (user == null) return Container();
+              return StreamBuilder<List<RelationshipModel>>(
+                stream: relationshipCRUD.streamFiltered(
+                  filter: (collection) =>
+                      collection.where('users', arrayContains: user.id),
+                ),
+                builder: (context, snapshot) {
+                  final relations = snapshot.data;
+                  return Wrap(
+                    children: [
+                      ...relations
+                              ?.map(
+                                (relationship) => FriendPreview(
+                                  friendId: (relationship.users ?? [])
+                                      .where((id) => id != user.id)
+                                      .first,
+                                ),
+                              )
+                              .toList() ??
+                          [],
+                      ColoredCircleButton(
+                        onTap: () => context.push('/profile/search_friend'),
+                        child: const Icon(Icons.person_add),
+                      ),
+                    ],
+                  );
+                },
               );
             },
           ),
@@ -611,18 +619,27 @@ class FriendPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Column(
-        children: [
-          const CircleAvatar(),
-          Text(
-            friendId,
-            textAlign: TextAlign.center,
-            maxLines: 2,
+    return StreamBuilder<UserModel?>(
+      stream: userCRUD.stream(documentId: friendId),
+      builder: (context, snapshot) {
+        final friend = snapshot.data;
+        if (friend == null) return const CircularProgressIndicator();
+        return InkWell(
+          onTap: () {},
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundImage: getPhotoAsset(friend.photo),
+              ),
+              Text(
+                friend.username ?? '',
+                textAlign: TextAlign.center,
+                maxLines: 2,
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
