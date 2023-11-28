@@ -89,7 +89,7 @@ class SearchFriendBody extends RouteBody {
                         .where(
                           (user) =>
                               user != currentUser &&
-                              (user.usernameLowercase?.startsWith(search) ??
+                              (user.usernameLowercase?.contains(search) ??
                                   false),
                         )
                         .map<Widget>(UserTile.new)
