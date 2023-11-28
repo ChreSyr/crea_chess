@@ -27,6 +27,12 @@ class _RelationshipModelConverter implements ModelConverter<RelationshipModel> {
 class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
   _RelationshipCRUD() : super('relationship', _RelationshipModelConverter());
 
+  Stream<List<RelationshipModel>> of(String? userId) {
+    return streamFiltered(
+      filter: (collection) => collection.where('users', arrayContains: userId),
+    );
+  }
+
   Future<void> makeFriends(String user1, String user2) async {
     final sortedUsers = [user1, user2]..sort();
     final relationshipId = sortedUsers.join();
@@ -39,27 +45,27 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
         );
       }
     } else {
-        await super.create(
-          documentId: relationshipId,
-          data: RelationshipModel(
-            users: [user1, user2],
-            status: RelationshipStatus.friends,
-          ),
-        );
+      await super.create(
+        documentId: relationshipId,
+        data: RelationshipModel(
+          users: [user1, user2],
+          status: RelationshipStatus.friends,
+        ),
+      );
 
-        final friendRequest1 = await notificationCRUD.read(
-          documentId: [user1, user2].join(),
-        );
-        if (friendRequest1 != null) {
-          await notificationCRUD.delete(documentId: friendRequest1.id);
-        }
+      final friendRequest1 = await notificationCRUD.read(
+        documentId: [user1, user2].join(),
+      );
+      if (friendRequest1 != null) {
+        await notificationCRUD.delete(documentId: friendRequest1.id);
+      }
 
-        final friendRequest2 = await notificationCRUD.read(
-          documentId: [user2, user1].join(),
-        );
-        if (friendRequest2 != null) {
-          await notificationCRUD.delete(documentId: friendRequest2.id);
-        }
+      final friendRequest2 = await notificationCRUD.read(
+        documentId: [user2, user1].join(),
+      );
+      if (friendRequest2 != null) {
+        await notificationCRUD.delete(documentId: friendRequest2.id);
+      }
     }
   }
 

@@ -40,8 +40,7 @@ class ModifyUsernameCubit extends Cubit<ModifyUsernameForm> {
     emit(state.copyWith(status: ModifyUsernameStatus.waiting));
 
     try {
-      final user = await userCRUD.readUsername(state.name.value);
-      if (user != null) {
+      if (await userCRUD.usernameIsTaken(state.name.value)) {
         emit(state.copyWith(status: ModifyUsernameStatus.usernameTaken));
         return;
       }

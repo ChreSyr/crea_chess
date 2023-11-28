@@ -14,6 +14,7 @@ dependencies:
   collection: ^1.17.2
   cupertino_icons: ^1.0.2
   dartchess_webok: ^0.1.0
+  diacritic: ^0.1.4
   fast_immutable_collections: ^9.1.6
   firebase_auth: ^4.12.1
   firebase_core: ^2.21.0

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
+import 'package:diacritic/diacritic.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:regexpattern/regexpattern.dart';
@@ -26,13 +27,12 @@ class UserCubit extends Cubit<UserModel?> {
       if (user == null) {
         // Create user
         var username = auth.displayName ?? auth.uid;
-        username = username.replaceAll(' ', '_');
+        username = removeDiacritics(username.replaceAll(' ', '_'));
         if (!RegExp(RegexPattern.usernameV2).hasMatch(username)) {
           username = auth.uid;
         }
         if (username != auth.uid) {
-          final otherUser = await userCRUD.readUsername(username);
-          if (otherUser != null) {
+          if (await userCRUD.usernameIsTaken(username)) {
             username = auth.uid;
           }
         }

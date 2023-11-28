@@ -461,10 +461,7 @@ class UserDetails extends StatelessWidget {
             builder: (context, user) {
               if (user == null) return Container();
               return StreamBuilder<List<RelationshipModel>>(
-                stream: relationshipCRUD.streamFiltered(
-                  filter: (collection) =>
-                      collection.where('users', arrayContains: user.id),
-                ),
+                stream: relationshipCRUD.of(user.id),
                 builder: (context, snapshot) {
                   final relations = snapshot.data;
                   return Wrap(

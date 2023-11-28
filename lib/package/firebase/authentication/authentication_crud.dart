@@ -32,7 +32,7 @@ class _AuthenticationCRUD {
     try {
       await user.delete();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'ERROR_REQUIRES_RECENT_LOGIN') {
+      if (e.code == 'requires-recent-login') {
         final userInfo = user.providerData.first;
 
         authProviderStatusCubit.waiting();
@@ -53,12 +53,16 @@ class _AuthenticationCRUD {
       }
     }
 
-    // Delete user in firestore
+    // Delete user in firestore. Also delete its relationships
     await userCRUD.delete(documentId: user.uid);
 
     // Delete profile photo in firebase storage
     final photoRef = FirebaseStorage.instance.getUserPhotoRef(user.uid);
-    await photoRef.delete();
+    try {
+      await photoRef.delete();
+    } on FirebaseException catch (e) {
+      if (e.code != 'object-not-found') rethrow;
+    }
   }
 
   /// Reload the user, to check if something changed.
