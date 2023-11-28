@@ -89,7 +89,7 @@ class ProfileBody extends MainRouteBody {
       builder: (context, auth) {
         if (auth == null) {
           return FilledButton.icon(
-            onPressed: () => context.go('/profile/sign_methods'),
+            onPressed: () => context.go('/profile/sso'),
             icon: const Icon(Icons.login),
             label: Text(context.l10n.signin),
           );
@@ -184,7 +184,7 @@ class NotFullyAuthenticated extends StatelessWidget {
                               onPressed: () {
                                 context
                                   ..pop()
-                                  ..push('/profile/email_verification');
+                                  ..push('/profile/sso/email_verification');
                               },
                             ),
                           ],

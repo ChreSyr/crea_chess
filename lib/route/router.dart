@@ -77,24 +77,28 @@ final router = GoRouter(
               routes: [
                 // child routes
                 GoRoute(
-                  path: 'sign_methods',
-                  builder: (context, state) =>
-                      const RouteScaffold(body: SignMethodsBody()),
-                ),
-                GoRoute(
-                  path: 'signin',
-                  builder: (context, state) =>
-                      const RouteScaffold(body: SigninBody()),
-                ),
-                GoRoute(
-                  path: 'signup',
-                  builder: (context, state) =>
-                      const RouteScaffold(body: SignupBody()),
-                ),
-                GoRoute(
-                  path: 'email_verification',
-                  builder: (context, state) =>
-                      const RouteScaffold(body: EmailVerificationBody()),
+                  path: 'sso',
+                  pageBuilder: (context, state) => const NoTransitionPage(
+                    child: RouteScaffold(body: SignMethodsBody()),
+                  ),
+                  routes: [
+                    // child routes
+                    GoRoute(
+                      path: 'signin',
+                      builder: (context, state) =>
+                          const RouteScaffold(body: SigninBody()),
+                    ),
+                    GoRoute(
+                      path: 'signup',
+                      builder: (context, state) =>
+                          const RouteScaffold(body: SignupBody()),
+                    ),
+                    GoRoute(
+                      path: 'email_verification',
+                      builder: (context, state) =>
+                          const RouteScaffold(body: EmailVerificationBody()),
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: 'modify_name',

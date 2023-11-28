@@ -43,7 +43,7 @@ class _SignMethodsBody extends StatelessWidget {
         children: [
           // sign in button
           FilledButton(
-            onPressed: () => context.push('/profile/signin'),
+            onPressed: () => context.push('/profile/sso/signin'),
             child: Text(context.l10n.signin),
           ),
 
@@ -51,7 +51,7 @@ class _SignMethodsBody extends StatelessWidget {
 
           // sign up button
           FilledButton(
-            onPressed: () => context.push('/profile/signup'),
+            onPressed: () => context.push('/profile/sso/signup'),
             child: Text(context.l10n.signup),
           ),
 
