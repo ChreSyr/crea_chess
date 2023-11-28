@@ -1,7 +1,7 @@
+import 'package:crea_chess/package/atomic_design/button/filled_circle_button.dart';
 import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
-import 'package:crea_chess/package/atomic_design/widget/box.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/l10n/get_locale_flag.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
@@ -26,79 +26,53 @@ class SettingsBody extends MainRouteBody {
 
     return BlocBuilder<PreferencesCubit, PreferencesState>(
       builder: (context, preferences) {
+        const buttonSize = CCWidgetSize.small;
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CCSmallBox(
-              child: FilledButton(
-                style: TextButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.zero,
-                ),
-                onPressed: preferencesCubit.toggleTheme,
-                child: Icon(
-                  preferences.isDarkMode ? Icons.nightlight : Icons.sunny,
-                  size: 50,
-                ),
-              ),
+            FilledCircleButton.icon(
+              icon: preferences.isDarkMode ? Icons.nightlight : Icons.sunny,
+              onPressed: preferencesCubit.toggleTheme,
+              size: buttonSize,
             ),
             CCGap.large,
-            CCSmallBox(
-              child: FilledButton(
-                style: TextButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.zero,
-                  backgroundColor: preferences.seedColor.color,
-                ),
-                onPressed: () => Modal.show(
-                  context: context,
-                  title: context.l10n.chooseColor,
-                  sections: [
-                    GridView.count(
-                      shrinkWrap: true,
-                      crossAxisCount: 3,
-                      crossAxisSpacing: CCSize.large,
-                      mainAxisSpacing: CCSize.large,
-                      children: SeedColor.values
-                          .map(
-                            (seedColor) => FilledButton(
-                              style: TextButton.styleFrom(
-                                minimumSize: Size.zero,
-                                padding: EdgeInsets.zero,
-                                backgroundColor: seedColor.color,
-                              ),
-                              onPressed: () => context
-                                ..pop()
-                                ..read<PreferencesCubit>()
-                                    .setSeedColor(seedColor),
-                              child: const Text(''),
+            FilledCircleButton.icon(
+              icon: null,
+              onPressed: () => Modal.show(
+                context: context,
+                title: context.l10n.chooseColor,
+                sections: [
+                  GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: CCSize.large,
+                    mainAxisSpacing: CCSize.large,
+                    children: SeedColor.values
+                        .map(
+                          (seedColor) => FilledButton(
+                            style: TextButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: EdgeInsets.zero,
+                              backgroundColor: seedColor.color,
                             ),
-                          )
-                          .toList(),
-                    ),
-                  ],
-                ),
-                child: const Text(''),
+                            onPressed: () => context
+                              ..pop()
+                              ..read<PreferencesCubit>()
+                                  .setSeedColor(seedColor),
+                            child: const Text(''),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
               ),
+              size: buttonSize,
             ),
             CCGap.large,
-            CCSmallBox(
-              child: FilledButton(
-                style: TextButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.zero,
-                ),
-                onPressed: preferencesCubit.toggleLocale,
-                child: Text(
-                  getLocaleFlag(
-                    Localizations.localeOf(context).languageCode,
-                  ),
-                  style: const TextStyle(
-                    fontSize: CCSize.xxlarge,
-                    fontFamily: 'NotoColorEmoji',
-                  ),
-                ),
-              ),
+            FilledCircleButton.text(
+              text: getLocaleFlag(context.l10n.localeName),
+              onPressed: preferencesCubit.toggleLocale,
+              size: buttonSize,
             ),
           ],
         );
