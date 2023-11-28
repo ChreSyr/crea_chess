@@ -177,10 +177,7 @@ void answerFriendRequest(BuildContext context, NotificationModel notif) {
               return const CircularProgressIndicator();
             }
             return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                backgroundImage: getPhotoAsset(friend.photo),
-              ),
+              leading: UserAvatar(friend.photo),
               title: Text(friend.username ?? ''),
             );
           },

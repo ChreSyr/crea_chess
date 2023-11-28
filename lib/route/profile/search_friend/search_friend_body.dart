@@ -113,9 +113,7 @@ class UserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO : different if friend, blocked, unknown...
     return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        backgroundImage: getPhotoAsset(user.photo),
+      leading: UserAvatar(user.photo
       ),
       title: Text(user.username ?? ''),
       trailing: IconButton(

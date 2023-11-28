@@ -143,12 +143,13 @@ class NotFullyAuthenticated extends StatelessWidget {
         children: [
           ListTile(
             title: Center(
-              child: CircleAvatar(
+              child: UserAvatar(
+                auth.photoURL,
                 radius: CCSize.xxxlarge,
                 backgroundColor: auth.photoURL == null
                     ? Colors.red[100]
-                    : Colors.transparent,
-                backgroundImage: getPhotoAsset(auth.photoURL),
+                    : null,
+                
               ),
             ),
           ),
@@ -215,11 +216,10 @@ class UserDetails extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.edit, color: Colors.transparent),
             title: Center(
-              child: CircleAvatar(
+              child: UserAvatar(
+                user.photo,
                 radius: CCSize.xxxlarge,
-                backgroundColor:
-                    user.photo == null ? Colors.red[100] : Colors.transparent,
-                backgroundImage: getPhotoAsset(user.photo),
+                backgroundColor: user.photo == null ? Colors.red[100] : null,
               ),
             ),
             trailing: (user.photo ?? '').isEmpty
@@ -377,10 +377,9 @@ class FriendPreview extends StatelessWidget {
         if (friend == null) return const CircularProgressIndicator();
         return InkWell(
           onTap: () {},
-          child: CircleAvatar(
+          child: UserAvatar(
+            friend.photo,
             radius: CCSize.xlarge,
-            backgroundColor: Colors.transparent,
-            backgroundImage: getPhotoAsset(friend.photo),
           ),
         );
       },
