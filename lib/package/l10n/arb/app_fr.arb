@@ -43,6 +43,7 @@
     }
   },
   "save": "Enregistrer",
+  "searchUsername": "Rechercher un nom",
   "sendEmail": "Envoyer un mail",
   "settings": "Réglages",
   "signCreateAccount": "Créer un compte",

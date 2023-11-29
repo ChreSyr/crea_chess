@@ -14,7 +14,6 @@ import 'package:crea_chess/route/profile/route_body/email_verification_body.dart
 import 'package:crea_chess/route/profile/route_body/sign_methods_body.dart';
 import 'package:crea_chess/route/profile/route_body/signin_body.dart';
 import 'package:crea_chess/route/profile/route_body/signup_body.dart';
-import 'package:crea_chess/route/profile/search_friend/search_friend_body.dart';
 import 'package:crea_chess/route/route_scaffold.dart';
 import 'package:crea_chess/route/settings/route_body/settings_body.dart';
 import 'package:flutter/material.dart';
@@ -104,11 +103,6 @@ final router = GoRouter(
                   path: 'modify_name',
                   builder: (context, state) =>
                       const RouteScaffold(body: ModifyUsernameBody()),
-                ),
-                GoRoute(
-                  path: 'search_friend',
-                  builder: (context, state) =>
-                      const RouteScaffold(body: SearchFriendBody()),
                 ),
               ],
             ),

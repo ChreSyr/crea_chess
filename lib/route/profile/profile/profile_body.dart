@@ -13,6 +13,7 @@ import 'package:crea_chess/package/firebase/storage/extension.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav_notif_cubit.dart';
 import 'package:crea_chess/route/profile/profile/profile_photo.dart';
+import 'package:crea_chess/route/profile/search_friend/search_friend_body.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -244,7 +245,7 @@ class UserDetails extends StatelessWidget {
             leading: const Icon(Icons.groups),
             title: const Text('Friends'), // TODO: l10n
             trailing: const Icon(Icons.person_add),
-            onTap: () => context.push('/profile/search_friend'),
+            onTap: () => searchFriend(context),
           ),
           BlocBuilder<UserCubit, UserModel?>(
             builder: (context, user) {

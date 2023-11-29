@@ -43,6 +43,7 @@
     }
   },
   "save": "Save",
+  "searchUsername": "Search username",
   "sendEmail": "Send email",
   "settings": "Settings",
   "signCreateAccount": "Create an account",
