@@ -378,7 +378,7 @@ class FriendPreview extends StatelessWidget {
         final friend = snapshot.data;
         if (friend == null) return const CircularProgressIndicator();
         return InkWell(
-          onTap: () => context.push('/profile/friend_profile'),
+          onTap: () => context.push('/profile/friend_profile/$friendId'),
           child: UserAvatar(
             friend.photo,
             radius: CCSize.xlarge,

@@ -31,7 +31,7 @@ final _shellNavigatorCKey = GlobalKey<NavigatorState>(debugLabel: 'shellC');
 final router = GoRouter(
   initialLocation: '/play',
   navigatorKey: _rootNavigatorKey,
-  errorBuilder: (context, state) => ErrorPage(state: state),
+  errorBuilder: (context, state) => ErrorPage(exception: state.error),
   routes: [
     // Stateful nested navigation based on:
     // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart
@@ -106,9 +106,11 @@ final router = GoRouter(
                       const RouteScaffold(body: ModifyUsernameBody()),
                 ),
                 GoRoute(
-                  path: 'friend_profile',
+                  path: 'friend_profile/:friendId',
                   builder: (context, state) => RouteScaffold(
-                    body: FriendProfileBody(friend: fakeFriend),
+                    body: FriendProfileBody(
+                      friendId: state.pathParameters['friendId'] ?? '',
+                    ),
                   ),
                 ),
               ],
@@ -139,25 +141,36 @@ final mainRouteBodies = [
 ];
 
 class ErrorPage extends StatelessWidget {
-  const ErrorPage({required this.state, super.key});
+  const ErrorPage({required this.exception, super.key});
 
-  final GoRouterState state;
+  final Exception? exception;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Page not found')),
-      body: Center(
+      body: ErrorBody(exception: exception),
+    );
+  }
+}
+
+class ErrorBody extends StatelessWidget {
+  const ErrorBody({required this.exception, super.key});
+
+  final Exception? exception;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(state.error?.toString() ?? 'null'),
+          Text(exception?.toString() ?? 'null'),
             TextButton(
               onPressed: () => context.go('/play'),
               child: Text(context.l10n.home),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }
