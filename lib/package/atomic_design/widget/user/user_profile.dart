@@ -11,9 +11,8 @@ import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/profile/search_friend/search_friend_body.dart';
 import 'package:flutter/material.dart';
 
-class UserProfileBody extends StatelessWidget {
-  const UserProfileBody(
-      {required this.user, required this.editable, super.key});
+class UserProfile extends StatelessWidget {
+  const UserProfile({required this.user, required this.editable, super.key});
 
   final UserModel user;
   final bool editable;

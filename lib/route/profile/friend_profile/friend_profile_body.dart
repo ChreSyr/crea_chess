@@ -1,4 +1,4 @@
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_body.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_profile.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
@@ -37,6 +37,6 @@ class _FriendProfileBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UserProfileBody(user: friend, editable: false);
+    return UserProfile(user: friend, editable: false);
   }
 }

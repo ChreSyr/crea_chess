@@ -1,6 +1,6 @@
 
 import 'package:crea_chess/package/atomic_design/size.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_body.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_profile.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
@@ -109,7 +109,7 @@ class ProfileBody extends MainRouteBody {
             // creating the user
             if (user == null) return const CircularProgressIndicator();
 
-            return UserProfileBody(user: user, editable: true);
+            return UserProfile(user: user, editable: true);
           },
         );
       },
