@@ -29,10 +29,13 @@ class ModifyUsernameCubit extends Cubit<ModifyUsernameForm> {
   }
 
   Future<void> submit() async {
-    if (state.name.value == initialName) {
+    var newUsername = state.name.value;
+    if (newUsername.startsWith('@')) newUsername = newUsername.substring(1);
+
+    if (newUsername == initialName) {
       return emit(state.copyWith(status: ModifyUsernameStatus.success));
     }
-    
+
     if (state.isNotValid) {
       return emit(state.copyWith(status: ModifyUsernameStatus.editError));
     }
@@ -40,13 +43,13 @@ class ModifyUsernameCubit extends Cubit<ModifyUsernameForm> {
     emit(state.copyWith(status: ModifyUsernameStatus.waiting));
 
     try {
-      if (await userCRUD.usernameIsTaken(state.name.value)) {
+      if (await userCRUD.usernameIsTaken(newUsername)) {
         emit(state.copyWith(status: ModifyUsernameStatus.usernameTaken));
         return;
       }
 
       // TODO : try & except Error.usernameIsTaken
-      await userCRUD.userCubit.setUsername(username: state.name.value);
+      await userCRUD.userCubit.setUsername(username: newUsername);
       emit(state.copyWith(status: ModifyUsernameStatus.success));
     } catch (_) {
       emit(state.copyWith(status: ModifyUsernameStatus.unexpectedError));
