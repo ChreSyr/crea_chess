@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
@@ -19,22 +20,85 @@ class UserProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: [
-        ListTile(
-          leading: const Icon(Icons.edit, color: Colors.transparent),
-          title: Center(
-            child: UserProfilePhoto(
-              user.photo,
-              radius: CCSize.xxxlarge,
-              backgroundColor: user.photo == null ? Colors.red[100] : null,
+        // banner
+        Stack(
+          children: [
+            const SizedBox(height: CCWidgetSize.xxxlarge),
+            Stack(
+              children: [
+                const SizedBox(
+                  height: CCWidgetSize.large,
+                  child: ListTile(
+                    tileColor: Colors.grey,
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: IconButton(
+                    onPressed: () {}, // TODO
+                    icon: const Icon(Icons.edit),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => CCColor.background(context),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          trailing: (user.photo ?? '').isEmpty
-              ? const Icon(Icons.priority_high, color: Colors.red)
-              : const Icon(Icons.edit),
-          onTap: () => showPhotoModal(context),
+            Positioned(
+              left: CCSize.small,
+              bottom: 0,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  UserProfilePhoto(
+                    user.photo,
+                    radius: CCWidgetSize.xxsmall,
+                    backgroundColor:
+                        user.photo == null ? Colors.red[100] : null,
+                  ),
+                  Positioned(
+                    right: -CCSize.medium,
+                    bottom: 0,
+                    child: IconButton(
+                      onPressed: () => showPhotoModal(context),
+                      icon: (user.photo ?? '').isEmpty
+                          ? const Icon(Icons.priority_high, color: Colors.red)
+                          : const Icon(Icons.edit),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => CCColor.background(context),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
+
+        // profile photo
+        // ListTile(
+        //   leading: const Icon(Icons.edit, color: Colors.transparent),
+        //   title: Center(
+        //     child: UserProfilePhoto(
+        //       user.photo,
+        //       radius: CCSize.xxxlarge,
+        //       backgroundColor: user.photo == null ? Colors.red[100] : null,
+        //     ),
+        //   ),
+        //   trailing: (user.photo ?? '').isEmpty
+        //       ? const Icon(Icons.priority_high, color: Colors.red)
+        //       : const Icon(Icons.edit),
+        //   onTap: () => showPhotoModal(context),
+        // ),
+
+        // // profile name
         ListTile(
           leading: const Icon(Icons.alternate_email),
           title: Text(user.username ?? ''),

@@ -1,5 +1,6 @@
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/divider.dart';
+import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/friend_preview.Dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_details.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_header.dart';
@@ -23,6 +24,7 @@ class UserProfileBody extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           UserProfileHeader(user: user),
+          CCGap.medium,
           const UserProfileDetails(),
           CCDivider.xthin,
           ListTile(
