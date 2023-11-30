@@ -141,7 +141,7 @@ class UserTile extends StatelessWidget {
             fromUserId: currentUser.id,
             toUserId: user.id,
           );
-          snackBarNotify(context, 'Demande en ami envoyée'); // TODO: l10n
+          snackBarNotify(context, context.l10n.friendRequestSent);
         },
       ),
     );

@@ -243,7 +243,7 @@ class UserDetails extends StatelessWidget {
           CCDivider.xthin,
           ListTile(
             leading: const Icon(Icons.groups),
-            title: const Text('Friends'), // TODO: l10n
+            title: Text(context.l10n.friends),
             trailing: const Icon(Icons.person_add),
             onTap: () => searchFriend(context),
           ),

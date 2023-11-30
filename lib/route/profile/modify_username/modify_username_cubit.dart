@@ -48,7 +48,6 @@ class ModifyUsernameCubit extends Cubit<ModifyUsernameForm> {
         return;
       }
 
-      // TODO : try & except Error.usernameIsTaken
       await userCRUD.userCubit.setUsername(username: newUsername);
       emit(state.copyWith(status: ModifyUsernameStatus.success));
     } catch (_) {

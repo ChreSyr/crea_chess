@@ -21,6 +21,8 @@
       "code": {}
     }
   },
+  "friendRequestSent": "Demande en ami envoyée",
+  "friends": "Amis",
   "home": "Home",
   "iAcceptConditions": "I have not read the Terms of Use or the Privacy Policy.",
   "needAccount": "Need an account ?",

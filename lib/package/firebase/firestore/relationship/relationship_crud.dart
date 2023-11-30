@@ -73,6 +73,7 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
     // TODO
     // If was acepted, cancelByUserX
     // Else, delete friend request
+    // TODO : when refusing a friend request, a dialog propose to block
   }
 }
 
