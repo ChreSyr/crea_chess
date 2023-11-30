@@ -4,7 +4,7 @@ import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/profile/profile_photo.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -130,7 +130,7 @@ class UserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO : different if friend, blocked, unknown...
     return ListTile(
-      leading: UserAvatar(user.photo),
+      leading: UserProfilePhoto(user.photo),
       title: Text(user.username ?? ''),
       trailing: IconButton(
         icon: const Icon(Icons.person_add),

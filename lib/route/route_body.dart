@@ -9,7 +9,7 @@ import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/profile/profile/profile_body.dart';
-import 'package:crea_chess/route/profile/profile/profile_photo.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -177,7 +177,7 @@ void answerFriendRequest(BuildContext context, NotificationModel notif) {
               return const CircularProgressIndicator();
             }
             return ListTile(
-              leading: UserAvatar(friend.photo),
+              leading: UserProfilePhoto(friend.photo),
               title: Text(friend.username ?? ''),
             );
           },

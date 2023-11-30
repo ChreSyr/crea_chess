@@ -1,12 +1,12 @@
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/divider.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/friend_preview.Dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/profile/profile_body.dart';
-import 'package:crea_chess/route/profile/profile/profile_photo.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:crea_chess/route/router.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +50,7 @@ class _FriendProfileBody extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.edit, color: Colors.transparent),
             title: Center(
-              child: UserAvatar(
+              child: UserProfilePhoto(
                 friend.photo,
                 radius: CCSize.xxxlarge,
                 backgroundColor: friend.photo == null ? Colors.grey : null,

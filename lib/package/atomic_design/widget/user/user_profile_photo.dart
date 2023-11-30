@@ -24,8 +24,9 @@ const avatarNames = [
   'yannick',
 ];
 
-class UserAvatar extends StatelessWidget {
-  const UserAvatar(this.photo, {this.backgroundColor, this.radius, super.key});
+class UserProfilePhoto extends StatelessWidget {
+  const UserProfilePhoto(this.photo,
+      {this.backgroundColor, this.radius, super.key});
 
   final String? photo;
   final Color? backgroundColor;
