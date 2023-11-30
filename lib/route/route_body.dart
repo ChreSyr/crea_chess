@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/notification/notification_model.dart';
@@ -9,14 +10,16 @@ import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/profile/profile/profile_body.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class RouteBody extends StatelessWidget {
-  const RouteBody({super.key});
+  const RouteBody({this.padded = true, this.centered = true, super.key});
+
+  final bool padded;
+  final bool centered;
 
   String getTitle(AppLocalizations l10n);
 
@@ -24,7 +27,13 @@ abstract class RouteBody extends StatelessWidget {
 }
 
 abstract class MainRouteBody extends RouteBody {
-  const MainRouteBody({required this.id, required this.icon, super.key});
+  const MainRouteBody({
+    required this.id,
+    required this.icon,
+    super.padded,
+    super.centered,
+    super.key,
+  });
 
   final String id;
   final IconData icon;

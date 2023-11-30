@@ -6,17 +6,16 @@ import 'package:flutter/material.dart';
 class RouteScaffold extends StatelessWidget {
   const RouteScaffold({
     required this.body,
-    this.withPadding = true,
     super.key,
   });
 
   final RouteBody body;
-  final bool withPadding;
 
   @override
   Widget build(BuildContext context) {
-    Widget padd(Widget child) {
-      return withPadding ? CCPadding.horizontalLarge(child: child) : child;
+    Widget padd(Widget child, {required bool centered, required bool padded}) {
+      final temp = centered ? Center(child: child) : child;
+      return padded ? CCPadding.horizontalLarge(child: temp) : temp;
     }
 
     return Scaffold(
@@ -25,10 +24,10 @@ class RouteScaffold extends StatelessWidget {
         actions: body.getActions(context),
       ),
       body: padd(
-        Center(
-          child: SingleChildScrollView(
-            child: body,
-          ),
+        centered: body.centered,
+        padded: body.centered,
+        SingleChildScrollView(
+          child: body,
         ),
       ),
     );

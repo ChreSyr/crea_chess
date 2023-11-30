@@ -50,7 +50,13 @@ enum ProfileMenuChoices {
 }
 
 class ProfileBody extends MainRouteBody {
-  const ProfileBody({super.key}) : super(id: 'profile', icon: Icons.person);
+  const ProfileBody({super.key})
+      : super(
+          id: 'profile',
+          icon: Icons.person,
+          centered: false,
+          padded: false,
+        );
 
   @override
   String getTitle(AppLocalizations l10n) {
@@ -79,10 +85,12 @@ class ProfileBody extends MainRouteBody {
       },
       builder: (context, auth) {
         if (auth == null) {
-          return FilledButton.icon(
-            onPressed: () => context.go('/profile/sso'),
-            icon: const Icon(Icons.login),
-            label: Text(context.l10n.signin),
+          return Center(
+            child: FilledButton.icon(
+              onPressed: () => context.go('/profile/sso'),
+              icon: const Icon(Icons.login),
+              label: Text(context.l10n.signin),
+            ),
           );
         } else if (!auth.isFullyAuthenticated) {
           return NotFullyAuthenticated(auth: auth);
