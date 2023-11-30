@@ -247,6 +247,7 @@ class UserDetails extends StatelessWidget {
             trailing: const Icon(Icons.person_add),
             onTap: () => searchFriend(context),
           ),
+          // TODO: remove this BlocBuilder
           BlocBuilder<UserCubit, UserModel?>(
             builder: (context, user) {
               if (user == null) return Container();
@@ -377,7 +378,7 @@ class FriendPreview extends StatelessWidget {
         final friend = snapshot.data;
         if (friend == null) return const CircularProgressIndicator();
         return InkWell(
-          onTap: () {},
+          onTap: () => context.push('/profile/friend_profile'),
           child: UserAvatar(
             friend.photo,
             radius: CCSize.xlarge,

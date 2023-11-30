@@ -8,6 +8,7 @@ import 'package:crea_chess/route/nav_notif_cubit.dart';
 import 'package:crea_chess/route/play/route_body/chessground_body.dart';
 import 'package:crea_chess/route/play/route_body/create_challenge_body.dart';
 import 'package:crea_chess/route/play/route_body/home_body.dart';
+import 'package:crea_chess/route/profile/friend_profile/friend_profile_body.dart';
 import 'package:crea_chess/route/profile/modify_username/modify_username_body.dart';
 import 'package:crea_chess/route/profile/profile/profile_body.dart';
 import 'package:crea_chess/route/profile/sso/email_verification_body.dart';
@@ -103,6 +104,12 @@ final router = GoRouter(
                   path: 'modify_name',
                   builder: (context, state) =>
                       const RouteScaffold(body: ModifyUsernameBody()),
+                ),
+                GoRoute(
+                  path: 'friend_profile',
+                  builder: (context, state) => RouteScaffold(
+                    body: FriendProfileBody(friend: fakeFriend),
+                  ),
                 ),
               ],
             ),
