@@ -12,9 +12,11 @@ import 'package:crea_chess/route/profile/search_friend/search_friend_body.dart';
 import 'package:flutter/material.dart';
 
 class UserProfileBody extends StatelessWidget {
-  const UserProfileBody({required this.user, super.key});
+  const UserProfileBody(
+      {required this.user, required this.editable, super.key});
 
   final UserModel user;
+  final bool editable;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +25,15 @@ class UserProfileBody extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          UserProfileHeader(user: user),
+          UserProfileHeader(user: user, editable: editable),
           CCGap.medium,
-          const UserProfileDetails(),
+          if (editable) const UserProfileDetails(),
           CCDivider.xthin,
           ListTile(
             leading: const Icon(Icons.groups),
             title: Text(context.l10n.friends),
-            trailing: const Icon(Icons.person_add),
-            onTap: () => searchFriend(context),
+            trailing: editable ? const Icon(Icons.person_add) : null,
+            onTap: editable ? () => searchFriend(context) : null,
           ),
           StreamBuilder<List<RelationshipModel>>(
             stream: relationshipCRUD.of(user.id),

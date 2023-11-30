@@ -14,18 +14,24 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfileHeader extends StatelessWidget {
-  const UserProfileHeader({required this.user, super.key});
+  const UserProfileHeader({
+    required this.user,
+    required this.editable,
+    super.key,
+  });
 
   final UserModel user;
+  final bool editable;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // banner
         Stack(
           children: [
             const SizedBox(height: CCWidgetSize.xxxlarge),
+
+            // banner
             Stack(
               children: [
                 const SizedBox(
@@ -34,21 +40,24 @@ class UserProfileHeader extends StatelessWidget {
                     tileColor: Colors.grey,
                   ),
                 ),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: IconButton(
-                    onPressed: () {}, // TODO
-                    icon: const Icon(Icons.edit),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => CCColor.background(context),
+                if (editable)
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: IconButton(
+                      onPressed: () {}, // TODO
+                      icon: const Icon(Icons.edit),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => CCColor.background(context),
+                        ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
+
+            // photo
             Positioned(
               left: CCSize.small,
               bottom: 0,
@@ -61,51 +70,38 @@ class UserProfileHeader extends StatelessWidget {
                     backgroundColor:
                         user.photo == null ? Colors.red[100] : null,
                   ),
-                  Positioned(
-                    right: -CCSize.medium,
-                    bottom: 0,
-                    child: IconButton(
-                      onPressed: () => showPhotoModal(context),
-                      icon: (user.photo ?? '').isEmpty
-                          ? const Icon(Icons.priority_high, color: Colors.red)
-                          : const Icon(Icons.edit),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => CCColor.background(context),
+                  if (editable)
+                    Positioned(
+                      right: -CCSize.medium,
+                      bottom: 0,
+                      child: IconButton(
+                        onPressed: () => showPhotoModal(context),
+                        icon: (user.photo ?? '').isEmpty
+                            ? const Icon(Icons.priority_high, color: Colors.red)
+                            : const Icon(Icons.edit),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateColor.resolveWith(
+                            (states) => CCColor.background(context),
+                          ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
           ],
         ),
 
-        // profile photo
-        // ListTile(
-        //   leading: const Icon(Icons.edit, color: Colors.transparent),
-        //   title: Center(
-        //     child: UserProfilePhoto(
-        //       user.photo,
-        //       radius: CCSize.xxxlarge,
-        //       backgroundColor: user.photo == null ? Colors.red[100] : null,
-        //     ),
-        //   ),
-        //   trailing: (user.photo ?? '').isEmpty
-        //       ? const Icon(Icons.priority_high, color: Colors.red)
-        //       : const Icon(Icons.edit),
-        //   onTap: () => showPhotoModal(context),
-        // ),
-
         // // profile name
         ListTile(
           leading: const Icon(Icons.alternate_email),
           title: Text(user.username ?? ''),
-          trailing: (user.username ?? '').isEmpty || user.username == user.id
-              ? const Icon(Icons.priority_high, color: Colors.red)
-              : const Icon(Icons.edit),
-          onTap: () => context.push('/profile/modify_name'),
+          trailing: editable
+              ? ((user.username ?? '').isEmpty || user.username == user.id)
+                  ? const Icon(Icons.priority_high, color: Colors.red)
+                  : const Icon(Icons.edit)
+              : null,
+          onTap: editable ? () => context.push('/profile/modify_name') : null,
         ),
       ],
     );
