@@ -112,7 +112,7 @@ abstract class MainRouteBody extends RouteBody {
               final isLoggedOut = auth == null;
               void signout() {
                 authenticationCRUD.signOut();
-                context.go('/profile/sso');
+                context.push('/sso');
               }
 
               return MenuAnchor(
@@ -136,7 +136,7 @@ abstract class MainRouteBody extends RouteBody {
                         onPressed: () {
                           switch (e) {
                             case ProfileMenuChoices.signin:
-                              context.push('/profile/sso');
+                              context.push('/sso');
                             case ProfileMenuChoices.signout:
                               signout();
                             case ProfileMenuChoices.deleteAccount:

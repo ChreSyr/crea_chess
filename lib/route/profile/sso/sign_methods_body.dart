@@ -17,7 +17,7 @@ class SignMethodsBody extends RouteBody {
 
   @override
   String getTitle(AppLocalizations l10n) {
-    return l10n.signin;
+    return l10n.signin; // TODO : change
   }
 
   @override
@@ -43,7 +43,7 @@ class _SignMethodsBody extends StatelessWidget {
         children: [
           // sign in button
           FilledButton(
-            onPressed: () => context.push('/profile/sso/signin'),
+            onPressed: () => context.push('/sso/signin'),
             child: Text(context.l10n.signin),
           ),
 
@@ -51,7 +51,7 @@ class _SignMethodsBody extends StatelessWidget {
 
           // sign up button
           FilledButton(
-            onPressed: () => context.push('/profile/sso/signup'),
+            onPressed: () => context.push('/sso/signup'),
             child: Text(context.l10n.signup),
           ),
 

@@ -26,6 +26,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
 final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
 final _shellNavigatorCKey = GlobalKey<NavigatorState>(debugLabel: 'shellC');
+final _shellNavigatorSSOKey = GlobalKey<NavigatorState>(debugLabel: 'shellSSO');
 
 // the one and only GoRouter instance
 final router = GoRouter(
@@ -77,30 +78,6 @@ final router = GoRouter(
               routes: [
                 // child routes
                 GoRoute(
-                  path: 'sso',
-                  pageBuilder: (context, state) => const NoTransitionPage(
-                    child: RouteScaffold(body: SignMethodsBody()),
-                  ),
-                  routes: [
-                    // child routes
-                    GoRoute(
-                      path: 'signin',
-                      builder: (context, state) =>
-                          const RouteScaffold(body: SigninBody()),
-                    ),
-                    GoRoute(
-                      path: 'signup',
-                      builder: (context, state) =>
-                          const RouteScaffold(body: SignupBody()),
-                    ),
-                    GoRoute(
-                      path: 'email_verification',
-                      builder: (context, state) =>
-                          const RouteScaffold(body: EmailVerificationBody()),
-                    ),
-                  ],
-                ),
-                GoRoute(
                   path: 'modify_name',
                   builder: (context, state) =>
                       const RouteScaffold(body: ModifyUsernameBody()),
@@ -126,6 +103,36 @@ final router = GoRouter(
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: RouteScaffold(body: SettingsBody()),
               ),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _shellNavigatorSSOKey,
+          routes: [
+            // top route inside branch
+            GoRoute(
+              path: '/sso',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: RouteScaffold(body: SignMethodsBody()),
+              ),
+              routes: [
+                // child routes
+                GoRoute(
+                  path: 'signin',
+                  builder: (context, state) =>
+                      const RouteScaffold(body: SigninBody()),
+                ),
+                GoRoute(
+                  path: 'signup',
+                  builder: (context, state) =>
+                      const RouteScaffold(body: SignupBody()),
+                ),
+                GoRoute(
+                  path: 'email_verification',
+                  builder: (context, state) =>
+                      const RouteScaffold(body: EmailVerificationBody()),
+                ),
+              ],
             ),
           ],
         ),
@@ -162,14 +169,14 @@ class ErrorBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
           Text(exception?.toString() ?? 'null'),
-            TextButton(
-              onPressed: () => context.go('/play'),
-              child: Text(context.l10n.home),
-            ),
+          TextButton(
+            onPressed: () => context.go('/play'),
+            child: Text(context.l10n.home),
+          ),
         ],
       ),
     );
@@ -181,6 +188,7 @@ class ErrorBody extends StatelessWidget {
 class ScaffoldWithNestedNavigation extends StatelessWidget {
   const ScaffoldWithNestedNavigation({required this.navigationShell, Key? key})
       : super(key: key ?? const ValueKey('ScaffoldWithNestedNavigation'));
+
   final StatefulNavigationShell navigationShell;
 
   void _goBranch(int index) {
@@ -196,27 +204,32 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // redirect sso to profile
+    final selectedIndex = navigationShell.currentIndex;
+
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: BlocBuilder<NavNotifCubit, Map<String, Set<String>>>(
-        builder: (context, notifs) {
-          return NavigationBar(
-            height: CCWidgetSize.xxsmall,
-            selectedIndex: navigationShell.currentIndex,
-            destinations: mainRouteBodies
-                .map(
-                  (e) => NavigationDestination(
-                    icon: notifs[e.id]?.isNotEmpty ?? false
-                        ? badges.Badge(child: Icon(e.icon))
-                        : Icon(e.icon),
-                    label: e.getTitle(context.l10n),
-                  ),
-                )
-                .toList(),
-            onDestinationSelected: _goBranch,
-          );
-        },
-      ),
+      bottomNavigationBar: selectedIndex >= mainRouteBodies.length
+          ? null
+          : BlocBuilder<NavNotifCubit, Map<String, Set<String>>>(
+              builder: (context, notifs) {
+                return NavigationBar(
+                  height: CCWidgetSize.xxsmall,
+                  selectedIndex: selectedIndex,
+                  destinations: mainRouteBodies
+                      .map(
+                        (e) => NavigationDestination(
+                          icon: notifs[e.id]?.isNotEmpty ?? false
+                              ? badges.Badge(child: Icon(e.icon))
+                              : Icon(e.icon),
+                          label: e.getTitle(context.l10n),
+                        ),
+                      )
+                      .toList(),
+                  onDestinationSelected: _goBranch,
+                );
+              },
+            ),
     );
   }
 }

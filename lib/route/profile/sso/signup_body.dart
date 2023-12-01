@@ -32,7 +32,7 @@ class SignupBody extends RouteBody {
           if (user != null) {
             context.pop();
             if (user.emailVerified != true) {
-              context.push('/profile/sso/email_verification');
+              context.push('/sso/email_verification');
             }
           }
         },

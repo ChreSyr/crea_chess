@@ -84,17 +84,23 @@ class ProfileBody extends MainRouteBody {
         }
       },
       builder: (context, auth) {
+        // Note : if auth is null, the sso route replaces the profile route.
+        // This is just a security.
         if (auth == null) {
           return Center(
             child: FilledButton.icon(
-              onPressed: () => context.go('/profile/sso'),
+              onPressed: () => context.push('/sso'),
               icon: const Icon(Icons.login),
               label: Text(context.l10n.signin),
             ),
           );
+
+          // If the email is not confirmed yet
+          // TODO: move in sso route
         } else if (!auth.isFullyAuthenticated) {
           return NotFullyAuthenticated(auth: auth);
         }
+
         return BlocConsumer<UserCubit, UserModel?>(
           listener: (context, user) {
             if (user == null) {
@@ -183,7 +189,7 @@ class NotFullyAuthenticated extends StatelessWidget {
                               onPressed: () {
                                 context
                                   ..pop()
-                                  ..push('/profile/sso/email_verification');
+                                  ..push('/sso/email_verification');
                               },
                             ),
                           ],
