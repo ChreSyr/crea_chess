@@ -7,7 +7,8 @@ import 'package:crea_chess/route/router.dart';
 import 'package:flutter/material.dart';
 
 class FriendProfileBody extends RouteBody {
-  const FriendProfileBody({required this.friendId, super.key});
+  const FriendProfileBody({required this.friendId, super.key})
+      : super(padded: false, centered: false);
 
   final String friendId;
 
