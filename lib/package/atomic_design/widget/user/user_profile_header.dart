@@ -3,13 +3,18 @@ import 'dart:io';
 import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/firebase/storage/extension.dart';
+import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -100,14 +105,51 @@ class UserProfileHeader extends StatelessWidget {
               ? ((user.username ?? '').isEmpty || user.username == user.id)
                   ? const Icon(Icons.priority_high, color: Colors.red)
                   : const Icon(Icons.edit)
-              : null,
-          onTap: editable ? () => context.push('/profile/modify_name') : null,
+              : const Icon(Icons.more_horiz),
+          onTap: editable
+              ? () => context.push('/profile/modify_name')
+              : () => showFriendActionsModal(context),
+        ),
+      ],
+    );
+  }
+
+  void showFriendActionsModal(BuildContext context) {
+    // TODO: l10n
+    final currentUserId = context.read<UserCubit>().state?.id;
+    if (currentUserId == null) return; // should never happen
+    if (user.id == null) return; // should never happen
+
+    return Modal.show(
+      context: context,
+      sections: [
+        if (!kIsWeb)
+          ListTile(
+            leading: const Icon(Icons.block),
+            title: const Text('Bloquer'),
+            onTap: () {
+              context.pop();
+              showBlockDialog(context, currentUserId, user.id!);
+            },
+          ),
+        ListTile(
+          leading: const Icon(Icons.person_remove),
+          title: const Text('Retirer des amis'),
+          onTap: () {
+            context.pop();
+            relationshipCRUD.cancel(
+              cancelerId: currentUserId,
+              otherId: user.id!,
+            );
+            snackBarNotify(context, 'Retiré des amis');
+          },
         ),
       ],
     );
   }
 
   void showPhotoModal(BuildContext context) {
+    // TODO: l10n
     return Modal.show(
       context: context,
       sections: [

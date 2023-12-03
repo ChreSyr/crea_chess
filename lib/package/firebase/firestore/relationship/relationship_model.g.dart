@@ -30,8 +30,8 @@ Map<String, dynamic> _$$RelationshipModelImplToJson(
 
 const _$RelationshipStatusEnumMap = {
   RelationshipStatus.friends: 'friends',
-  RelationshipStatus.canceledByUser1: 'canceledByUser1',
-  RelationshipStatus.canceledByUser2: 'canceledByUser2',
-  RelationshipStatus.blockedByUser1: 'blockedByUser1',
-  RelationshipStatus.blockedByUser2: 'blockedByUser2',
+  RelationshipStatus.canceledByFirst: 'canceledByFirst',
+  RelationshipStatus.canceledByLast: 'canceledByLast',
+  RelationshipStatus.blockedByFirst: 'blockedByFirst',
+  RelationshipStatus.blockedByLast: 'blockedByLast',
 };

@@ -35,7 +35,7 @@ class UserProfile extends StatelessWidget {
             onTap: editable ? () => searchFriend(context) : null,
           ),
           StreamBuilder<List<RelationshipModel>>(
-            stream: relationshipCRUD.of(user.id),
+            stream: relationshipCRUD.friendsOf(user.id),
             builder: (context, snapshot) {
               final relations = snapshot.data;
               return Wrap(

@@ -27,10 +27,81 @@ class _RelationshipModelConverter implements ModelConverter<RelationshipModel> {
 class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
   _RelationshipCRUD() : super('relationship', _RelationshipModelConverter());
 
-  Stream<List<RelationshipModel>> of(String? userId) {
-    return streamFiltered(
-      filter: (collection) => collection.where('users', arrayContains: userId),
+  Future<void> block({
+    required String blockerId,
+    required String toBlockId,
+  }) async {
+    final sortedUsers = [blockerId, toBlockId]..sort();
+
+    final RelationshipStatus newStatus;
+    if (blockerId == sortedUsers.first) {
+      newStatus = RelationshipStatus.blockedByFirst;
+    } else if (blockerId == sortedUsers.last) {
+      newStatus = RelationshipStatus.blockedByLast;
+    } else {
+      return;
+    }
+
+    final relationshipId = sortedUsers.join();
+
+    final relationship = await read(documentId: relationshipId);
+    if (relationship == null) {
+      return create(
+        documentId: relationshipId,
+        data: RelationshipModel(
+          id: relationshipId,
+          users: sortedUsers,
+          status: newStatus,
+        ),
+      );
+    }
+
+    if ([RelationshipStatus.blockedByFirst, RelationshipStatus.blockedByLast]
+        .contains(relationship.status)) return;
+
+    await update(
+      documentId: relationshipId,
+      data: relationship.copyWith(status: newStatus),
     );
+  }
+
+  Future<void> cancel({
+    required String cancelerId,
+    required String otherId,
+  }) async {
+    final relationshipId = getId(cancelerId, otherId);
+
+    final relationship = await read(documentId: relationshipId);
+    if (relationship == null) return;
+
+    if (relationship.status != RelationshipStatus.friends) return;
+
+    final RelationshipStatus newStatus;
+    if (cancelerId == relationship.users?.first) {
+      newStatus = RelationshipStatus.canceledByFirst;
+    } else if (cancelerId == relationship.users?.last) {
+      newStatus = RelationshipStatus.canceledByLast;
+    } else {
+      return;
+    }
+
+    await update(
+      documentId: relationshipId,
+      data: relationship.copyWith(status: newStatus),
+    );
+  }
+
+  Stream<List<RelationshipModel>> friendsOf(String? userId) {
+    return streamFiltered(
+      filter: (collection) => collection
+          .where('users', arrayContains: userId)
+          .where('status', isEqualTo: RelationshipStatus.friends.name),
+    );
+  }
+
+  String getId(String user1, String user2) {
+    final sortedUsers = [user1, user2]..sort();
+    return sortedUsers.join();
   }
 
   Future<void> makeFriends(String user1, String user2) async {
@@ -48,7 +119,7 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
       await super.create(
         documentId: relationshipId,
         data: RelationshipModel(
-          users: [user1, user2],
+          users: sortedUsers,
           status: RelationshipStatus.friends,
         ),
       );
@@ -67,13 +138,6 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
         await notificationCRUD.delete(documentId: friendRequest2.id);
       }
     }
-  }
-
-  void canceledBy(String canceledBy, {required String relationshipId}) {
-    // TODO
-    // If was acepted, cancelByUserX
-    // Else, delete friend request
-    // TODO : when refusing a friend request, a dialog propose to block
   }
 }
 

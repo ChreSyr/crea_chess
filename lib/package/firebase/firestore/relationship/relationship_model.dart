@@ -8,10 +8,10 @@ part 'relationship_model.g.dart';
 
 enum RelationshipStatus {
   friends,
-  canceledByUser1,
-  canceledByUser2,
-  blockedByUser1,
-  blockedByUser2,
+  canceledByFirst,
+  canceledByLast,
+  blockedByFirst,
+  blockedByLast,
 }
 
 @freezed

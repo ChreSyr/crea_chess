@@ -167,6 +167,8 @@ abstract class MainRouteBody extends RouteBody {
   }
 }
 
+// TODO: dialogs folder in atomic design
+
 void answerFriendRequest(BuildContext context, NotificationModel notif) {
   if (notif.from == null || notif.to == null) return;
   showDialog<AlertDialog>(
@@ -177,17 +179,15 @@ void answerFriendRequest(BuildContext context, NotificationModel notif) {
       }
 
       return AlertDialog(
+        // TODO: l10n
         title: const Text('Nouvelle demande en ami !'),
         content: FutureBuilder<UserModel?>(
           future: userCRUD.read(documentId: notif.from!),
           builder: (context, snapshot) {
             final friend = snapshot.data;
-            if (friend == null) {
-              return const CircularProgressIndicator();
-            }
             return ListTile(
-              leading: UserProfilePhoto(friend.photo),
-              title: Text(friend.username ?? ''),
+              leading: UserProfilePhoto(friend?.photo),
+              title: Text(friend?.username ?? ''),
             );
           },
         ),
@@ -197,7 +197,7 @@ void answerFriendRequest(BuildContext context, NotificationModel notif) {
             onPressed: () {
               context.pop();
               deleteNotification();
-              snackBarNotify(context, 'Demande en ami refusée.');
+              showBlockDialog(context, notif.to!, notif.from!);
             },
             label: const Text('Refuser'),
           ),
@@ -244,6 +244,49 @@ Future<AlertDialog?> confirmDeleteAccount(BuildContext context, User user) {
                 snackBarError(context, context.l10n.errorOccurred);
               }
             },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void showBlockDialog(BuildContext context, String blockerId, String toBlockId) {
+  showDialog<AlertDialog>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        // TODO: l10n
+        title: const Text('Bloquer cet utilisateur ?'),
+        content: FutureBuilder<UserModel?>(
+          future: userCRUD.read(documentId: toBlockId),
+          builder: (context, snapshot) {
+            final toBlock = snapshot.data;
+            return ListTile(
+              leading: UserProfilePhoto(toBlock?.photo),
+              title: Text(toBlock?.username ?? ''),
+            );
+          },
+        ),
+        actions: [
+          ElevatedButton.icon(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              context.pop();
+            },
+            label: const Text('Non'),
+          ),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              relationshipCRUD.block(
+                blockerId: blockerId,
+                toBlockId: toBlockId,
+              );
+              context.pop();
+              snackBarNotify(context, 'Utilisateur bloqué');
+            },
+            label: const Text('Oui'),
           ),
         ],
       );

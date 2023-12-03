@@ -1,5 +1,7 @@
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
@@ -84,7 +86,7 @@ class FriendSearchDelegate extends SearchDelegate<String?> {
     return BlocBuilder<AllUsersCubit, List<UserModel>>(
       builder: (context, users) {
         if (users.isEmpty) return const LinearProgressIndicator();
-        if (query.isEmpty) return Container();
+        // if (query.isEmpty) return Container();
         return ListView(
           children: users
               .where(
@@ -93,7 +95,7 @@ class FriendSearchDelegate extends SearchDelegate<String?> {
                     (user.usernameLowercase?.contains(query.toLowerCase()) ??
                         false),
               )
-              .map<Widget>(UserTile.new)
+              .map<Widget>((user) => getUserTile(context, user))
               .toList(),
         );
       },
@@ -103,47 +105,57 @@ class FriendSearchDelegate extends SearchDelegate<String?> {
   @override
   Widget buildSuggestions(BuildContext context) {
     return buildResults(context);
-    // final matchQuery = <String>[];
-    // for (final user in searchTerms) {
-    //   if (user.toLowerCase().contains(query.toLowerCase())) {
-    //     matchQuery.add(user);
-    //   }
-    // }
-    // return ListView.builder(
-    //   itemCount: matchQuery.length,
-    //   itemBuilder: (context, index) {
-    //     final result = matchQuery[index];
-    //     return ListTile(
-    //       title: Text(result),
-    //     );
-    //   },
-    // );
   }
 }
 
-class UserTile extends StatelessWidget {
-  const UserTile(this.user, {super.key});
+Widget getUserTile(BuildContext context, UserModel user) {
+  final currentUserId = context.read<UserCubit>().state?.id;
+  if (currentUserId == null) return Container(); // should never happen
+  if (user.id == null) return Container(); // should never happen
+  final relationshipId = relationshipCRUD.getId(currentUserId, user.id!);
 
-  final UserModel user;
+  return StreamBuilder<RelationshipModel?>(
+    stream: relationshipCRUD.stream(documentId: relationshipId),
+    builder: (context, snapshot) {
+      Widget? getTrailing() {
+        // TODO: if friend request has been sent
+        switch (snapshot.data?.status) {
+          case null:
+          case RelationshipStatus.canceledByFirst:
+          case RelationshipStatus.canceledByLast:
+            return IconButton(
+              icon: const Icon(Icons.person_add),
+              onPressed: () {
+                notificationCRUD.sendFriendRequest(
+                  fromUserId: currentUserId,
+                  toUserId: user.id,
+                );
+                snackBarNotify(context, context.l10n.friendRequestSent);
+              },
+            );
+          case RelationshipStatus.friends:
+            return const IconButton(
+              icon: Icon(Icons.check),
+              onPressed: null,
+            );
+          // TODO: if blocked by current, can unblock
+          case RelationshipStatus.blockedByFirst:
+          case RelationshipStatus.blockedByLast:
+            return const IconButton(
+              icon: Icon(Icons.block),
+              onPressed: null,
+            );
+        }
+      }
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO : different if friend, blocked, unknown...
-    return ListTile(
-      leading: UserProfilePhoto(user.photo),
-      title: Text(user.username ?? ''),
-      trailing: IconButton(
-        icon: const Icon(Icons.person_add),
-        onPressed: () {
-          final currentUser = context.read<UserCubit>().state;
-          if (currentUser == null) return;
-          notificationCRUD.sendFriendRequest(
-            fromUserId: currentUser.id,
-            toUserId: user.id,
-          );
-          snackBarNotify(context, context.l10n.friendRequestSent);
-        },
-      ),
-    );
-  }
+      final trailing = getTrailing();
+      if (trailing == null) return Container();
+
+      return ListTile(
+        leading: UserProfilePhoto(user.photo),
+        title: Text(user.username ?? ''),
+        trailing: trailing,
+      );
+    },
+  );
 }
