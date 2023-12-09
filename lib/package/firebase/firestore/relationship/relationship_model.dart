@@ -80,4 +80,15 @@ class RelationshipModel with _$RelationshipModel {
             userId == users!.first ||
         status == RelationshipStatus.requestedByLast && userId == users!.last;
   }
+
+  String? otherUser(String user1) {
+    if (users == null || users!.isEmpty) return null;
+    if (user1 == users!.first) {
+      return users!.last;
+    } else if (user1 == users!.last) {
+      return users!.first;
+    } else {
+      return null;
+    }
+  }
 }
