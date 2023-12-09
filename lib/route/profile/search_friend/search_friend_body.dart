@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_friend_request.dart';
 import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user_dialog.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/simple_badge.dart';
@@ -152,7 +153,13 @@ Widget getUserTile(BuildContext context, UserModel user) {
                       icon: const Icon(Icons.mail),
                     ),
                   )
-                : const IconButton(onPressed: null, icon: Icon(Icons.send));
+                : IconButton(
+                    onPressed: () => showCancelFriendRequestDialog(
+                      context,
+                      userId,
+                    ),
+                    icon: const Icon(Icons.send),
+                  );
           case RelationshipStatus.friends:
             return const IconButton(
               icon: Icon(Icons.check),

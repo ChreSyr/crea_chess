@@ -191,7 +191,7 @@ void answerFriendRequest(BuildContext pageContext, String? fromUserId) {
                 documentId: relationshipCRUD.getId(fromUserId, currentUserId),
               );
               dialogContext.pop();
-              showBlockUserDialog(pageContext, currentUserId, fromUserId);
+              showBlockUserDialog(pageContext, fromUserId);
             },
             label: const Text('Refuser'),
           ),

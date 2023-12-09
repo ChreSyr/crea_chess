@@ -130,7 +130,7 @@ class UserProfileHeader extends StatelessWidget {
           title: const Text('Bloquer'),
           onTap: () {
             context.pop();
-            showBlockUserDialog(context, currentUserId, userId);
+            showBlockUserDialog(context, userId);
           },
         ),
         StreamBuilder<RelationshipModel?>(
@@ -145,7 +145,7 @@ class UserProfileHeader extends StatelessWidget {
                 title: const Text('Retirer des amis'), // TODO: l10n
                 onTap: () {
                   context.pop();
-                  showCancelRelationshipDialog(context, currentUserId, userId);
+                  showCancelRelationshipDialog(context, userId);
                 },
               );
             } else {

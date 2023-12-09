@@ -69,18 +69,26 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
     required String otherId,
   }) async {
     final relationshipId = getId(cancelerId, otherId);
-
     final relationship = await read(documentId: relationshipId);
     if (relationship == null) return;
 
     if (relationship.status != RelationshipStatus.friends) return;
 
-    final newStatus = RelationshipStatus.canceled;
-
     await update(
       documentId: relationshipId,
-      data: relationship.copyWith(status: newStatus),
+      data: relationship.copyWith(status: RelationshipStatus.canceled),
     );
+  }
+
+  Future<void> cancelFriendRequest({
+    required String cancelerId,
+    required String otherId,
+  }) async {
+    final relationshipId = getId(cancelerId, otherId);
+    final relationship = await read(documentId: relationshipId);
+    if (relationship == null || relationship.requester != cancelerId) return;
+
+    await delete(documentId: relationshipId);
   }
 
   Stream<Iterable<RelationshipModel>> friendsOf(String? userId) {
@@ -196,11 +204,9 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
     if (relationship == null) return;
     if (!relationship.isBlockedBy(blockerId)) return;
 
-    final newStatus = RelationshipStatus.canceled;
-
     await update(
       documentId: relationshipId,
-      data: relationship.copyWith(status: newStatus),
+      data: relationship.copyWith(status: RelationshipStatus.canceled),
     );
   }
 }

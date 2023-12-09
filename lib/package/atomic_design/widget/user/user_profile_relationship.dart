@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_friend_request.dart';
 import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user_dialog.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
@@ -52,8 +53,8 @@ class UserProfileRelationship extends StatelessWidget {
                 label: const Text('Nouvelle demande en ami !'), // TODO : l10n
               );
             } else {
-              return FilledButton.icon(
-                onPressed: null,
+              return ElevatedButton.icon(
+                onPressed: () => showCancelFriendRequestDialog(context, userId),
                 icon: const Icon(Icons.send),
                 label: const Text('Demande en ami envoyée'), // TODO : l10n
               );

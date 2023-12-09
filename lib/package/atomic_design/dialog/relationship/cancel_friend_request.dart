@@ -8,33 +8,32 @@ import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void showBlockUserDialog(
+void showCancelFriendRequestDialog(
   BuildContext pageContext,
-  String toBlockId,
+  String relatedUserId,
 ) {
   final currentUserId = pageContext.read<UserCubit>().state?.id;
   if (currentUserId == null) return; // should never happen
 
   showYesNoDialog(
     pageContext: pageContext,
-    title: 'Bloquer cet utilisateur ?', // TODO: l10n
+    title: 'Annuler la demande en ami ?', // TODO: l10n
     content: FutureBuilder<UserModel?>(
-      future: userCRUD.read(documentId: toBlockId),
+      future: userCRUD.read(documentId: relatedUserId),
       builder: (context, snapshot) {
         final toBlock = snapshot.data;
         return ListTile(
           leading: UserProfilePhoto(toBlock?.photo),
           title: Text(toBlock?.username ?? ''),
         );
-        // TODO : il ne pourra plus voir votre liste d'amis
       },
     ),
     onYes: () {
-      relationshipCRUD.block(
-        blockerId: currentUserId,
-        toBlockId: toBlockId,
+      relationshipCRUD.cancelFriendRequest(
+        cancelerId: currentUserId,
+        otherId: relatedUserId,
       );
-      snackBarNotify(pageContext, 'Utilisateur bloqué'); // TODO: l10n
+      snackBarNotify(pageContext, 'Demande en ami annulée'); // TODO: l10n
     },
   );
 }

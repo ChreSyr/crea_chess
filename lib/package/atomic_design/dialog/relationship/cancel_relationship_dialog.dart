@@ -3,14 +3,18 @@ import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void showCancelRelationshipDialog(
   BuildContext pageContext,
-  String cancelerId,
   String relatedUserId,
 ) {
+  final currentUserId = pageContext.read<UserCubit>().state?.id;
+  if (currentUserId == null) return; // should never happen
+
   showYesNoDialog(
     pageContext: pageContext,
     title: 'Retirer des amis ?', // TODO: l10n
@@ -26,7 +30,7 @@ void showCancelRelationshipDialog(
     ),
     onYes: () {
       relationshipCRUD.cancel(
-        cancelerId: cancelerId,
+        cancelerId: currentUserId,
         otherId: relatedUserId,
       );
       snackBarNotify(pageContext, 'Retiré des amis'); // TODO: l10n
