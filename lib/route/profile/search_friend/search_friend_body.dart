@@ -137,8 +137,7 @@ Widget getUserTile(BuildContext context, UserModel user) {
         if (relationship == null) return sendRequestButton;
         switch (relationship.status) {
           case null:
-          case RelationshipStatus.canceledByFirst:
-          case RelationshipStatus.canceledByLast:
+          case RelationshipStatus.canceled:
             return sendRequestButton;
           case RelationshipStatus.requestedByFirst:
           case RelationshipStatus.requestedByLast:

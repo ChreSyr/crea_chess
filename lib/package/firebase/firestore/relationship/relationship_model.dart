@@ -10,8 +10,7 @@ enum RelationshipStatus {
   requestedByFirst,
   requestedByLast,
   friends,
-  canceledByFirst,
-  canceledByLast,
+  canceled,
   blockedByFirst,
   blockedByLast,
 }

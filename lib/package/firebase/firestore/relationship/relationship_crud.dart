@@ -75,14 +75,7 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
 
     if (relationship.status != RelationshipStatus.friends) return;
 
-    final RelationshipStatus newStatus;
-    if (cancelerId == relationship.users?.first) {
-      newStatus = RelationshipStatus.canceledByFirst;
-    } else if (cancelerId == relationship.users?.last) {
-      newStatus = RelationshipStatus.canceledByLast;
-    } else {
-      return;
-    }
+    final newStatus = RelationshipStatus.canceled;
 
     await update(
       documentId: relationshipId,
@@ -174,14 +167,8 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
     final relationshipId = sortedUsers.join();
 
     final relation = await read(documentId: relationshipId);
-    if (relation != null) {
-      if ([
-        RelationshipStatus.requestedByFirst,
-        RelationshipStatus.requestedByLast,
-        RelationshipStatus.friends,
-        RelationshipStatus.blockedByFirst,
-        RelationshipStatus.blockedByLast,
-      ].contains(relation.status)) return;
+    if (relation != null && relation.status != RelationshipStatus.canceled) {
+      return;
     }
 
     final status = fromUserId == sortedUsers[0]
@@ -207,11 +194,7 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
     if (relationship == null) return;
     if (!relationship.isBlockedBy(blockerId)) return;
 
-    final newStatus = switch (relationship.status) {
-      RelationshipStatus.blockedByFirst => RelationshipStatus.canceledByFirst,
-      RelationshipStatus.blockedByLast => RelationshipStatus.canceledByLast,
-      _ => RelationshipStatus.canceledByFirst,
-    };
+    final newStatus = RelationshipStatus.canceled;
 
     await update(
       documentId: relationshipId,

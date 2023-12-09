@@ -32,8 +32,7 @@ const _$RelationshipStatusEnumMap = {
   RelationshipStatus.requestedByFirst: 'requestedByFirst',
   RelationshipStatus.requestedByLast: 'requestedByLast',
   RelationshipStatus.friends: 'friends',
-  RelationshipStatus.canceledByFirst: 'canceledByFirst',
-  RelationshipStatus.canceledByLast: 'canceledByLast',
+  RelationshipStatus.canceled: 'canceled',
   RelationshipStatus.blockedByFirst: 'blockedByFirst',
   RelationshipStatus.blockedByLast: 'blockedByLast',
 };
