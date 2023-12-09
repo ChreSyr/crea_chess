@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:crea_chess/package/atomic_design/color.dart';
+import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user_dialog.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
@@ -10,7 +11,6 @@ import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/firebase/storage/extension.dart';
-import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -120,6 +120,8 @@ class UserProfileHeader extends StatelessWidget {
     if (currentUserId == null) return; // should never happen
     if (user.id == null) return; // should never happen
 
+    // TODO: solve : if the user is not a friend, modal should only show 'block'
+
     return Modal.show(
       context: context,
       sections: [
@@ -129,13 +131,14 @@ class UserProfileHeader extends StatelessWidget {
             title: const Text('Bloquer'),
             onTap: () {
               context.pop();
-              showBlockDialog(context, currentUserId, user.id!);
+              showBlockUserDialog(context, currentUserId, user.id!);
             },
           ),
         ListTile(
           leading: const Icon(Icons.person_remove),
           title: const Text('Retirer des amis'),
           onTap: () {
+            // TODO: showCancelFriendshipDialog
             context.pop();
             relationshipCRUD.cancel(
               cancelerId: currentUserId,

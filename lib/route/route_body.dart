@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart' as badges;
+import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user_dialog.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
@@ -197,7 +198,7 @@ void answerFriendRequest(BuildContext context, NotificationModel notif) {
             onPressed: () {
               context.pop();
               deleteNotification();
-              showBlockDialog(context, notif.to!, notif.from!);
+              showBlockUserDialog(context, notif.to!, notif.from!);
             },
             label: const Text('Refuser'),
           ),
@@ -244,49 +245,6 @@ Future<AlertDialog?> confirmDeleteAccount(BuildContext context, User user) {
                 snackBarError(context, context.l10n.errorOccurred);
               }
             },
-          ),
-        ],
-      );
-    },
-  );
-}
-
-void showBlockDialog(BuildContext context, String blockerId, String toBlockId) {
-  showDialog<AlertDialog>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        // TODO: l10n
-        title: const Text('Bloquer cet utilisateur ?'),
-        content: FutureBuilder<UserModel?>(
-          future: userCRUD.read(documentId: toBlockId),
-          builder: (context, snapshot) {
-            final toBlock = snapshot.data;
-            return ListTile(
-              leading: UserProfilePhoto(toBlock?.photo),
-              title: Text(toBlock?.username ?? ''),
-            );
-          },
-        ),
-        actions: [
-          ElevatedButton.icon(
-            icon: const Icon(Icons.close),
-            onPressed: () {
-              context.pop();
-            },
-            label: const Text('Non'),
-          ),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.check),
-            onPressed: () {
-              relationshipCRUD.block(
-                blockerId: blockerId,
-                toBlockId: toBlockId,
-              );
-              context.pop();
-              snackBarNotify(context, 'Utilisateur bloqué');
-            },
-            label: const Text('Oui'),
           ),
         ],
       );
