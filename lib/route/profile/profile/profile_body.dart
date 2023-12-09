@@ -123,7 +123,7 @@ class ProfileBody extends MainRouteBody {
             // creating the user
             if (user == null) return const CircularProgressIndicator();
 
-            return UserProfile(user: user, editable: true);
+            return UserProfile(user: user);
           },
         );
       },

@@ -107,13 +107,13 @@ class UserProfileHeader extends StatelessWidget {
               : const Icon(Icons.more_horiz),
           onTap: editable
               ? () => context.push('/profile/modify_name')
-              : () => showFriendActionsModal(context),
+              : () => showUserActionsModal(context),
         ),
       ],
     );
   }
 
-  void showFriendActionsModal(BuildContext context) {
+  void showUserActionsModal(BuildContext context) {
     // TODO: l10n
     final currentUserId = context.read<UserCubit>().state?.id;
     if (currentUserId == null) return; // should never happen

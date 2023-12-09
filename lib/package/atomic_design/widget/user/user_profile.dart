@@ -6,19 +6,35 @@ import 'package:crea_chess/package/atomic_design/widget/user/user_profile_detail
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_header.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/profile/search_friend/search_friend_body.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserProfile extends StatelessWidget {
-  const UserProfile({required this.user, required this.editable, super.key});
+  const UserProfile({required this.user, super.key});
+
+  static Widget fromId({required String userId}) {
+    return StreamBuilder<UserModel?>(
+      stream: userCRUD.stream(documentId: userId),
+      builder: (context, snapshot) {
+        final user = snapshot.data;
+        if (user == null) return const CircularProgressIndicator();
+        return UserProfile(user: user);
+      },
+    );
+  }
 
   final UserModel user;
-  final bool editable;
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = context.read<UserCubit>().state;
+    final editable = currentUser?.id == user.id;
+    
     return SizedBox(
       width: CCWidgetSize.large3,
       child: Column(
