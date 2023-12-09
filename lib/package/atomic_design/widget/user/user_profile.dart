@@ -11,7 +11,6 @@ import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/search_friend/search_friend_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,8 +36,6 @@ class UserProfile extends StatelessWidget {
     if (currentUserId == null) return Container(); // should never happen
     if (user.id == null) return Container(); // should never happen
     final userId = user.id!;
-    
-    final editable = currentUserId == userId;
 
     return StreamBuilder<RelationshipModel?>(
       stream: relationshipCRUD.stream(
@@ -51,17 +48,15 @@ class UserProfile extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              UserProfileHeader(user: user, editable: editable),
+              UserProfileHeader(user: user),
               if (relation != null) UserProfileRelationship(relation),
               if (relation?.blocker != userId) ...[
                 CCGap.medium,
-                if (editable) const UserProfileDetails(),
+                if (currentUserId == userId) const UserProfileDetails(),
                 CCDivider.xthin,
                 ListTile(
                   leading: const Icon(Icons.groups),
                   title: Text(context.l10n.friends),
-                  trailing: editable ? const Icon(Icons.person_add) : null,
-                  onTap: editable ? () => searchFriend(context) : null,
                 ),
                 UserProfileFriends(user: user),
               ],
@@ -84,21 +79,22 @@ class UserProfileFriends extends StatelessWidget {
       stream: relationshipCRUD.friendsOf(user.id),
       builder: (context, snapshot) {
         final relations = snapshot.data;
+        final List<Widget> friendsPreviews = (relations ?? [])
+            .map(
+              (relationship) => FriendPreview(
+                friendId: (relationship.users ?? [])
+                    .where((id) => id != user.id)
+                    .first,
+              ),
+            )
+            .toList();
+        if (context.read<UserCubit>().state?.id == user.id) {
+          friendsPreviews.add(const FriendPreview(friendId: 'add'));
+        }
         return Wrap(
           runSpacing: CCSize.medium,
           spacing: CCSize.medium,
-          children: [
-            ...relations
-                    ?.map(
-                      (relationship) => FriendPreview(
-                        friendId: (relationship.users ?? [])
-                            .where((id) => id != user.id)
-                            .first,
-                      ),
-                    )
-                    .toList() ??
-                [],
-          ],
+          children: friendsPreviews,
         );
       },
     );

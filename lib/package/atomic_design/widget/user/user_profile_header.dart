@@ -20,17 +20,19 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfileHeader extends StatelessWidget {
-  const UserProfileHeader({
-    required this.user,
-    required this.editable,
-    super.key,
-  });
+  const UserProfileHeader({required this.user, super.key});
 
   final UserModel user;
-  final bool editable;
 
   @override
   Widget build(BuildContext context) {
+    final currentUserId = context.read<UserCubit>().state?.id;
+    if (currentUserId == null) return Container(); // should never happen
+    if (user.id == null) return Container(); // should never happen
+    final userId = user.id!;
+
+    final editable = currentUserId == userId;
+
     return Column(
       children: [
         Stack(
