@@ -139,6 +139,28 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
       }
     }
   }
+
+  Future<void> unblock({
+    required String blockerId,
+    required String toUnblockId,
+  }) async {
+    final sortedUsers = [blockerId, toUnblockId]..sort();
+    final relationshipId = sortedUsers.join();
+    final relationship = await read(documentId: relationshipId);
+    if (relationship == null) return;
+    if (!relationship.isBlockedBy(blockerId)) return;
+
+    final newStatus = switch (relationship.status) {
+      RelationshipStatus.blockedByFirst => RelationshipStatus.canceledByFirst,
+      RelationshipStatus.blockedByLast => RelationshipStatus.canceledByLast,
+      _ => RelationshipStatus.canceledByFirst,
+    };
+
+    await update(
+      documentId: relationshipId,
+      data: relationship.copyWith(status: newStatus),
+    );
+  }
 }
 
 final relationshipCRUD = _RelationshipCRUD();

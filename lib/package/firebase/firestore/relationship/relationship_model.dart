@@ -43,4 +43,11 @@ class RelationshipModel with _$RelationshipModel {
         return key == 'id' || key == 'ref' || value == null;
       });
   }
+
+  bool isBlockedBy(String userId) {
+    if (users == null || users!.isEmpty) return false;
+    return status == RelationshipStatus.blockedByFirst &&
+            userId == users!.first ||
+        status == RelationshipStatus.blockedByLast && userId == users!.last;
+  }
 }

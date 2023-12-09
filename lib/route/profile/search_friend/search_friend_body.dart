@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user_dialog.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
@@ -9,6 +10,7 @@ import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class AllUsersCubit extends Cubit<List<UserModel>> {
   AllUsersCubit() : super([]);
@@ -119,7 +121,10 @@ Widget getUserTile(BuildContext context, UserModel user) {
     builder: (context, snapshot) {
       Widget? getTrailing() {
         // TODO: if friend request has been sent
-        switch (snapshot.data?.status) {
+        final relationship = snapshot.data;
+        if (relationship == null) return const CircularProgressIndicator();
+
+        switch (relationship.status) {
           case null:
           case RelationshipStatus.canceledByFirst:
           case RelationshipStatus.canceledByLast:
@@ -138,12 +143,17 @@ Widget getUserTile(BuildContext context, UserModel user) {
               icon: Icon(Icons.check),
               onPressed: null,
             );
-          // TODO: if blocked by current, can unblock
           case RelationshipStatus.blockedByFirst:
           case RelationshipStatus.blockedByLast:
-            return const IconButton(
-              icon: Icon(Icons.block),
-              onPressed: null,
+            return IconButton(
+              icon: const Icon(Icons.block),
+              onPressed: relationship.isBlockedBy(user.id ?? '')
+                  ? null
+                  : () => showUnblockUserDialog(
+                        context,
+                        currentUserId,
+                        user.id ?? '',
+                      ),
             );
         }
       }
@@ -155,6 +165,7 @@ Widget getUserTile(BuildContext context, UserModel user) {
         leading: UserProfilePhoto(user.photo),
         title: Text(user.username ?? ''),
         trailing: trailing,
+        onTap: () => context.push('/profile/friend_profile/${user.id}'),
       );
     },
   );
