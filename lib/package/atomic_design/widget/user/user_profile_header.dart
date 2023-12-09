@@ -2,11 +2,10 @@ import 'dart:io';
 
 import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user_dialog.dart';
+import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_relationship_dialog.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
-import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
-import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
@@ -125,26 +124,20 @@ class UserProfileHeader extends StatelessWidget {
     return Modal.show(
       context: context,
       sections: [
-        if (!kIsWeb)
-          ListTile(
-            leading: const Icon(Icons.block),
-            title: const Text('Bloquer'),
-            onTap: () {
-              context.pop();
-              showBlockUserDialog(context, currentUserId, user.id!);
-            },
-          ),
+        ListTile(
+          leading: const Icon(Icons.block),
+          title: const Text('Bloquer'),
+          onTap: () {
+            context.pop();
+            showBlockUserDialog(context, currentUserId, user.id!);
+          },
+        ),
         ListTile(
           leading: const Icon(Icons.person_remove),
           title: const Text('Retirer des amis'),
           onTap: () {
-            // TODO: showCancelFriendshipDialog
             context.pop();
-            relationshipCRUD.cancel(
-              cancelerId: currentUserId,
-              otherId: user.id!,
-            );
-            snackBarNotify(context, 'Retiré des amis');
+            showCancelRelationshipDialog(context, currentUserId, user.id!);
           },
         ),
       ],
