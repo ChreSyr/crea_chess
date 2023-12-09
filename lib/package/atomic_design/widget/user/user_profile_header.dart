@@ -139,14 +139,14 @@ class UserProfileHeader extends StatelessWidget {
           stream: relationshipCRUD.stream(
             documentId: relationshipCRUD.getId(currentUserId, userId),
           ),
-          builder: (context, snapshot) {
+          builder: (modalContext, snapshot) {
             final relationship = snapshot.data;
             if (relationship?.status == RelationshipStatus.friends) {
               return ListTile(
                 leading: const Icon(Icons.person_remove),
                 title: const Text('Retirer des amis'), // TODO: l10n
                 onTap: () {
-                  context.pop();
+                  modalContext.pop();
                   showCancelRelationshipDialog(context, userId);
                 },
               );
