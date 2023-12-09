@@ -33,7 +33,7 @@ class CreaChessApp extends StatelessWidget {
           create: (context) => PreferencesCubit(),
         ),
         BlocProvider(
-          create: (context) => AllUsersCubit(),
+          create: (context) => AllUsersCubit(), // TODO : rework
         ),
       ],
       child: BlocBuilder<PreferencesCubit, PreferencesState>(

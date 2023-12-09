@@ -26,7 +26,7 @@ abstract class BaseCRUD<T> {
         );
   }
 
-  Future<List<T>> readFiltered({
+  Future<Iterable<T>> readFiltered({
     required Query<T> Function(CollectionReference<T>) filter,
   }) {
     return filter(_collection).get().then(
@@ -48,7 +48,7 @@ abstract class BaseCRUD<T> {
     return streamController.stream;
   }
 
-  Stream<List<T>> streamFiltered({
+  Stream<Iterable<T>> streamFiltered({
     required Query<T> Function(CollectionReference<T>) filter,
   }) {
     return filter(_collection).snapshots().map(

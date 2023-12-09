@@ -5,15 +5,14 @@ import 'package:crea_chess/package/firebase/firestore/relationship/relationship_
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 void showBlockUserDialog(
-  BuildContext context,
+  BuildContext pageContext,
   String blockerId,
   String toBlockId,
 ) {
   showYesNoDialog(
-    context: context,
+    pageContext: pageContext,
     title: 'Bloquer cet utilisateur ?', // TODO: l10n
     content: FutureBuilder<UserModel?>(
       future: userCRUD.read(documentId: toBlockId),
@@ -30,8 +29,7 @@ void showBlockUserDialog(
         blockerId: blockerId,
         toBlockId: toBlockId,
       );
-      context.pop();
-      snackBarNotify(context, 'Utilisateur bloqué'); // TODO: l10n
+      snackBarNotify(pageContext, 'Utilisateur bloqué'); // TODO: l10n
     },
   );
 }

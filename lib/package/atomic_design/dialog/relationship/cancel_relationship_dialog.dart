@@ -5,15 +5,14 @@ import 'package:crea_chess/package/firebase/firestore/relationship/relationship_
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 void showCancelRelationshipDialog(
-  BuildContext context,
+  BuildContext pageContext,
   String cancelerId,
   String relatedUserId,
 ) {
   showYesNoDialog(
-    context: context,
+    pageContext: pageContext,
     title: 'Retirer des amis ?', // TODO: l10n
     content: FutureBuilder<UserModel?>(
       future: userCRUD.read(documentId: relatedUserId),
@@ -30,8 +29,7 @@ void showCancelRelationshipDialog(
         cancelerId: cancelerId,
         otherId: relatedUserId,
       );
-      context.pop();
-      snackBarNotify(context, 'Retiré des amis'); // TODO: l10n
+      snackBarNotify(pageContext, 'Retiré des amis'); // TODO: l10n
     },
   );
 }

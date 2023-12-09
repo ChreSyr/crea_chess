@@ -21,18 +21,13 @@
       "code": {}
     }
   },
+  "friendRequest": "Friend request",
   "friendRequestSent": "Demande en ami envoyée",
   "friends": "Amis",
   "home": "Home",
   "iAcceptConditions": "I have not read the Terms of Use or the Privacy Policy.",
   "needAccount": "Need an account ?",
   "next": "Next",
-  "notificationType": "{type, select, other{Notification} friendRequest{Friend request}}",
-  "@notificationType": {
-    "placeholders": {
-      "type": {}
-    }
-  },
   "orContinueWith": "Or continue with",
   "password": "Password",
   "passwordForgot": "Forgot password ?",

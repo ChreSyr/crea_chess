@@ -1,18 +1,19 @@
 import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user_dialog.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
+import 'package:crea_chess/package/atomic_design/widget/simple_badge.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
-import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
+import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class AllUsersCubit extends Cubit<List<UserModel>> {
+class AllUsersCubit extends Cubit<Iterable<UserModel>> {
   AllUsersCubit() : super([]);
 
   Future<void> load() async {
@@ -85,7 +86,7 @@ class FriendSearchDelegate extends SearchDelegate<String?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return BlocBuilder<AllUsersCubit, List<UserModel>>(
+    return BlocBuilder<AllUsersCubit, Iterable<UserModel>>(
       builder: (context, users) {
         if (users.isEmpty) return const LinearProgressIndicator();
         // if (query.isEmpty) return Container();
@@ -113,31 +114,46 @@ class FriendSearchDelegate extends SearchDelegate<String?> {
 Widget getUserTile(BuildContext context, UserModel user) {
   final currentUserId = context.read<UserCubit>().state?.id;
   if (currentUserId == null) return Container(); // should never happen
-  if (user.id == null) return Container(); // should never happen
-  final relationshipId = relationshipCRUD.getId(currentUserId, user.id!);
+  final userId = user.id;
+  if (userId == null) return Container(); // should never happen
+  final relationshipId = relationshipCRUD.getId(currentUserId, userId);
 
   return StreamBuilder<RelationshipModel?>(
     stream: relationshipCRUD.stream(documentId: relationshipId),
     builder: (context, snapshot) {
-      Widget? getTrailing() {
-        // TODO: if friend request has been sent
+      Widget getTrailing() {
         final relationship = snapshot.data;
-        if (relationship == null) return const CircularProgressIndicator();
+        final sendRequestButton = IconButton(
+          icon: const Icon(Icons.person_add),
+          onPressed: () {
+            relationshipCRUD.sendFriendRequest(
+              fromUserId: currentUserId,
+              toUserId: userId,
+            );
+            snackBarNotify(context, context.l10n.friendRequestSent);
+          },
+        );
 
+        if (relationship == null) return sendRequestButton;
         switch (relationship.status) {
           case null:
           case RelationshipStatus.canceledByFirst:
           case RelationshipStatus.canceledByLast:
-            return IconButton(
-              icon: const Icon(Icons.person_add),
-              onPressed: () {
-                notificationCRUD.sendFriendRequest(
-                  fromUserId: currentUserId,
-                  toUserId: user.id,
-                );
-                snackBarNotify(context, context.l10n.friendRequestSent);
-              },
-            );
+            return sendRequestButton;
+          case RelationshipStatus.requestedByFirst:
+          case RelationshipStatus.requestedByLast:
+            final canAccept = relationship.isRequestedBy(userId);
+            return canAccept
+                ? SimpleIconButtonBadge(
+                    child: IconButton(
+                      onPressed: () => answerFriendRequest(
+                        context,
+                        relationship.requester,
+                      ),
+                      icon: const Icon(Icons.mail),
+                    ),
+                  )
+                : const IconButton(onPressed: null, icon: Icon(Icons.send));
           case RelationshipStatus.friends:
             return const IconButton(
               icon: Icon(Icons.check),
@@ -147,25 +163,24 @@ Widget getUserTile(BuildContext context, UserModel user) {
           case RelationshipStatus.blockedByLast:
             return IconButton(
               icon: const Icon(Icons.block),
-              onPressed: relationship.isBlockedBy(user.id ?? '')
+              onPressed: relationship.isBlockedBy(userId)
                   ? null
                   : () => showUnblockUserDialog(
                         context,
                         currentUserId,
-                        user.id ?? '',
+                        userId,
                       ),
             );
         }
       }
 
       final trailing = getTrailing();
-      if (trailing == null) return Container();
 
       return ListTile(
         leading: UserProfilePhoto(user.photo),
         title: Text(user.username ?? ''),
         trailing: trailing,
-        onTap: () => context.push('/profile/friend_profile/${user.id}'),
+        onTap: () => context.push('/profile/friend_profile/${userId}'),
       );
     },
   );

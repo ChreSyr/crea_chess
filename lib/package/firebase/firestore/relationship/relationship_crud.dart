@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crea_chess/package/firebase/firestore/crud/base_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/crud/model_converter.dart';
-import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 
 class _RelationshipModelConverter implements ModelConverter<RelationshipModel> {
@@ -91,7 +90,7 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
     );
   }
 
-  Stream<List<RelationshipModel>> friendsOf(String? userId) {
+  Stream<Iterable<RelationshipModel>> friendsOf(String? userId) {
     return streamFiltered(
       filter: (collection) => collection
           .where('users', arrayContains: userId)
@@ -108,36 +107,94 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
     final sortedUsers = [user1, user2]..sort();
     final relationshipId = sortedUsers.join();
     final relation = await read(documentId: relationshipId);
+
+    // A friendship starts with a friend request
+    if (relation == null ||
+        ![
+          RelationshipStatus.requestedByFirst,
+          RelationshipStatus.requestedByLast,
+        ].contains(relation.status)) return;
+
+    // if (relation != null) {
+    // if (relation.status != RelationshipStatus.friends) {
+    await super.update(
+      documentId: relationshipId,
+      data: relation.copyWith(status: RelationshipStatus.friends),
+    );
+    // }
+    // } else {
+    //   await super.create(
+    //     documentId: relationshipId,
+    //     data: RelationshipModel(
+    //       users: sortedUsers,
+    //       status: RelationshipStatus.friends,
+    //     ),
+    //   );
+
+    //   final friendRequest1 = await notificationCRUD.read(
+    //     documentId: [user1, user2].join(),
+    //   );
+    //   if (friendRequest1 != null) {
+    //     await notificationCRUD.delete(documentId: friendRequest1.id);
+    //   }
+
+    //   final friendRequest2 = await notificationCRUD.read(
+    //     documentId: [user2, user1].join(),
+    //   );
+    //   if (friendRequest2 != null) {
+    //     await notificationCRUD.delete(documentId: friendRequest2.id);
+    //   }
+    // }
+  }
+
+  /// Return the relationships waiting for an answer, from or to userId
+  Stream<Iterable<RelationshipModel>> requestsAbout(String userId) {
+    return streamFiltered(
+      filter: (collection) =>
+          collection.where('users', arrayContains: userId).where(
+                Filter.or(
+                  Filter(
+                    'status',
+                    isEqualTo: RelationshipStatus.requestedByFirst.name,
+                  ),
+                  Filter(
+                    'status',
+                    isEqualTo: RelationshipStatus.requestedByLast.name,
+                  ),
+                ),
+              ),
+    );
+  }
+
+  Future<void> sendFriendRequest({
+    required String fromUserId,
+    required String toUserId,
+  }) async {
+    final sortedUsers = [fromUserId, toUserId]..sort();
+    final relationshipId = sortedUsers.join();
+
+    final relation = await read(documentId: relationshipId);
     if (relation != null) {
-      if (relation.status != RelationshipStatus.friends) {
-        await super.update(
-          documentId: relationshipId,
-          data: relation.copyWith(status: RelationshipStatus.friends),
-        );
-      }
-    } else {
-      await super.create(
-        documentId: relationshipId,
-        data: RelationshipModel(
-          users: sortedUsers,
-          status: RelationshipStatus.friends,
-        ),
-      );
-
-      final friendRequest1 = await notificationCRUD.read(
-        documentId: [user1, user2].join(),
-      );
-      if (friendRequest1 != null) {
-        await notificationCRUD.delete(documentId: friendRequest1.id);
-      }
-
-      final friendRequest2 = await notificationCRUD.read(
-        documentId: [user2, user1].join(),
-      );
-      if (friendRequest2 != null) {
-        await notificationCRUD.delete(documentId: friendRequest2.id);
-      }
+      if ([
+        RelationshipStatus.requestedByFirst,
+        RelationshipStatus.requestedByLast,
+        RelationshipStatus.friends,
+        RelationshipStatus.blockedByFirst,
+        RelationshipStatus.blockedByLast,
+      ].contains(relation.status)) return;
     }
+
+    final status = fromUserId == sortedUsers[0]
+        ? RelationshipStatus.requestedByFirst
+        : RelationshipStatus.requestedByLast;
+
+    await super.create(
+      documentId: relationshipId,
+      data: RelationshipModel(
+        users: sortedUsers,
+        status: status,
+      ),
+    );
   }
 
   Future<void> unblock({

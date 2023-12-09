@@ -7,6 +7,8 @@ part 'relationship_model.freezed.dart';
 part 'relationship_model.g.dart';
 
 enum RelationshipStatus {
+  requestedByFirst,
+  requestedByLast,
   friends,
   canceledByFirst,
   canceledByLast,
@@ -44,10 +46,28 @@ class RelationshipModel with _$RelationshipModel {
       });
   }
 
+  String? get requester {
+    if (users == null || users!.isEmpty) return null;
+    if (status == RelationshipStatus.requestedByFirst) {
+      return users!.first;
+    } else if (status == RelationshipStatus.requestedByLast) {
+      return users!.last;
+    } else {
+      return null;
+    }
+  }
+
   bool isBlockedBy(String userId) {
     if (users == null || users!.isEmpty) return false;
     return status == RelationshipStatus.blockedByFirst &&
             userId == users!.first ||
         status == RelationshipStatus.blockedByLast && userId == users!.last;
+  }
+
+  bool isRequestedBy(String userId) {
+    if (users == null || users!.isEmpty) return false;
+    return status == RelationshipStatus.requestedByFirst &&
+            userId == users!.first ||
+        status == RelationshipStatus.requestedByLast && userId == users!.last;
   }
 }

@@ -1,11 +1,10 @@
-import 'package:badges/badges.dart' as badges;
 import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user_dialog.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
+import 'package:crea_chess/package/atomic_design/widget/simple_badge.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
-import 'package:crea_chess/package/firebase/firestore/notification/notification_crud.dart';
-import 'package:crea_chess/package/firebase/firestore/notification/notification_model.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
@@ -46,14 +45,13 @@ abstract class MainRouteBody extends RouteBody {
         children: [
           BlocBuilder<UserCubit, UserModel?>(
             builder: (context, user) {
-              if (user == null) return Container();
-              return StreamBuilder<Iterable<NotificationModel>>(
-                stream: notificationCRUD.streamFiltered(
-                  filter: (colection) =>
-                      colection.where('to', isEqualTo: user.id),
-                ),
+              if (user == null || user.id == null) return Container();
+              return StreamBuilder<Iterable<RelationshipModel>>(
+                stream: relationshipCRUD.requestsAbout(user.id!),
                 builder: (context, snapshot) {
-                  final notifications = snapshot.data ?? [];
+                  final requests = snapshot.data ?? [];
+                  final requestsTo =
+                      requests.where((e) => !e.isRequestedBy(user.id!));
                   return MenuAnchor(
                     builder: (
                       BuildContext context,
@@ -66,17 +64,16 @@ abstract class MainRouteBody extends RouteBody {
                             : controller.open(),
                         icon: const Icon(Icons.notifications),
                       );
-                      if (notifications.isEmpty) {
+                      if (requestsTo.isEmpty) {
                         return iconButton;
                       } else {
                         // TODO: notif in nav bar or accessible everywhere
-                        return badges.Badge(
-                          position: badges.BadgePosition.topEnd(top: 3, end: 3),
+                        return SimpleIconButtonBadge(
                           child: iconButton,
                         );
                       }
                     },
-                    menuChildren: notifications.isEmpty
+                    menuChildren: requestsTo.isEmpty
                         ? [
                             MenuItemButton(
                               leadingIcon: const Icon(Icons.done_all),
@@ -84,22 +81,18 @@ abstract class MainRouteBody extends RouteBody {
                               child: const Text('Aucune notification'),
                             ),
                           ]
-                        : notifications
+                        : requestsTo
                             .map(
                               (e) => MenuItemButton(
                                 leadingIcon: const Icon(Icons.mail),
                                 onPressed: () {
-                                  switch (e.type) {
-                                    case NotificationType.friendRequest:
-                                      answerFriendRequest(context, e);
-                                    case null:
-                                      return;
-                                  }
+                                  final requester = e.requester;
+                                  return answerFriendRequest(
+                                    context,
+                                    requester,
+                                  );
                                 },
-                                child: Text(
-                                  context.l10n
-                                      .notificationType(e.type?.name ?? ''),
-                                ),
+                                child: Text(context.l10n.friendRequest),
                               ),
                             )
                             .toList(),
@@ -170,20 +163,18 @@ abstract class MainRouteBody extends RouteBody {
 
 // TODO: dialogs folder in atomic design
 
-void answerFriendRequest(BuildContext context, NotificationModel notif) {
-  if (notif.from == null || notif.to == null) return;
+void answerFriendRequest(BuildContext pageContext, String? fromUserId) {
+  if (fromUserId == null) return;
+  final currentUserId = pageContext.read<UserCubit>().state?.id;
+  if (currentUserId == null) return; // should never happen
   showDialog<AlertDialog>(
-    context: context,
-    builder: (BuildContext context) {
-      void deleteNotification() {
-        notificationCRUD.delete(documentId: notif.id);
-      }
-
+    context: pageContext,
+    builder: (BuildContext dialogContext) {
       return AlertDialog(
         // TODO: l10n
         title: const Text('Nouvelle demande en ami !'),
         content: FutureBuilder<UserModel?>(
-          future: userCRUD.read(documentId: notif.from!),
+          future: userCRUD.read(documentId: fromUserId),
           builder: (context, snapshot) {
             final friend = snapshot.data;
             return ListTile(
@@ -196,19 +187,20 @@ void answerFriendRequest(BuildContext context, NotificationModel notif) {
           ElevatedButton.icon(
             icon: const Icon(Icons.close),
             onPressed: () {
-              context.pop();
-              deleteNotification();
-              showBlockUserDialog(context, notif.to!, notif.from!);
+              relationshipCRUD.delete(
+                documentId: relationshipCRUD.getId(fromUserId, currentUserId),
+              );
+              dialogContext.pop();
+              showBlockUserDialog(pageContext, currentUserId, fromUserId);
             },
             label: const Text('Refuser'),
           ),
           ElevatedButton.icon(
             icon: const Icon(Icons.check),
             onPressed: () {
-              context.pop();
-              deleteNotification();
-              relationshipCRUD.makeFriends(notif.from!, notif.to!);
-              snackBarNotify(context, 'Demande en ami acceptée !');
+              dialogContext.pop();
+              relationshipCRUD.makeFriends(fromUserId, currentUserId);
+              snackBarNotify(pageContext, 'Demande en ami acceptée !');
             },
             label: const Text('Accepter'),
           ),
@@ -225,6 +217,8 @@ Future<AlertDialog?> confirmDeleteAccount(BuildContext context, User user) {
       return AlertDialog(
         content: Text(
           context.l10n.deleteAccountExplanation(user.email ?? 'ERROR'),
+          // TODO : toutes les parties jouées et messages envoyés
+          // seront définitivement supprimées
         ),
         actions: [
           TextButton(
