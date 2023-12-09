@@ -45,6 +45,17 @@ class RelationshipModel with _$RelationshipModel {
       });
   }
 
+  String? get blocker {
+    if (users == null || users!.isEmpty) return null;
+    if (status == RelationshipStatus.blockedByFirst) {
+      return users!.first;
+    } else if (status == RelationshipStatus.blockedByLast) {
+      return users!.last;
+    } else {
+      return null;
+    }
+  }
+
   String? get requester {
     if (users == null || users!.isEmpty) return null;
     if (status == RelationshipStatus.requestedByFirst) {

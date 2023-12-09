@@ -6,6 +6,8 @@ import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_rela
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
@@ -118,8 +120,7 @@ class UserProfileHeader extends StatelessWidget {
     final currentUserId = context.read<UserCubit>().state?.id;
     if (currentUserId == null) return; // should never happen
     if (user.id == null) return; // should never happen
-
-    // TODO: solve : if the user is not a friend, modal should only show 'block'
+    final userId = user.id!;
 
     return Modal.show(
       context: context,
@@ -129,15 +130,27 @@ class UserProfileHeader extends StatelessWidget {
           title: const Text('Bloquer'),
           onTap: () {
             context.pop();
-            showBlockUserDialog(context, currentUserId, user.id!);
+            showBlockUserDialog(context, currentUserId, userId);
           },
         ),
-        ListTile(
-          leading: const Icon(Icons.person_remove),
-          title: const Text('Retirer des amis'),
-          onTap: () {
-            context.pop();
-            showCancelRelationshipDialog(context, currentUserId, user.id!);
+        StreamBuilder<RelationshipModel?>(
+          stream: relationshipCRUD.stream(
+            documentId: relationshipCRUD.getId(currentUserId, userId),
+          ),
+          builder: (context, snapshot) {
+            final relationship = snapshot.data;
+            if (relationship?.status == RelationshipStatus.friends) {
+              return ListTile(
+                leading: const Icon(Icons.person_remove),
+                title: const Text('Retirer des amis'), // TODO: l10n
+                onTap: () {
+                  context.pop();
+                  showCancelRelationshipDialog(context, currentUserId, userId);
+                },
+              );
+            } else {
+              return Container();
+            }
           },
         ),
       ],

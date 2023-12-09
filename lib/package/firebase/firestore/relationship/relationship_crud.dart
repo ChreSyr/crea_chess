@@ -163,6 +163,8 @@ class _RelationshipCRUD extends BaseCRUD<RelationshipModel> {
     required String fromUserId,
     required String toUserId,
   }) async {
+    if (fromUserId == toUserId) return; // Can't be your own friend, dude
+
     final sortedUsers = [fromUserId, toUserId]..sort();
     final relationshipId = sortedUsers.join();
 

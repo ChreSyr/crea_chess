@@ -4,6 +4,7 @@ import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/friend_preview.Dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_details.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_header.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_profile_relationship.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
@@ -41,6 +42,7 @@ class UserProfile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           UserProfileHeader(user: user, editable: editable),
+          UserProfileRelationship(userId: user.id ?? ''),
           CCGap.medium,
           if (editable) const UserProfileDetails(),
           CCDivider.xthin,
@@ -50,6 +52,7 @@ class UserProfile extends StatelessWidget {
             trailing: editable ? const Icon(Icons.person_add) : null,
             onTap: editable ? () => searchFriend(context) : null,
           ),
+          // TODO : can't see friends if the user blocked you
           StreamBuilder<Iterable<RelationshipModel>>(
             stream: relationshipCRUD.friendsOf(user.id),
             builder: (context, snapshot) {

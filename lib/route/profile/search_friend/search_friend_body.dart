@@ -164,11 +164,7 @@ Widget getUserTile(BuildContext context, UserModel user) {
               icon: const Icon(Icons.block),
               onPressed: relationship.isBlockedBy(userId)
                   ? null
-                  : () => showUnblockUserDialog(
-                        context,
-                        currentUserId,
-                        userId,
-                      ),
+                  : () => showUnblockUserDialog(context, userId),
             );
         }
       }
