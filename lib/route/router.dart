@@ -3,7 +3,6 @@
 
 import 'package:badges/badges.dart' as badges;
 import 'package:crea_chess/package/atomic_design/size.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav_notif_cubit.dart';
 import 'package:crea_chess/route/play/route_body/chessground_body.dart';
@@ -74,7 +73,7 @@ final router = GoRouter(
               path: '/user',
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: RouteScaffold(
-                  body: UserBody(tab: UserProfileTab.friends),
+                  body: UserBody(),
                 ),
               ),
               routes: [
@@ -89,7 +88,6 @@ final router = GoRouter(
                   builder: (context, state) => RouteScaffold(
                     body: UserBody(
                       userId: state.pathParameters['userId'] ?? '',
-                      tab: UserProfileTab.friends,
                     ),
                   ),
                 ),
@@ -146,7 +144,7 @@ final router = GoRouter(
 
 final mainRouteBodies = [
   const HomeBody(),
-  const UserBody(tab: UserProfileTab.friends),
+  const UserBody(),
   const SettingsBody(),
 ];
 

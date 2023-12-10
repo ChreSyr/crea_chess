@@ -17,7 +17,7 @@ import 'package:go_router/go_router.dart';
 // TODO: App Check
 
 class UserBody extends MainRouteBody {
-  const UserBody({required this.tab, this.userId, super.key})
+  const UserBody({this.userId, super.key})
       : super(
           id: 'user',
           icon: Icons.person,
@@ -26,7 +26,6 @@ class UserBody extends MainRouteBody {
         );
 
   final String? userId;
-  final UserProfileTab tab;
 
   @override
   String getTitle(AppLocalizations l10n) => l10n.profile;
@@ -39,7 +38,7 @@ class UserBody extends MainRouteBody {
   Widget build(BuildContext context) {
     final currentUserId = context.read<UserCubit>().state?.id;
     if (userId != null && currentUserId != userId) {
-      return UserProfile.fromId(userId: userId!, tab: tab);
+      return UserProfile.fromId(userId: userId!);
     }
 
     return BlocConsumer<AuthenticationCubit, User?>(
@@ -96,7 +95,7 @@ class UserBody extends MainRouteBody {
             // creating the user
             if (user == null) return const CircularProgressIndicator();
 
-            return UserProfile(user: user, tab: tab);
+            return UserProfile(user: user);
           },
         );
       },

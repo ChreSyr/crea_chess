@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/padding.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/divider.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
@@ -10,28 +11,24 @@ import 'package:crea_chess/package/firebase/firestore/relationship/relationship_
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
-import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum UserProfileTab { friends, details }
-
 class UserProfile extends StatelessWidget {
-  const UserProfile({required this.user, required this.tab, super.key});
+  const UserProfile({required this.user, super.key});
 
-  static Widget fromId({required String userId, required UserProfileTab tab}) {
+  static Widget fromId({required String userId}) {
     return StreamBuilder<UserModel?>(
       stream: userCRUD.stream(documentId: userId),
       builder: (context, snapshot) {
         final user = snapshot.data;
         if (user == null) return const CircularProgressIndicator();
-        return UserProfile(user: user, tab: tab);
+        return UserProfile(user: user);
       },
     );
   }
 
   final UserModel user;
-  final UserProfileTab tab;
 
   @override
   Widget build(BuildContext context) {
@@ -55,19 +52,37 @@ class UserProfile extends StatelessWidget {
               if (relation != null) UserProfileRelationship(relation),
               if (relation?.blocker != userId) ...[
                 CCGap.medium,
-                if (currentUserId == userId) const UserProfileDetails(),
-                CCDivider.xthin,
-                ListTile(
-                  leading: const Icon(Icons.groups),
-                  title: Text(context.l10n.friends),
+                DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      const TabBar(
+                        isScrollable: true,
+                        tabAlignment: TabAlignment.start,
+                        tabs: [
+                          Tab(text: 'Amis'), // TODO : l10n
+                          Tab(text: 'Détails'), // TODO : l10n
+                        ],
+                      ),
+                      CCDivider.xthin,
+                      CCPadding.allMedium(
+                        child: SizedBox(
+                          height: 120,
+                          child: TabBarView(
+                            children: [
+                              UserProfileFriends(user: user),
+                              if (currentUserId == userId)
+                                const UserProfileDetails()
+                              else
+                                // TODO : l10n
+                                const Text('Aucun détail disponible'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                UserProfileFriends(user: user),
-                // DefaultTabController(
-                //   length: 2,
-                //   child: Column(
-                //     children: [],
-                //   ),
-                // ),
               ],
             ],
           ),
