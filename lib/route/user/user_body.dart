@@ -1,4 +1,3 @@
-
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
@@ -17,51 +16,20 @@ import 'package:go_router/go_router.dart';
 // TODO: welcome and connect page when it is the first opening of the app
 // TODO: App Check
 
-enum ProfileMenuChoices {
-  signin(whenLoggedOut: true),
-  signout(whenLoggedOut: false),
-  deleteAccount(whenLoggedOut: false);
-
-  const ProfileMenuChoices({required this.whenLoggedOut});
-
-  final bool whenLoggedOut;
-
-  String getLocalization(AppLocalizations l10n) {
-    switch (this) {
-      case ProfileMenuChoices.signin:
-        return l10n.signin;
-      case ProfileMenuChoices.signout:
-        return l10n.signout;
-      case ProfileMenuChoices.deleteAccount:
-        return l10n.deleteAccount;
-    }
-  }
-
-  IconData getIcon() {
-    switch (this) {
-      case ProfileMenuChoices.signin:
-        return Icons.login;
-      case ProfileMenuChoices.signout:
-        return Icons.logout;
-      case ProfileMenuChoices.deleteAccount:
-        return Icons.delete_forever;
-    }
-  }
-}
-
-class ProfileBody extends MainRouteBody {
-  const ProfileBody({super.key})
+class UserBody extends MainRouteBody {
+  const UserBody({required this.tab, this.userId, super.key})
       : super(
-          id: 'profile',
+          id: 'user',
           icon: Icons.person,
           centered: false,
           padded: false,
         );
 
+  final String? userId;
+  final UserProfileTab tab;
+
   @override
-  String getTitle(AppLocalizations l10n) {
-    return l10n.profile;
-  }
+  String getTitle(AppLocalizations l10n) => l10n.profile;
 
   static const notifNotFullyAuthenticated = 'not-fully-authenticated';
   static const notifPhotoEmpty = 'photo-empty';
@@ -69,6 +37,11 @@ class ProfileBody extends MainRouteBody {
 
   @override
   Widget build(BuildContext context) {
+    final currentUserId = context.read<UserCubit>().state?.id;
+    if (userId != null && currentUserId != userId) {
+      return UserProfile.fromId(userId: userId!, tab: tab);
+    }
+
     return BlocConsumer<AuthenticationCubit, User?>(
       listener: (context, auth) {
         if (auth == null) {
@@ -84,7 +57,7 @@ class ProfileBody extends MainRouteBody {
         }
       },
       builder: (context, auth) {
-        // Note : if auth is null, the sso route replaces the profile route.
+        // Note : if auth is null, the sso route replaces the user route.
         // This is just a security.
         if (auth == null) {
           return Center(
@@ -123,7 +96,7 @@ class ProfileBody extends MainRouteBody {
             // creating the user
             if (user == null) return const CircularProgressIndicator();
 
-            return UserProfile(user: user);
+            return UserProfile(user: user, tab: tab);
           },
         );
       },
@@ -151,10 +124,7 @@ class NotFullyAuthenticated extends StatelessWidget {
               child: UserProfilePhoto(
                 auth.photoURL,
                 radius: CCSize.xxxlarge,
-                backgroundColor: auth.photoURL == null
-                    ? Colors.red[100]
-                    : null,
-                
+                backgroundColor: auth.photoURL == null ? Colors.red[100] : null,
               ),
             ),
           ),

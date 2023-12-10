@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/body_template.dart';
+import 'package:crea_chess/package/atomic_design/widget/body_template.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class EmailVerificationBody extends RouteBody {
     return BlocListener<AuthenticationCubit, User?>(
       listener: (context, user) {
         if (user == null) return;
-        if (user.emailVerified) context.push('/profile/modify_name');
+        if (user.emailVerified) context.push('/user/modify_name');
       },
       child: const _EmailVerificationBody(),
     );
@@ -40,24 +40,24 @@ class _EmailVerificationBody extends StatelessWidget {
       emoji: '📬',
       title: context.l10n.verifyMailbox,
       children: [
-          Text(
-            context.l10n.verifyEmailExplainLink(
+        Text(
+          context.l10n.verifyEmailExplainLink(
             context.read<AuthenticationCubit>().state?.email ?? 'ERROR',
-            ),
-            textAlign: TextAlign.center,
+          ),
+          textAlign: TextAlign.center,
         ),
         CCGap.xxlarge,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const ResendButton(),
-              CCGap.large,
-              FilledButton(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const ResendButton(),
+            CCGap.large,
+            FilledButton(
               onPressed: authenticationCRUD.reloadUser,
-                child: Text(context.l10n.continue_),
-              ),
-            ],
-          ),
+              child: Text(context.l10n.continue_),
+            ),
+          ],
+        ),
       ],
     );
   }

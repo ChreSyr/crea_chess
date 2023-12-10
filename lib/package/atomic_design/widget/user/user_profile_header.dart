@@ -100,7 +100,7 @@ class UserProfileHeader extends StatelessWidget {
           ],
         ),
 
-        // // profile name
+        // // user name
         ListTile(
           leading: const Icon(Icons.alternate_email),
           title: Text(user.username ?? ''),
@@ -110,7 +110,7 @@ class UserProfileHeader extends StatelessWidget {
                   : const Icon(Icons.edit)
               : const Icon(Icons.more_horiz),
           onTap: editable
-              ? () => context.push('/profile/modify_name')
+              ? () => context.push('/user/modify_name')
               : () => showUserActionsModal(context),
         ),
       ],

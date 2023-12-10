@@ -14,21 +14,24 @@ import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UserProfile extends StatelessWidget {
-  const UserProfile({required this.user, super.key});
+enum UserProfileTab { friends, details }
 
-  static Widget fromId({required String userId}) {
+class UserProfile extends StatelessWidget {
+  const UserProfile({required this.user, required this.tab, super.key});
+
+  static Widget fromId({required String userId, required UserProfileTab tab}) {
     return StreamBuilder<UserModel?>(
       stream: userCRUD.stream(documentId: userId),
       builder: (context, snapshot) {
         final user = snapshot.data;
         if (user == null) return const CircularProgressIndicator();
-        return UserProfile(user: user);
+        return UserProfile(user: user, tab: tab);
       },
     );
   }
 
   final UserModel user;
+  final UserProfileTab tab;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +62,12 @@ class UserProfile extends StatelessWidget {
                   title: Text(context.l10n.friends),
                 ),
                 UserProfileFriends(user: user),
+                // DefaultTabController(
+                //   length: 2,
+                //   child: Column(
+                //     children: [],
+                //   ),
+                // ),
               ],
             ],
           ),

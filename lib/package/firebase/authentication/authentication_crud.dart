@@ -56,7 +56,7 @@ class _AuthenticationCRUD {
     // Delete user in firestore. Also delete its relationships
     await userCRUD.delete(documentId: user.uid);
 
-    // Delete profile photo in firebase storage
+    // Delete user photo in firebase storage
     final photoRef = FirebaseStorage.instance.getUserPhotoRef(user.uid);
     try {
       await photoRef.delete();

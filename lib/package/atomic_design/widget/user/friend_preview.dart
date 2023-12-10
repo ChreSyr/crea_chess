@@ -3,7 +3,7 @@ import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
-import 'package:crea_chess/route/profile/search_friend/search_friend_body.dart';
+import 'package:crea_chess/route/user/search_friend/search_friend_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -40,7 +40,7 @@ class FriendPreview extends StatelessWidget {
                 context.pop();
               }
             } else {
-              context.push('/profile/friend_profile/$friendId');
+              context.push('/user/@$friendId');
             }
           },
           child: UserProfilePhoto(

@@ -3,20 +3,20 @@
 
 import 'package:badges/badges.dart' as badges;
 import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_profile.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/nav_notif_cubit.dart';
 import 'package:crea_chess/route/play/route_body/chessground_body.dart';
 import 'package:crea_chess/route/play/route_body/create_challenge_body.dart';
 import 'package:crea_chess/route/play/route_body/home_body.dart';
-import 'package:crea_chess/route/profile/friend_profile/friend_profile_body.dart';
-import 'package:crea_chess/route/profile/modify_username/modify_username_body.dart';
-import 'package:crea_chess/route/profile/profile/profile_body.dart';
-import 'package:crea_chess/route/profile/sso/email_verification_body.dart';
-import 'package:crea_chess/route/profile/sso/sign_methods_body.dart';
-import 'package:crea_chess/route/profile/sso/signin_body.dart';
-import 'package:crea_chess/route/profile/sso/signup_body.dart';
 import 'package:crea_chess/route/route_scaffold.dart';
 import 'package:crea_chess/route/settings/route_body/settings_body.dart';
+import 'package:crea_chess/route/user/modify_username/modify_username_body.dart';
+import 'package:crea_chess/route/user/sso/email_verification_body.dart';
+import 'package:crea_chess/route/user/sso/sign_methods_body.dart';
+import 'package:crea_chess/route/user/sso/signin_body.dart';
+import 'package:crea_chess/route/user/sso/signup_body.dart';
+import 'package:crea_chess/route/user/user_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -71,9 +71,11 @@ final router = GoRouter(
           routes: [
             // top route inside branch
             GoRoute(
-              path: '/profile',
+              path: '/user',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: RouteScaffold(body: ProfileBody()),
+                child: RouteScaffold(
+                  body: UserBody(tab: UserProfileTab.friends),
+                ),
               ),
               routes: [
                 // child routes
@@ -83,10 +85,11 @@ final router = GoRouter(
                       const RouteScaffold(body: ModifyUsernameBody()),
                 ),
                 GoRoute(
-                  path: 'friend_profile/:friendId',
+                  path: '@:userId',
                   builder: (context, state) => RouteScaffold(
-                    body: FriendProfileBody(
-                      friendId: state.pathParameters['friendId'] ?? '',
+                    body: UserBody(
+                      userId: state.pathParameters['userId'] ?? '',
+                      tab: UserProfileTab.friends,
                     ),
                   ),
                 ),
@@ -143,7 +146,7 @@ final router = GoRouter(
 
 final mainRouteBodies = [
   const HomeBody(),
-  const ProfileBody(),
+  const UserBody(tab: UserProfileTab.friends),
   const SettingsBody(),
 ];
 
@@ -204,7 +207,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // redirect sso to profile
+    // redirect sso to user
     final selectedIndex = navigationShell.currentIndex;
 
     return Scaffold(

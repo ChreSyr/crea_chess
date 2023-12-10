@@ -8,7 +8,7 @@ import 'package:crea_chess/package/form/signup/signup_cubit.dart';
 import 'package:crea_chess/package/form/signup/signup_form.dart';
 import 'package:crea_chess/package/form/signup/signup_status.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/body_template.dart';
+import 'package:crea_chess/package/atomic_design/widget/body_template.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

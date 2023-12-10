@@ -9,7 +9,6 @@ import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/profile/profile_body.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +23,38 @@ abstract class RouteBody extends StatelessWidget {
   String getTitle(AppLocalizations l10n);
 
   List<Widget>? getActions(BuildContext context) => null;
+}
+
+enum _MenuChoices {
+  signin(whenLoggedOut: true),
+  signout(whenLoggedOut: false),
+  deleteAccount(whenLoggedOut: false);
+
+  const _MenuChoices({required this.whenLoggedOut});
+
+  final bool whenLoggedOut;
+
+  String getLocalization(AppLocalizations l10n) {
+    switch (this) {
+      case _MenuChoices.signin:
+        return l10n.signin;
+      case _MenuChoices.signout:
+        return l10n.signout;
+      case _MenuChoices.deleteAccount:
+        return l10n.deleteAccount;
+    }
+  }
+
+  IconData getIcon() {
+    switch (this) {
+      case _MenuChoices.signin:
+        return Icons.login;
+      case _MenuChoices.signout:
+        return Icons.logout;
+      case _MenuChoices.deleteAccount:
+        return Icons.delete_forever;
+    }
+  }
 }
 
 abstract class MainRouteBody extends RouteBody {
@@ -122,23 +153,23 @@ abstract class MainRouteBody extends RouteBody {
                     icon: const Icon(Icons.more_vert),
                   );
                 },
-                menuChildren: ProfileMenuChoices.values
+                menuChildren: _MenuChoices.values
                     .where((e) => isLoggedOut == e.whenLoggedOut)
                     .map(
                       (e) => MenuItemButton(
                         leadingIcon: Icon(e.getIcon()),
                         onPressed: () {
                           switch (e) {
-                            case ProfileMenuChoices.signin:
+                            case _MenuChoices.signin:
                               context.push('/sso');
-                            case ProfileMenuChoices.signout:
+                            case _MenuChoices.signout:
                               signout();
-                            case ProfileMenuChoices.deleteAccount:
+                            case _MenuChoices.deleteAccount:
                               confirmDeleteAccount(context, auth!);
                           }
                         },
                         style: switch (e) {
-                          ProfileMenuChoices.deleteAccount => ButtonStyle(
+                          _MenuChoices.deleteAccount => ButtonStyle(
                               iconColor: MaterialStateColor.resolveWith(
                                 (states) => Colors.red,
                               ),

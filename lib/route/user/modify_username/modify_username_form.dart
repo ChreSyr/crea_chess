@@ -1,7 +1,7 @@
 import 'package:crea_chess/package/form/form_error.dart';
 import 'package:crea_chess/package/form/input/input_string.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/profile/modify_username/modify_username_status.dart';
+import 'package:crea_chess/route/user/modify_username/modify_username_status.dart';
 import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -30,7 +30,7 @@ class ModifyUsernameForm with FormzMixin, _$ModifyUsernameForm {
 
     if (input.error == FormError.invalid) {
       if (input == name) return l10n.formError('notUsername');
-    } 
+    }
 
     return l10n.formError(input.error!.name);
   }
