@@ -13,9 +13,16 @@ class RouteScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget padd(Widget child, {required bool centered, required bool padded}) {
-      final temp = centered ? Center(child: child) : child;
-      return padded ? CCPadding.horizontalLarge(child: temp) : temp;
+    Widget padd(
+      Widget child, {
+      required bool centered,
+      required bool padded,
+      required bool scrolled,
+    }) {
+      final temp1 = scrolled ? SingleChildScrollView(child: body) : body;
+      final temp2 = centered ? Center(child: temp1) : temp1;
+      final temp3 = padded ? CCPadding.horizontalLarge(child: temp2) : temp2;
+      return temp3;
     }
 
     return Scaffold(
@@ -24,11 +31,10 @@ class RouteScaffold extends StatelessWidget {
         actions: body.getActions(context),
       ),
       body: padd(
+        body,
         centered: body.centered,
         padded: body.centered,
-        SingleChildScrollView(
-          child: body,
-        ),
+        scrolled: body.scrolled,
       ),
     );
   }

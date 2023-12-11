@@ -22,8 +22,8 @@
     }
   },
   "friendRequest": "Friend request",
-  "friendRequestSent": "Demande en ami envoyée",
-  "friends": "Amis",
+  "friendRequestSent": "Friend request sent",
+  "friends": "Friends",
   "home": "Home",
   "iAcceptConditions": "I have not read the Terms of Use or the Privacy Policy.",
   "needAccount": "Need an account ?",

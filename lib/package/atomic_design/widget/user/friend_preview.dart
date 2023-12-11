@@ -16,11 +16,12 @@ class FriendPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUserId = context.read<UserCubit>().state?.id;
+    const radius = CCSize.xlarge;
 
     if (friendId == 'add') {
       return SizedBox(
-        height: CCSize.xlarge * 2,
-        width: CCSize.xlarge * 2,
+        height: radius * 2,
+        width: radius * 2,
         child: IconButton.outlined(
           onPressed: () => searchFriend(context),
           icon: const Icon(Icons.person_add),
@@ -32,7 +33,12 @@ class FriendPreview extends StatelessWidget {
       stream: userCRUD.stream(documentId: friendId),
       builder: (context, snapshot) {
         final friend = snapshot.data;
-        if (friend == null) return const CircularProgressIndicator();
+        if (friend == null) {
+          return const SizedBox(
+            height: radius * 2,
+            width: radius * 2,
+          );
+        }
         return InkWell(
           onTap: () {
             if (friendId == currentUserId) {
@@ -45,7 +51,7 @@ class FriendPreview extends StatelessWidget {
           },
           child: UserProfilePhoto(
             friend.photo,
-            radius: CCSize.xlarge,
+            radius: radius,
           ),
         );
       },

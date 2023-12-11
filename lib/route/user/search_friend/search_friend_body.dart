@@ -182,7 +182,7 @@ Widget getUserTile(BuildContext context, UserModel user) {
         leading: UserProfilePhoto(user.photo),
         title: Text(user.username ?? ''),
         trailing: trailing,
-        onTap: () => context.push('/user/friend_profile/${userId}'),
+        onTap: () => context.push('/user/@$userId'),
       );
     },
   );

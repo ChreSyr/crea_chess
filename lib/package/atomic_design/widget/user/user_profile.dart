@@ -11,8 +11,15 @@ import 'package:crea_chess/package/firebase/firestore/relationship/relationship_
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+class TabIndexCubit extends Cubit<int> {
+  TabIndexCubit() : super(0);
+
+  void set(int index) => emit(index);
+}
 
 class UserProfile extends StatelessWidget {
   const UserProfile({required this.user, super.key});
@@ -36,58 +43,71 @@ class UserProfile extends StatelessWidget {
     if (currentUserId == null) return Container(); // should never happen
     if (user.id == null) return Container(); // should never happen
     final userId = user.id!;
-
-    return StreamBuilder<RelationshipModel?>(
-      stream: relationshipCRUD.stream(
-        documentId: relationshipCRUD.getId(currentUserId, userId),
+    final tabSections = <String, Widget>{
+      context.l10n.friends: UserProfileFriends(user: user),
+    };
+    if (userId == currentUserId) {
+      tabSections['Détails'] = const UserProfileDetails();
+    }
+    return BlocProvider(
+      create: (context) => TabIndexCubit(),
+      child: StreamBuilder<RelationshipModel?>(
+        stream: relationshipCRUD.stream(
+          documentId: relationshipCRUD.getId(currentUserId, userId),
+        ),
+        builder: (context, snapshot) {
+          final relation = snapshot.data;
+          return SizedBox(
+            width: CCWidgetSize.large3,
+            child: DefaultTabController(
+              length: tabSections.length,
+              child: Column(
+                children: [
+                  UserProfileHeader(user: user),
+                  if (relation != null) UserProfileRelationship(relation),
+                  if (relation?.blocker != userId) ...[
+                    CCGap.medium,
+                    TabBar(
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.start,
+                      tabs: tabSections.keys.map((e) => Tab(text: e)).toList(),
+                      onTap: context.read<TabIndexCubit>().set,
+                    ),
+                    CCDivider.xthin,
+                    CCPadding.allMedium(
+                      child: BlocBuilder<TabIndexCubit, int>(
+                        builder: (context, index) {
+                          return IndexedStack(
+                            alignment: Alignment.topCenter,
+                            index: index,
+                            children: tabSections.values.toList(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          );
+        },
       ),
-      builder: (context, snapshot) {
-        final relation = snapshot.data;
-        return SizedBox(
-          width: CCWidgetSize.large3,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              UserProfileHeader(user: user),
-              if (relation != null) UserProfileRelationship(relation),
-              if (relation?.blocker != userId) ...[
-                CCGap.medium,
-                DefaultTabController(
-                  length: 2,
-                  child: Column(
-                    children: [
-                      const TabBar(
-                        isScrollable: true,
-                        tabAlignment: TabAlignment.start,
-                        tabs: [
-                          Tab(text: 'Amis'), // TODO : l10n
-                          Tab(text: 'Détails'), // TODO : l10n
-                        ],
-                      ),
-                      CCDivider.xthin,
-                      CCPadding.allMedium(
-                        child: SizedBox(
-                          height: 120,
-                          child: TabBarView(
-                            children: [
-                              UserProfileFriends(user: user),
-                              if (currentUserId == userId)
-                                const UserProfileDetails()
-                              else
-                                // TODO : l10n
-                                const Text('Aucun détail disponible'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ],
-          ),
-        );
-      },
     );
+  }
+}
+
+class AdaptativeTabBarView extends StatelessWidget {
+  const AdaptativeTabBarView({
+    required this.controller,
+    required this.children,
+    super.key,
+  });
+
+  final TabController controller;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

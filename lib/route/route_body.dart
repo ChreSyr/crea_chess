@@ -15,10 +15,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class RouteBody extends StatelessWidget {
-  const RouteBody({this.padded = true, this.centered = true, super.key});
+  const RouteBody({
+    this.padded = true,
+    this.centered = true,
+    this.scrolled = true,
+    super.key,
+  });
 
   final bool padded;
   final bool centered;
+  final bool scrolled;
 
   String getTitle(AppLocalizations l10n);
 
@@ -63,6 +69,7 @@ abstract class MainRouteBody extends RouteBody {
     required this.icon,
     super.padded,
     super.centered,
+    super.scrolled,
     super.key,
   });
 
