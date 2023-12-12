@@ -14,7 +14,6 @@ class UserModel with _$UserModel {
     String? username,
     String? usernameLowercase,
     String? photo,
-    List<String>? relationships, // TODO: remove ?
   }) = _UserModel;
 
   /// Required for the override getter

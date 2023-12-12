@@ -9,7 +9,6 @@ class UserProfileDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.email),
-      // TODO: change (load on demain ?)
       title: Text(context.read<AuthenticationCubit>().state?.email ?? ''),
     );
   }

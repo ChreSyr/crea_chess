@@ -16,9 +16,7 @@ class SignMethodsBody extends RouteBody {
   const SignMethodsBody({super.key});
 
   @override
-  String getTitle(AppLocalizations l10n) {
-    return l10n.signin; // TODO : change
-  }
+  String getTitle(AppLocalizations l10n) => '';
 
   @override
   Widget build(BuildContext context) {

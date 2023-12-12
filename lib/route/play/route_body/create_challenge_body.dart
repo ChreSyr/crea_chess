@@ -42,7 +42,7 @@ class _CreateChallengeBody extends StatelessWidget {
           child: ListView(
             shrinkWrap: true,
             children: [
-              _Custom(
+              _TitledRow(
                 title: context.l10n.timeControl,
                 child: OutlinedButton.icon(
                   onPressed: () => ModalSelect.show(
@@ -101,7 +101,7 @@ class _CreateChallengeBody extends StatelessWidget {
                 ),
               ),
               CCGap.large,
-              _Custom(
+              _TitledRow(
                 title: 'Taille du plateau',
                 child: OutlinedButton(
                   onPressed: () => ModalSelect.show(
@@ -135,7 +135,7 @@ class _CreateChallengeBody extends StatelessWidget {
                 ),
               ),
               CCGap.large,
-              _Custom(
+              _TitledRow(
                 title: 'Budget',
                 child: OutlinedButton(
                   onPressed: () => ModalSelect.show(
@@ -163,7 +163,7 @@ class _CreateChallengeBody extends StatelessWidget {
               CCGap.large,
               FilledButton(
                 onPressed: () {}, // TODO
-                child: const Text('Create challenge'), // TODO
+                child: const Text('Create challenge'), // TODO : l10n
               ),
             ],
           ),
@@ -173,9 +173,8 @@ class _CreateChallengeBody extends StatelessWidget {
   }
 }
 
-// TODO : name
-class _Custom extends StatelessWidget {
-  const _Custom({required this.title, required this.child});
+class _TitledRow extends StatelessWidget {
+  const _TitledRow({required this.title, required this.child});
 
   final String title;
   final Widget child;

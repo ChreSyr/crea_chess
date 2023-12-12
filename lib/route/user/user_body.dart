@@ -12,9 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-// TODO: web can't see images from firebase storage
-// TODO: welcome and connect page when it is the first opening of the app
-// TODO: App Check
+// LATER: welcome and connect page when it is the first opening of the app
+// LATER: App Check
 
 class UserBody extends MainRouteBody {
   const UserBody({this.userId, super.key})
@@ -69,7 +68,8 @@ class UserBody extends MainRouteBody {
           );
 
           // If the email is not confirmed yet
-          // TODO: move in sso route
+          // LATER: rethink : authenticated simply with phone ?
+          // LATER: move in sso route
         } else if (!auth.isFullyAuthenticated) {
           return NotFullyAuthenticated(auth: auth);
         }

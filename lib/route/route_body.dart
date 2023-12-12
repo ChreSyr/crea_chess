@@ -105,10 +105,7 @@ abstract class MainRouteBody extends RouteBody {
                       if (requestsTo.isEmpty) {
                         return iconButton;
                       } else {
-                        // TODO: notif in nav bar or accessible everywhere
-                        return SimpleIconButtonBadge(
-                          child: iconButton,
-                        );
+                        return SimpleIconButtonBadge(child: iconButton);
                       }
                     },
                     menuChildren: requestsTo.isEmpty
@@ -254,8 +251,8 @@ Future<AlertDialog?> confirmDeleteAccount(BuildContext context, User user) {
       return AlertDialog(
         content: Text(
           context.l10n.deleteAccountExplanation(user.email ?? 'ERROR'),
-          // TODO : toutes les parties jouées et messages envoyés
-          // seront définitivement supprimées
+          // LATER : better message. Toutes les parties jouées
+          // et messages envoyés seront définitivement supprimées ?
         ),
         actions: [
           TextButton(

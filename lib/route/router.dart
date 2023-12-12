@@ -1,5 +1,5 @@
 // Code from : https://codewithandrea.com/articles/flutter-bottom-navigation-bar-nested-routes-gorouter/
-// TODO : responsive scaffold
+// LATER : responsive scaffold
 
 import 'package:badges/badges.dart' as badges;
 import 'package:crea_chess/package/atomic_design/size.dart';

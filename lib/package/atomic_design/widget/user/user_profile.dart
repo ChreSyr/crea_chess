@@ -58,7 +58,6 @@ class UserProfile extends StatelessWidget {
         builder: (context, snapshot) {
           final streaming = snapshot.connectionState == ConnectionState.active;
           final relation = snapshot.data;
-          // TODO : manage stream errors
           if (userId != currentUserId &&
               relation?.status == RelationshipStatus.friends) {
             tabSections[context.l10n.friends] = UserProfileFriends(user: user);

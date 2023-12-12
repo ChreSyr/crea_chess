@@ -25,7 +25,6 @@ mixin _$UserModel {
   String? get username => throw _privateConstructorUsedError;
   String? get usernameLowercase => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
-  List<String>? get relationships => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,8 +42,7 @@ abstract class $UserModelCopyWith<$Res> {
       String? ref,
       String? username,
       String? usernameLowercase,
-      String? photo,
-      List<String>? relationships});
+      String? photo});
 }
 
 /// @nodoc
@@ -65,7 +63,6 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? username = freezed,
     Object? usernameLowercase = freezed,
     Object? photo = freezed,
-    Object? relationships = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -88,10 +85,6 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
-      relationships: freezed == relationships
-          ? _value.relationships
-          : relationships // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
     ) as $Val);
   }
 }
@@ -109,8 +102,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String? ref,
       String? username,
       String? usernameLowercase,
-      String? photo,
-      List<String>? relationships});
+      String? photo});
 }
 
 /// @nodoc
@@ -129,7 +121,6 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? username = freezed,
     Object? usernameLowercase = freezed,
     Object? photo = freezed,
-    Object? relationships = freezed,
   }) {
     return _then(_$UserModelImpl(
       id: freezed == id
@@ -152,10 +143,6 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
-      relationships: freezed == relationships
-          ? _value._relationships
-          : relationships // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
     ));
   }
 }
@@ -164,14 +151,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserModelImpl extends _UserModel {
   _$UserModelImpl(
-      {this.id,
-      this.ref,
-      this.username,
-      this.usernameLowercase,
-      this.photo,
-      final List<String>? relationships})
-      : _relationships = relationships,
-        super._();
+      {this.id, this.ref, this.username, this.usernameLowercase, this.photo})
+      : super._();
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -187,19 +168,10 @@ class _$UserModelImpl extends _UserModel {
   final String? usernameLowercase;
   @override
   final String? photo;
-  final List<String>? _relationships;
-  @override
-  List<String>? get relationships {
-    final value = _relationships;
-    if (value == null) return null;
-    if (_relationships is EqualUnmodifiableListView) return _relationships;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
 
   @override
   String toString() {
-    return 'UserModel(id: $id, ref: $ref, username: $username, usernameLowercase: $usernameLowercase, photo: $photo, relationships: $relationships)';
+    return 'UserModel(id: $id, ref: $ref, username: $username, usernameLowercase: $usernameLowercase, photo: $photo)';
   }
 
   @override
@@ -213,21 +185,13 @@ class _$UserModelImpl extends _UserModel {
                 other.username == username) &&
             (identical(other.usernameLowercase, usernameLowercase) ||
                 other.usernameLowercase == usernameLowercase) &&
-            (identical(other.photo, photo) || other.photo == photo) &&
-            const DeepCollectionEquality()
-                .equals(other._relationships, _relationships));
+            (identical(other.photo, photo) || other.photo == photo));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      ref,
-      username,
-      usernameLowercase,
-      photo,
-      const DeepCollectionEquality().hash(_relationships));
+  int get hashCode =>
+      Object.hash(runtimeType, id, ref, username, usernameLowercase, photo);
 
   @JsonKey(ignore: true)
   @override
@@ -249,8 +213,7 @@ abstract class _UserModel extends UserModel {
       final String? ref,
       final String? username,
       final String? usernameLowercase,
-      final String? photo,
-      final List<String>? relationships}) = _$UserModelImpl;
+      final String? photo}) = _$UserModelImpl;
   _UserModel._() : super._();
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -266,8 +229,6 @@ abstract class _UserModel extends UserModel {
   String? get usernameLowercase;
   @override
   String? get photo;
-  @override
-  List<String>? get relationships;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
