@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:crea_chess/package/atomic_design/color.dart';
-import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user_dialog.dart';
-import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_relationship_dialog.dart';
+import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user.dart';
+import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_relationship.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';

@@ -1,4 +1,4 @@
-import 'package:crea_chess/package/atomic_design/dialog/yes_no_dialog.dart';
+import 'package:crea_chess/package/atomic_design/dialog/yes_no.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';

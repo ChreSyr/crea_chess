@@ -1,11 +1,9 @@
-import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user_dialog.dart';
-import 'package:crea_chess/package/atomic_design/snack_bar.dart';
+import 'package:crea_chess/package/atomic_design/dialog/relationship/answer_friend_request.dart';
+import 'package:crea_chess/package/atomic_design/dialog/user/delete_account.dart';
 import 'package:crea_chess/package/atomic_design/widget/simple_badge.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
-import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
@@ -122,7 +120,7 @@ abstract class MainRouteBody extends RouteBody {
                                 leadingIcon: const Icon(Icons.mail),
                                 onPressed: () {
                                   final requester = e.requester;
-                                  return answerFriendRequest(
+                                  return showAnswerFriendRequestDialog(
                                     context,
                                     requester,
                                   );
@@ -169,7 +167,7 @@ abstract class MainRouteBody extends RouteBody {
                             case _MenuChoices.signout:
                               signout();
                             case _MenuChoices.deleteAccount:
-                              confirmDeleteAccount(context, auth!);
+                              showDeleteAccountDialog(context, auth!);
                           }
                         },
                         style: switch (e) {
@@ -194,88 +192,4 @@ abstract class MainRouteBody extends RouteBody {
       ),
     ];
   }
-}
-
-// TODO: dialogs folder in atomic design
-
-void answerFriendRequest(BuildContext pageContext, String? fromUserId) {
-  if (fromUserId == null) return;
-  final currentUserId = pageContext.read<UserCubit>().state?.id;
-  if (currentUserId == null) return; // should never happen
-  showDialog<AlertDialog>(
-    context: pageContext,
-    builder: (BuildContext dialogContext) {
-      return AlertDialog(
-        title: Text(pageContext.l10n.friendRequestNew),
-        content: FutureBuilder<UserModel?>(
-          future: userCRUD.read(documentId: fromUserId),
-          builder: (context, snapshot) {
-            final friend = snapshot.data;
-            return ListTile(
-              leading: UserProfilePhoto(friend?.photo),
-              title: Text(friend?.username ?? ''),
-            );
-          },
-        ),
-        actions: [
-          ElevatedButton.icon(
-            icon: const Icon(Icons.close),
-            onPressed: () {
-              relationshipCRUD.delete(
-                documentId: relationshipCRUD.getId(fromUserId, currentUserId),
-              );
-              dialogContext.pop();
-              showBlockUserDialog(pageContext, fromUserId);
-            },
-            label: Text(pageContext.l10n.decline),
-          ),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.check),
-            onPressed: () {
-              dialogContext.pop();
-              relationshipCRUD.makeFriends(fromUserId, currentUserId);
-              // TODO: fiest animation on new friend
-            },
-            label: Text(pageContext.l10n.accept),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-Future<AlertDialog?> confirmDeleteAccount(BuildContext context, User user) {
-  return showDialog<AlertDialog>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        content: Text(
-          context.l10n.deleteAccountExplanation(user.email ?? 'ERROR'),
-          // LATER : better message. Toutes les parties jouées
-          // et messages envoyés seront définitivement supprimées ?
-        ),
-        actions: [
-          TextButton(
-            onPressed: context.pop,
-            child: Text(context.l10n.cancel),
-          ),
-          FilledButton(
-            child: Text(context.l10n.deleteAccount),
-            onPressed: () {
-              try {
-                authenticationCRUD.deleteUserAccount(userId: user.uid);
-                snackBarNotify(context, context.l10n.deletedAccount);
-                // pop menu
-                context.pop();
-                // sigout
-                authenticationCRUD.signOut();
-              } catch (_) {
-                snackBarError(context, context.l10n.errorOccurred);
-              }
-            },
-          ),
-        ],
-      );
-    },
-  );
 }

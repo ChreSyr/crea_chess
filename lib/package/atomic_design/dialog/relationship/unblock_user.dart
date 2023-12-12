@@ -1,4 +1,4 @@
-import 'package:crea_chess/package/atomic_design/dialog/yes_no_dialog.dart';
+import 'package:crea_chess/package/atomic_design/dialog/yes_no.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
@@ -9,18 +9,18 @@ import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void showCancelRelationshipDialog(
+void showUnblockUserDialog(
   BuildContext pageContext,
-  String relatedUserId,
+  String toUnblockId,
 ) {
   final currentUserId = pageContext.read<UserCubit>().state?.id;
   if (currentUserId == null) return; // should never happen
 
   showYesNoDialog(
     pageContext: pageContext,
-    title: pageContext.l10n.friendRemove,
+    title: pageContext.l10n.userUnblock,
     content: FutureBuilder<UserModel?>(
-      future: userCRUD.read(documentId: relatedUserId),
+      future: userCRUD.read(documentId: toUnblockId),
       builder: (context, snapshot) {
         final toBlock = snapshot.data;
         return ListTile(
@@ -30,11 +30,11 @@ void showCancelRelationshipDialog(
       },
     ),
     onYes: () {
-      relationshipCRUD.cancel(
-        cancelerId: currentUserId,
-        otherId: relatedUserId,
+      relationshipCRUD.unblock(
+        blockerId: currentUserId,
+        toUnblockId: toUnblockId,
       );
-      snackBarNotify(pageContext, pageContext.l10n.friendRemoved);
+      snackBarNotify(pageContext, pageContext.l10n.userUnblocked);
     },
   );
 }

@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:crea_chess/package/atomic_design/dialog/relationship/answer_friend_request.dart';
 import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_friend_request.dart';
-import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user_dialog.dart';
+import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/simple_badge.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
@@ -11,7 +12,6 @@ import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -162,7 +162,7 @@ Widget getUserTile(BuildContext context, UserModel user) {
             return canAccept
                 ? SimpleIconButtonBadge(
                     child: IconButton(
-                      onPressed: () => answerFriendRequest(
+                      onPressed: () => showAnswerFriendRequestDialog(
                         context,
                         relationship.requester,
                       ),

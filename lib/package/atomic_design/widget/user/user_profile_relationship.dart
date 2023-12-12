@@ -1,11 +1,11 @@
+import 'package:crea_chess/package/atomic_design/dialog/relationship/answer_friend_request.dart';
 import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_friend_request.dart';
-import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user_dialog.dart';
+import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
-import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,7 +56,7 @@ class UserProfileRelationship extends StatelessWidget {
       case RelationshipStatus.requestedByLast:
         if (relation.requester == userId) {
           return FilledButton.icon(
-            onPressed: () => answerFriendRequest(context, userId),
+            onPressed: () => showAnswerFriendRequestDialog(context, userId),
             icon: const Icon(Icons.mail),
             label: Text(context.l10n.friendRequestSend),
           );
