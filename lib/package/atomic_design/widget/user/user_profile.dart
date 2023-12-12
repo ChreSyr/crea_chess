@@ -48,7 +48,7 @@ class UserProfile extends StatelessWidget {
     final tabSections = <String, Widget>{};
     if (userId == currentUserId) {
       tabSections[context.l10n.friends] = UserProfileFriends(user: user);
-      tabSections['Détails'] = const UserProfileDetails();
+      tabSections['Détails'] = const UserProfileDetails(); // TODO: l10n
     }
     return BlocProvider(
       create: (context) => TabIndexCubit(),
