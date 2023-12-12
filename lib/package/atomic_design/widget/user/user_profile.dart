@@ -43,8 +43,7 @@ class UserProfile extends StatelessWidget {
     if (currentUserId == null) return Container(); // should never happen
     if (user.id == null) return Container(); // should never happen
     final userId = user.id!;
-    // TODO : AllFriendsCubit
-    // TODO: if not friend with him, can only see friends in common
+    // LATER: if not friend with him, can only see friends in common
     final tabSections = <String, Widget>{};
     if (userId == currentUserId) {
       tabSections[context.l10n.friends] = UserProfileFriends(user: user);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_friend_request.dart';
 import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user_dialog.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
@@ -14,25 +16,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class AllUsersCubit extends Cubit<Iterable<UserModel>> {
-  AllUsersCubit() : super([]);
+class QueriedUsersCubit extends Cubit<Iterable<UserModel>> {
+  QueriedUsersCubit() : super([]);
 
-  Future<void> load() async {
-    try {
-      final users = await userCRUD.readFiltered(
-        filter: (collection) => collection,
-      );
-      emit(users);
-    } catch (_) {}
+  StreamSubscription<Iterable<UserModel>>? _streamSubscription;
+  String _query = '';
+
+  Future<void> setQuery(String query) async {
+    final newQuery = query.toLowerCase();
+    if (_query == newQuery) return;
+
+    _query = newQuery;
+    await _streamSubscription?.cancel();
+
+    if (_query.isEmpty) return emit([]);
+
+    // The character \uf8ff used in the query is a very high code point in
+    //the Unicode range (it is a Private Usage Area [PUA] code).
+    // Because it is after most regular characters in Unicode, the query
+    // matches all values that start with queryText.
+    _streamSubscription = userCRUD
+        .streamFiltered(
+          filter: (collection) => collection
+              .where('usernameLowercase', isGreaterThanOrEqualTo: _query)
+              .where('usernameLowercase', isLessThan: '$_query\uf8ff'),
+        )
+        .listen(emit);
   }
 
-  void clear() => emit([]);
-
-  late final List<UserModel> allUsers;
+  @override
+  Future<void> close() {
+    _streamSubscription?.cancel();
+    return super.close();
+  }
 }
 
 void searchFriend(BuildContext context) {
-  context.read<AllUsersCubit>().load();
   showSearch(
     context: context,
     delegate: FriendSearchDelegate(
@@ -79,7 +98,7 @@ class FriendSearchDelegate extends SearchDelegate<String?> {
     return IconButton(
       onPressed: () {
         close(context, null);
-        context.read<AllUsersCubit>().clear();
+        context.read<QueriedUsersCubit>().setQuery('');
       },
       icon: const Icon(Icons.arrow_back),
     );
@@ -87,18 +106,15 @@ class FriendSearchDelegate extends SearchDelegate<String?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return BlocBuilder<AllUsersCubit, Iterable<UserModel>>(
+    context.read<QueriedUsersCubit>().setQuery(query);
+
+    return BlocBuilder<QueriedUsersCubit, Iterable<UserModel>>(
       builder: (context, users) {
-        if (users.isEmpty) return const LinearProgressIndicator();
+        // if (users.isEmpty) return const LinearProgressIndicator();
         // if (query.isEmpty) return Container();
         return ListView(
           children: users
-              .where(
-                (user) =>
-                    user != currentUser &&
-                    (user.usernameLowercase?.contains(query.toLowerCase()) ??
-                        false),
-              )
+              .where((user) => user != currentUser)
               .map<Widget>((user) => getUserTile(context, user))
               .toList(),
         );
