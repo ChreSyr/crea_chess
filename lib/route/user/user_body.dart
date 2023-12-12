@@ -23,6 +23,7 @@ class UserBody extends MainRouteBody {
           icon: Icons.person,
           centered: false,
           padded: false,
+          // scrolled: false,
         );
 
   final String? userId;
@@ -114,7 +115,7 @@ class NotFullyAuthenticated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: CCWidgetSize.large3,
+      width: CCWidgetSize.large4,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

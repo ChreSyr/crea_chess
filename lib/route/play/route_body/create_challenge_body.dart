@@ -38,7 +38,7 @@ class _CreateChallengeBody extends StatelessWidget {
     return BlocBuilder<CreateChallengeCubit, CreateChallengeForm>(
       builder: (context, form) {
         return SizedBox(
-          width: CCWidgetSize.large3,
+          width: CCWidgetSize.large4,
           child: ListView(
             shrinkWrap: true,
             children: [

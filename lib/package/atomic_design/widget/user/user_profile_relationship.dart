@@ -9,6 +9,30 @@ import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class SendFriendRequestButton extends StatelessWidget {
+  const SendFriendRequestButton({required this.userId, super.key});
+
+  final String userId;
+
+  @override
+  Widget build(BuildContext context) {
+    final currentUserId = context.read<UserCubit>().state?.id;
+    if (currentUserId == null) return Container(); // should never happen
+    
+    return FilledButton.icon(
+      icon: const Icon(Icons.person_add),
+      label: Text(context.l10n.friendRequestSend),
+      onPressed: () {
+        relationshipCRUD.sendFriendRequest(
+          fromUserId: currentUserId,
+          toUserId: userId,
+        );
+        snackBarNotify(context, context.l10n.friendRequestSent);
+      },
+    );
+  }
+}
+
 class UserProfileRelationship extends StatelessWidget {
   const UserProfileRelationship(this.relation, {super.key});
 
@@ -25,17 +49,7 @@ class UserProfileRelationship extends StatelessWidget {
     switch (relation.status) {
       case null:
       case RelationshipStatus.canceled:
-        return FilledButton.icon(
-          icon: const Icon(Icons.person_add),
-          label: Text(context.l10n.friendRequestSend),
-          onPressed: () {
-            relationshipCRUD.sendFriendRequest(
-              fromUserId: currentUserId,
-              toUserId: userId,
-            );
-            snackBarNotify(context, context.l10n.friendRequestSent);
-          },
-        );
+        return SendFriendRequestButton(userId: userId);
       case RelationshipStatus.friends:
         return Container();
       case RelationshipStatus.requestedByFirst:
@@ -44,7 +58,7 @@ class UserProfileRelationship extends StatelessWidget {
           return FilledButton.icon(
             onPressed: () => answerFriendRequest(context, userId),
             icon: const Icon(Icons.mail),
-            label: Text(context.l10n.friendRequestNew),
+            label: Text(context.l10n.friendRequestSend),
           );
         } else {
           return ElevatedButton.icon(

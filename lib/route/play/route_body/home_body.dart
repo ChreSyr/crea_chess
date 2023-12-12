@@ -18,7 +18,7 @@ class HomeBody extends MainRouteBody {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: CCWidgetSize.large3,
+      width: CCWidgetSize.large4,
       child: ListView(
         shrinkWrap: true,
         children: [

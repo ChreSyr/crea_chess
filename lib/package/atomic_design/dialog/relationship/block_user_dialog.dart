@@ -27,7 +27,6 @@ void showBlockUserDialog(
           leading: UserProfilePhoto(toBlock?.photo),
           title: Text(toBlock?.username ?? ''),
         );
-        // TODO : il ne pourra plus voir votre liste d'amis
       },
     ),
     onYes: () {

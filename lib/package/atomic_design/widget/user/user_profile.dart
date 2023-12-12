@@ -43,10 +43,11 @@ class UserProfile extends StatelessWidget {
     if (currentUserId == null) return Container(); // should never happen
     if (user.id == null) return Container(); // should never happen
     final userId = user.id!;
-    final tabSections = <String, Widget>{
-      context.l10n.friends: UserProfileFriends(user: user),
-    };
+    // TODO : AllFriendsCubit
+    // TODO: if not friend with him, can only see friends in common
+    final tabSections = <String, Widget>{};
     if (userId == currentUserId) {
+      tabSections[context.l10n.friends] = UserProfileFriends(user: user);
       tabSections['Détails'] = const UserProfileDetails();
     }
     return BlocProvider(
@@ -56,16 +57,27 @@ class UserProfile extends StatelessWidget {
           documentId: relationshipCRUD.getId(currentUserId, userId),
         ),
         builder: (context, snapshot) {
+          final streaming = snapshot.connectionState == ConnectionState.active;
           final relation = snapshot.data;
+          // TODO : manage stream errors
+          if (userId != currentUserId &&
+              relation?.status == RelationshipStatus.friends) {
+            tabSections[context.l10n.friends] = UserProfileFriends(user: user);
+          }
+
           return SizedBox(
-            width: CCWidgetSize.large3,
+            width: CCWidgetSize.large4,
             child: DefaultTabController(
               length: tabSections.length,
               child: Column(
                 children: [
                   UserProfileHeader(user: user),
-                  if (relation != null) UserProfileRelationship(relation),
-                  if (relation?.blocker != userId) ...[
+                  if (streaming && userId != currentUserId)
+                    if (relation == null)
+                      SendFriendRequestButton(userId: userId)
+                    else
+                      UserProfileRelationship(relation),
+                  if (tabSections.isNotEmpty) ...[
                     CCGap.medium,
                     TabBar(
                       isScrollable: true,

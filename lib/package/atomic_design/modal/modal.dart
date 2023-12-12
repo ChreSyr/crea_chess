@@ -31,7 +31,7 @@ class Modal {
         builder: (_) => SimpleDialog(
           children: [
             SizedBox(
-              width: CCWidgetSize.large3,
+              width: CCWidgetSize.large4,
               child: content,
             ),
           ],
