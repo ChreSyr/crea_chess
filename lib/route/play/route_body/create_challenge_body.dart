@@ -17,7 +17,7 @@ class CreateChallengeBody extends RouteBody {
 
   @override
   String getTitle(AppLocalizations l10n) {
-    return 'Create challenge'; // TODO
+    return 'Create challenge'; // TODO : l10n
   }
 
   @override
@@ -162,7 +162,7 @@ class _CreateChallengeBody extends StatelessWidget {
               ),
               CCGap.large,
               FilledButton(
-                onPressed: () {}, // TODO
+                onPressed: () {}, // TODO : challengeCRUD
                 child: const Text('Create challenge'), // TODO : l10n
               ),
             ],

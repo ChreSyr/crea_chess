@@ -54,7 +54,7 @@ class UserProfileHeader extends StatelessWidget {
                     right: 0,
                     bottom: 0,
                     child: IconButton(
-                      onPressed: () {}, // TODO
+                      onPressed: () {}, // TODO : banners
                       icon: const Icon(Icons.edit),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateColor.resolveWith(
@@ -218,7 +218,6 @@ class UserProfileHeader extends StatelessWidget {
   Future<void> uploadProfilePhoto(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
 
-    // TODO: fix for the web
     if (pickedFile == null) return;
 
     final photoRef = FirebaseStorage.instance.getUserPhotoRef(user.id!);

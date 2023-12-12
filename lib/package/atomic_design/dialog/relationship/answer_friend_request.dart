@@ -48,7 +48,7 @@ void showAnswerFriendRequestDialog(
             onPressed: () {
               dialogContext.pop();
               relationshipCRUD.makeFriends(fromUserId, currentUserId);
-              // TODO: fiest animation on new friend
+              // LATER: fiest animation on new friend
             },
             label: Text(pageContext.l10n.accept),
           ),
