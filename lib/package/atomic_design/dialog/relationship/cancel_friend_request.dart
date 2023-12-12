@@ -5,6 +5,7 @@ import 'package:crea_chess/package/firebase/firestore/relationship/relationship_
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +18,7 @@ void showCancelFriendRequestDialog(
 
   showYesNoDialog(
     pageContext: pageContext,
-    title: 'Annuler la demande en ami ?', // TODO: l10n
+    title: pageContext.l10n.friendRequestCancel,
     content: FutureBuilder<UserModel?>(
       future: userCRUD.read(documentId: relatedUserId),
       builder: (context, snapshot) {
@@ -33,7 +34,7 @@ void showCancelFriendRequestDialog(
         cancelerId: currentUserId,
         otherId: relatedUserId,
       );
-      snackBarNotify(pageContext, 'Demande en ami annulée'); // TODO: l10n
+      snackBarNotify(pageContext, pageContext.l10n.friendRequestCanceled);
     },
   );
 }

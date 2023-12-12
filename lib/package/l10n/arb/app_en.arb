@@ -1,10 +1,18 @@
 {
   "@@locale": "en",
+  "accept": "Accept",
   "alreadyHaveAccount": "Already have an account ?",
+  "avatarChoose": "Choose an avatar",
+  "block": "Block",
+  "blockedUser": "Blocked user",
+  "blockedByUser": "This user blocked you",
+  "blockedUserVerbose": "You blocked this user",
+  "blockThisUser": "Block this user ?",
   "cancel": "Cancel",
   "chooseColor": "Choose a color",
   "chooseGoodUsername": "Choose a name your friends will recognize !",
   "continue_": "Continue",
+  "decline": "Decline",
   "deleteAccount": "Delete this account",
   "deleteAccountExplanation": "Are you sure you want to delete the account linked to {email} ?\nThis action is irreversible.",
   "@deleteAccountExplanation": {
@@ -21,16 +29,25 @@
       "code": {}
     }
   },
+  "friendRemove": "Remove from friends ?",
+  "friendRemoved": "Removed from friends",
   "friendRequest": "Friend request",
+  "friendRequestCancel": "Cancel the friend request ?",
+  "friendRequestCanceled": "Canceled friend request",
+  "friendRequestNew": "New friend request !",
+  "friendRequestSend": "Send friend request",
   "friendRequestSent": "Friend request sent",
   "friends": "Friends",
   "home": "Home",
   "iAcceptConditions": "I have not read the Terms of Use or the Privacy Policy.",
   "needAccount": "Need an account ?",
   "next": "Next",
+  "no": "No",
   "orContinueWith": "Or continue with",
   "password": "Password",
   "passwordForgot": "Forgot password ?",
+  "pictureTake": "Take a picture",
+  "pictureImport": "Import a picture",
   "play": "Play",
   "profile": "Profile",
   "resetPasswordExplanation": "Do you want to reset your password ?\n\nAn email will be sent to {email}",
@@ -48,6 +65,8 @@
   "signout": "Sign out",
   "signup": "Sign up",
   "timeControl": "Time control",
+  "userUnblock": "Unblock this user ?",
+  "userUnblocked": "Unblocked user",
   "verifyEmailExplainLink": "Confirm your email by clicking the link sent to {email}, then return to the app and click Continue.",
   "@verifyEmailExplainLink": {
     "placeholders": {
@@ -58,5 +77,6 @@
   "verifyEmailResendLink": "Resend link",
   "verifyMailbox": "Check your mailbox !",
   "welcomeBack": "Welcome back !",
-  "welcomeAmongUs": "Welcome among us !"
+  "welcomeAmongUs": "Welcome among us !",
+  "yes": "Yes"
 }

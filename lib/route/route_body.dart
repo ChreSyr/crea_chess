@@ -209,8 +209,7 @@ void answerFriendRequest(BuildContext pageContext, String? fromUserId) {
     context: pageContext,
     builder: (BuildContext dialogContext) {
       return AlertDialog(
-        // TODO: l10n
-        title: const Text('Nouvelle demande en ami !'),
+        title: Text(pageContext.l10n.friendRequestNew),
         content: FutureBuilder<UserModel?>(
           future: userCRUD.read(documentId: fromUserId),
           builder: (context, snapshot) {
@@ -231,16 +230,16 @@ void answerFriendRequest(BuildContext pageContext, String? fromUserId) {
               dialogContext.pop();
               showBlockUserDialog(pageContext, fromUserId);
             },
-            label: const Text('Refuser'),
+            label: Text(pageContext.l10n.decline),
           ),
           ElevatedButton.icon(
             icon: const Icon(Icons.check),
             onPressed: () {
               dialogContext.pop();
               relationshipCRUD.makeFriends(fromUserId, currentUserId);
-              snackBarNotify(pageContext, 'Demande en ami acceptée !');
+              // TODO: fiest animation on new friend
             },
-            label: const Text('Accepter'),
+            label: Text(pageContext.l10n.accept),
           ),
         ],
       );

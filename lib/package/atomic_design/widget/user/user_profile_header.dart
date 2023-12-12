@@ -12,6 +12,7 @@ import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/firebase/storage/extension.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,6 @@ class UserProfileHeader extends StatelessWidget {
   }
 
   void showUserActionsModal(BuildContext context) {
-    // TODO: l10n
     final currentUserId = context.read<UserCubit>().state?.id;
     if (currentUserId == null) return; // should never happen
     if (user.id == null) return; // should never happen
@@ -129,7 +129,7 @@ class UserProfileHeader extends StatelessWidget {
       sections: [
         ListTile(
           leading: const Icon(Icons.block),
-          title: const Text('Bloquer'),
+          title: Text(context.l10n.block),
           onTap: () {
             context.pop();
             showBlockUserDialog(context, userId);
@@ -144,7 +144,7 @@ class UserProfileHeader extends StatelessWidget {
             if (relationship?.status == RelationshipStatus.friends) {
               return ListTile(
                 leading: const Icon(Icons.person_remove),
-                title: const Text('Retirer des amis'), // TODO: l10n
+                title: Text(context.l10n.friendRemove),
                 onTap: () {
                   modalContext.pop();
                   showCancelRelationshipDialog(context, userId);
@@ -160,14 +160,13 @@ class UserProfileHeader extends StatelessWidget {
   }
 
   void showPhotoModal(BuildContext context) {
-    // TODO: l10n
     return Modal.show(
       context: context,
       sections: [
         if (!kIsWeb)
           ListTile(
             leading: const Icon(Icons.add_a_photo),
-            title: const Text('Prendre une photo'),
+            title: Text(context.l10n.pictureTake),
             onTap: () {
               context.pop();
               uploadProfilePhoto(ImageSource.camera);
@@ -175,7 +174,7 @@ class UserProfileHeader extends StatelessWidget {
           ),
         ListTile(
           leading: const Icon(Icons.drive_folder_upload),
-          title: const Text('Importer une photo'),
+          title: Text(context.l10n.pictureImport),
           onTap: () {
             context.pop();
             uploadProfilePhoto(ImageSource.gallery);
@@ -183,7 +182,7 @@ class UserProfileHeader extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.person),
-          title: const Text('Choisir un avatar'),
+          title: Text(context.l10n.avatarChoose),
           onTap: () {
             context.pop();
             Modal.show(

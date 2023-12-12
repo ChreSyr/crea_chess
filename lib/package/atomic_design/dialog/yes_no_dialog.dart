@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,7 +18,7 @@ void showYesNoDialog({
           ElevatedButton.icon(
             icon: const Icon(Icons.close),
             onPressed: dialogContext.pop,
-            label: const Text('Non'), // TODO : l10n
+            label: Text(pageContext.l10n.no),
           ),
           ElevatedButton.icon(
             icon: const Icon(Icons.check),
@@ -25,7 +26,7 @@ void showYesNoDialog({
               onYes();
               dialogContext.pop();
             },
-            label: const Text('Oui'), // TODO : l10n
+            label: Text(pageContext.l10n.yes),
           ),
         ],
       );

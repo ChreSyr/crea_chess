@@ -47,7 +47,7 @@ class _CreateChallengeBody extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => ModalSelect.show(
                     context: context,
-                    title: 'Taille du plateau',
+                    title: 'Taille du plateau', // TODO: l10n
                     choices: [
                       ModalSelectRowData(
                         title: 'Bullet', // TODO: l10n ?

@@ -5,6 +5,7 @@ import 'package:crea_chess/package/firebase/firestore/relationship/relationship_
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +18,7 @@ void showUnblockUserDialog(
 
   showYesNoDialog(
     pageContext: pageContext,
-    title: 'Débloquer cet utilisateur ?', // TODO: l10n
+    title: pageContext.l10n.userUnblock,
     content: FutureBuilder<UserModel?>(
       future: userCRUD.read(documentId: toUnblockId),
       builder: (context, snapshot) {
@@ -33,7 +34,7 @@ void showUnblockUserDialog(
         blockerId: currentUserId,
         toUnblockId: toUnblockId,
       );
-      snackBarNotify(pageContext, 'Utilisateur débloqué'); // TODO: l10n
+      snackBarNotify(pageContext, pageContext.l10n.userUnblocked);
     },
   );
 }

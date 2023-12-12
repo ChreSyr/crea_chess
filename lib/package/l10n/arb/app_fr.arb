@@ -1,10 +1,18 @@
 {
   "@@locale": "fr",
+  "accept": "Accepter",
   "alreadyHaveAccount": "Tu as déjà un compte ?",
+  "avatarChoose": "Choisir un avatar",
+  "block": "Bloquer",
+  "blockedUser": "Utilisateur bloqué",
+  "blockedByUser": "Cet utilisateur vous a bloqué",
+  "blockedUserVerbose": "Vous avez bloqué cet utilisateur",
+  "blockThisUser": "Bloquer cet utilisateur ?",
   "cancel": "Annuler",
   "chooseColor": "Choisis une couleur",
   "chooseGoodUsername": "Choisissez un nom que vos amis reconnaîtront !",
   "continue_": "Continuer",
+  "decline": "Décliner",
   "deleteAccount": "Supprimer ce compte",
   "deleteAccountExplanation": "Êtes vous sûr de vouloir supprimer le compte lié à l'addresse {email} ?\nCette action est irréversible.",
   "@deleteAccountExplanation": {
@@ -21,16 +29,25 @@
       "code": {}
     }
   },
+  "friendRemove": "Retirer des amis ?",
+  "friendRemoved": "Retiré des amis",
   "friendRequest": "Demande en ami",
+  "friendRequestCancel": "Annuler la demande en ami ?",
+  "friendRequestCanceled": "Demande en ami annulée",
+  "friendRequestNew": "Nouvelle demande en ami !",
+  "friendRequestSend": "Demander en ami",
   "friendRequestSent": "Demande en ami envoyée",
   "friends": "Amis",
   "home": "Accueil",
   "iAcceptConditions": "Je n'ai lu ni les Conditions d'utilisation, ni la Politique de confidentialité.",
   "needAccount": "Besoin d'un compte ?",
   "next": "Suivant",
+  "no": "Non",
   "orContinueWith": "Ou continuer avec",
   "password": "Mot de passe",
   "passwordForgot": "Mot de passe oublié ?",
+  "pictureTake": "Prendre une photo",
+  "pictureImport": "Importer une photo",
   "play": "Jouer",
   "profile": "Profil",
   "resetPasswordExplanation": "Voulez-vous réinitialiser votre mot de passe ?\n\nUn mail sera envoté à {email}",
@@ -48,6 +65,8 @@
   "signout": "Se déconnecter",
   "signup": "Inscription",
   "timeControl": "Cadence",
+  "userUnblock": "Débloquer cet utilisateur ?",
+  "userUnblocked": "Utilisateur débloqué",
   "verifyEmailExplainLink": "Confirmez votre adresse e-mail en cliquant sur le lien envoyé à {email}, puis revenez à l'application et cliquez sur Continuer.",
   "@verifyEmailExplainLink": {
     "placeholders": {
@@ -58,5 +77,6 @@
   "verifyEmailResendLink": "Renvoyer le lien",
   "verifyMailbox": "Vérifiez votre boîte de réception !",
   "welcomeBack": "Bon retour parmi nous !",
-  "welcomeAmongUs": "Bienvenue parmi nous !"
+  "welcomeAmongUs": "Bienvenue parmi nous !",
+  "yes": "Oui"
 }

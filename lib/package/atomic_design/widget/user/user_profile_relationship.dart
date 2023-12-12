@@ -4,6 +4,7 @@ import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
+import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:crea_chess/route/route_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,16 +27,13 @@ class UserProfileRelationship extends StatelessWidget {
       case RelationshipStatus.canceled:
         return FilledButton.icon(
           icon: const Icon(Icons.person_add),
-          label: const Text('Demander en ami'), // TODO : l10n
+          label: Text(context.l10n.friendRequestSend),
           onPressed: () {
             relationshipCRUD.sendFriendRequest(
               fromUserId: currentUserId,
               toUserId: userId,
             );
-            snackBarNotify(
-              context,
-              'Demande en ami envoyée',
-            ); // TODO : l10n
+            snackBarNotify(context, context.l10n.friendRequestSent);
           },
         );
       case RelationshipStatus.friends:
@@ -46,13 +44,13 @@ class UserProfileRelationship extends StatelessWidget {
           return FilledButton.icon(
             onPressed: () => answerFriendRequest(context, userId),
             icon: const Icon(Icons.mail),
-            label: const Text('Nouvelle demande en ami !'), // TODO : l10n
+            label: Text(context.l10n.friendRequestNew),
           );
         } else {
           return ElevatedButton.icon(
             onPressed: () => showCancelFriendRequestDialog(context, userId),
             icon: const Icon(Icons.send),
-            label: const Text('Demande en ami envoyée'), // TODO : l10n
+            label: Text(context.l10n.friendRequestSent),
           );
         }
       case RelationshipStatus.blockedByFirst:
@@ -61,18 +59,15 @@ class UserProfileRelationship extends StatelessWidget {
           return ElevatedButton.icon(
             onPressed: () => showUnblockUserDialog(context, userId),
             icon: const Icon(Icons.block),
-            label: const Text(
-              'Vous avez bloqué cet utilisateur',
-            ), // TODO : l10n
+            label: Text(context.l10n.blockedUserVerbose),
           );
         } else {
           return ElevatedButton.icon(
             onPressed: null,
             icon: const Icon(Icons.block),
-            label: const Text('Cet utilisateur vous a bloqué'), // TODO : l10n
+            label: Text(context.l10n.blockedByUser),
           );
         }
     }
-    
   }
 }
