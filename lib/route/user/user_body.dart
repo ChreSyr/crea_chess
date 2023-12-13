@@ -105,6 +105,7 @@ class UserBody extends MainRouteBody {
 }
 
 class NotFullyAuthenticated extends StatelessWidget {
+  // TODO : use UserProfile
   const NotFullyAuthenticated({
     required this.auth,
     super.key,

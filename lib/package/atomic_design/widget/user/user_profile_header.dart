@@ -5,6 +5,7 @@ import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user.
 import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_relationship.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_profile_banner.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
@@ -43,22 +44,18 @@ class UserProfileHeader extends StatelessWidget {
             // banner
             Stack(
               children: [
-                const SizedBox(
-                  height: CCWidgetSize.large,
-                  child: ListTile(
-                    tileColor: Colors.grey,
-                  ),
-                ),
+                UserProfileBanner(user.banner),
                 if (editable)
                   Positioned(
                     right: 0,
                     bottom: 0,
                     child: IconButton(
-                      onPressed: () {}, // TODO : banners
+                      onPressed: () => showBannerModal(context),
                       icon: const Icon(Icons.edit),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateColor.resolveWith(
                           (states) => CCColor.background(context),
+                          // TODO : sligth transparency in background
                         ),
                       ),
                     ),
@@ -91,6 +88,7 @@ class UserProfileHeader extends StatelessWidget {
                         style: ButtonStyle(
                           backgroundColor: MaterialStateColor.resolveWith(
                             (states) => CCColor.background(context),
+                            // TODO : sligth transparency in background
                           ),
                         ),
                       ),
@@ -101,7 +99,7 @@ class UserProfileHeader extends StatelessWidget {
           ],
         ),
 
-        // // user name
+        // username
         ListTile(
           leading: const Icon(Icons.alternate_email),
           title: Text(user.username ?? ''),
@@ -154,6 +152,32 @@ class UserProfileHeader extends StatelessWidget {
               return Container();
             }
           },
+        ),
+      ],
+    );
+  }
+
+  void showBannerModal(BuildContext context) {
+    Modal.show(
+      context: context,
+      sections: [
+        GridView.count(
+          shrinkWrap: true,
+          childAspectRatio: 3,
+          crossAxisCount: 2,
+          crossAxisSpacing: CCSize.large,
+          mainAxisSpacing: CCSize.large,
+          children: bannerNames
+              .map(
+                (e) => GestureDetector(
+                  onTap: () {
+                    userCRUD.userCubit.setBanner(banner: e);
+                    context.pop();
+                  },
+                  child: UserProfileBanner(e),
+                ),
+              )
+              .toList(),
         ),
       ],
     );

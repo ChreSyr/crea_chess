@@ -69,6 +69,16 @@ class UserCubit extends Cubit<UserModel?> {
     return super.close();
   }
 
+  Future<void> setBanner({required String banner}) async {
+    if (state == null || state!.id == null) return;
+    if (banner == state!.banner) return;
+
+    await userCRUD.update(
+      documentId: state!.id!,
+      data: state!.copyWith(banner: banner),
+    );
+  }
+
   Future<void> setPhoto({required String photo}) async {
     if (state == null || state!.id == null) return;
     if (photo == state!.photo) return;

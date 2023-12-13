@@ -14,6 +14,7 @@ class UserModel with _$UserModel {
     String? username,
     String? usernameLowercase,
     String? photo,
+    String? banner,
   }) = _UserModel;
 
   /// Required for the override getter

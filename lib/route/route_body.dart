@@ -139,7 +139,9 @@ abstract class MainRouteBody extends RouteBody {
               final isLoggedOut = auth == null;
               void signout() {
                 authenticationCRUD.signOut();
-                context.push('/sso');
+                context
+                  ..go('/user')
+                  ..push('/sso');
               }
 
               return MenuAnchor(
