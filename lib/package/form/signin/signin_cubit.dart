@@ -54,12 +54,18 @@ class SigninCubit extends Cubit<SigninForm> {
         ),
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+      print('---------------');
+      print(e.code);
+      if (e.code == 'invalid-credential') {
         emit(state.copyWith(status: SigninStatus.invalidCredentials));
+      } else if (e.code == 'too-many-requests') {
+        emit(state.copyWith(status: SigninStatus.tooManyRequests));
       } else {
         emit(state.copyWith(status: SigninStatus.unexpectedError));
       }
     } catch (_) {
+      print('---------------');
+      print('rrr');
       emit(state.copyWith(status: SigninStatus.unexpectedError));
     }
   }

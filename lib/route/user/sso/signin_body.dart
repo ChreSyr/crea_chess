@@ -39,6 +39,7 @@ class SigninBody extends RouteBody {
 class _SigninBody extends StatelessWidget {
   const _SigninBody();
 
+  // TODO : dialog folder
   Future<AlertDialog?> confirmResetPassword(
     BuildContext context,
     String email,
@@ -81,6 +82,7 @@ class _SigninBody extends StatelessWidget {
       listener: (context, form) {
         switch (form.status) {
           case SigninStatus.invalidCredentials:
+          case SigninStatus.tooManyRequests:
           case SigninStatus.unexpectedError:
             snackBarError(
               context,

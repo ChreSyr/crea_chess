@@ -16,5 +16,6 @@ enum SigninStatus {
 
   // snack bar notified errors
   invalidCredentials,
+  tooManyRequests,
   unexpectedError,
 }
