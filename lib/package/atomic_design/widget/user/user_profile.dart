@@ -2,122 +2,73 @@ import 'package:crea_chess/package/atomic_design/padding.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/divider.dart';
 import 'package:crea_chess/package/atomic_design/widget/gap.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_details.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_friends.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_header.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_relationship.dart';
-import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
-import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
-import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
-import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
-import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_header.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_sections.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TabIndexCubit extends Cubit<int> {
-  TabIndexCubit() : super(0);
+class _TabIndexCubit extends Cubit<int> {
+  _TabIndexCubit() : super(0);
 
   void set(int index) => emit(index);
 }
 
 class UserProfile extends StatelessWidget {
-  const UserProfile({required this.user, super.key});
+  const UserProfile({
+    required this.header,
+    required this.tabSections,
+    this.relationshipWidget,
+    super.key,
+  });
 
-  static Widget fromId({required String userId}) {
-    return StreamBuilder<UserModel?>(
-      stream: userCRUD.stream(documentId: userId),
-      builder: (context, snapshot) {
-        final user = snapshot.data;
-        if (user == null) return const CircularProgressIndicator();
-        return UserProfile(user: user);
-      },
-    );
-  }
-
-  final UserModel user;
+  final UserHeader header;
+  final Widget? relationshipWidget;
+  final List<UserSection> tabSections;
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = context.read<UserCubit>().state?.id;
-    if (currentUserId == null) return Container(); // should never happen
-    if (user.id == null) return Container(); // should never happen
-    final userId = user.id!;
-    // LATER: if not friend with him, can only see friends in common
-    final tabSections = <String, Widget>{};
-    if (userId == currentUserId) {
-      tabSections[context.l10n.friends] = UserProfileFriends(user: user);
-      tabSections[context.l10n.details] = const UserProfileDetails();
-    }
     return BlocProvider(
-      create: (context) => TabIndexCubit(),
-      child: StreamBuilder<RelationshipModel?>(
-        stream: relationshipCRUD.stream(
-          documentId: relationshipCRUD.getId(currentUserId, userId),
-        ),
-        builder: (context, snapshot) {
-          final streaming = snapshot.connectionState == ConnectionState.active;
-          final relation = snapshot.data;
-          if (userId != currentUserId &&
-              relation?.status == RelationshipStatus.friends) {
-            tabSections[context.l10n.friends] = UserProfileFriends(user: user);
-          }
-
+      create: (context) => _TabIndexCubit(),
+      child: Builder(
+        builder: (context) {
           return SizedBox(
             width: CCWidgetSize.large4,
-            child: DefaultTabController(
-              length: tabSections.length,
-              child: Column(
-                children: [
-                  UserProfileHeader(user: user),
-                  if (streaming && userId != currentUserId)
-                    if (relation == null)
-                      SendFriendRequestButton(userId: userId)
-                    else
-                      UserProfileRelationship(relation),
-                  if (tabSections.isNotEmpty) ...[
-                    CCGap.medium,
-                    TabBar(
+            child: Column(
+              children: [
+                header,
+                if (relationshipWidget != null) relationshipWidget!,
+                if (tabSections.isNotEmpty) ...[
+                  CCGap.medium,
+                  DefaultTabController(
+                    length: tabSections.length,
+                    child: TabBar(
                       isScrollable: true,
                       tabAlignment: TabAlignment.start,
-                      tabs: tabSections.keys.map((e) => Tab(text: e)).toList(),
-                      onTap: context.read<TabIndexCubit>().set,
+                      tabs: tabSections
+                          .map((e) => Tab(text: e.getTitle(context.l10n)))
+                          .toList(),
+                      onTap: context.read<_TabIndexCubit>().set,
                     ),
-                    CCDivider.xthin,
-                    CCPadding.allMedium(
-                      child: BlocBuilder<TabIndexCubit, int>(
-                        builder: (context, index) {
-                          return IndexedStack(
-                            alignment: Alignment.topCenter,
-                            index: index,
-                            children: tabSections.values.toList(),
-                          );
-                        },
-                      ),
+                  ),
+                  CCDivider.xthin,
+                  CCPadding.allMedium(
+                    child: BlocBuilder<_TabIndexCubit, int>(
+                      builder: (context, index) {
+                        return IndexedStack(
+                          alignment: Alignment.topCenter,
+                          index: index,
+                          children: tabSections.toList(),
+                        );
+                      },
                     ),
-                  ],
+                  ),
                 ],
-              ),
+              ],
             ),
           );
         },
       ),
     );
-  }
-}
-
-class AdaptativeTabBarView extends StatelessWidget {
-  const AdaptativeTabBarView({
-    required this.controller,
-    required this.children,
-    super.key,
-  });
-
-  final TabController controller;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

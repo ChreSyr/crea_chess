@@ -15,7 +15,7 @@ class UserCubit extends Cubit<UserModel?> {
   }
 
   void _fromAuth(User? auth) {
-    if (auth == null || !auth.isFullyAuthenticated) {
+    if (auth == null || !auth.isVerified) {
       cancelUserStreamSubscription();
       emit(null);
       return;

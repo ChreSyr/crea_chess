@@ -1,6 +1,6 @@
 import 'package:crea_chess/package/atomic_design/dialog/yes_no.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
@@ -24,7 +24,7 @@ void showUnblockUserDialog(
       builder: (context, snapshot) {
         final toBlock = snapshot.data;
         return ListTile(
-          leading: UserProfilePhoto(toBlock?.photo),
+          leading: UserPhoto(toBlock?.photo),
           title: Text(toBlock?.username ?? ''),
         );
       },

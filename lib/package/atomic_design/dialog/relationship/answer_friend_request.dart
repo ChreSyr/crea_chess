@@ -1,5 +1,5 @@
 import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
@@ -26,7 +26,7 @@ void showAnswerFriendRequestDialog(
           builder: (context, snapshot) {
             final friend = snapshot.data;
             return ListTile(
-              leading: UserProfilePhoto(friend?.photo),
+              leading: UserPhoto(friend?.photo),
               title: Text(friend?.username ?? ''),
             );
           },

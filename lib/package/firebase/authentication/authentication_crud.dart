@@ -208,9 +208,9 @@ class AuthenticationCubit extends Cubit<User?> {
   }
 }
 
-extension UserIsFullyAuthenticated on User {
+extension UserIsVerified on User {
   /// true if the email is verified or has been provided by google or facebook
-  bool get isFullyAuthenticated {
+  bool get isVerified {
     return emailVerified ||
         providerData.where((e) => e.providerId != 'password').isNotEmpty;
   }

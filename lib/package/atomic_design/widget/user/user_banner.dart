@@ -13,20 +13,24 @@ const bannerNames = [
   'gold_pinimg',
 ];
 
-class UserProfileBanner extends StatelessWidget {
-  const UserProfileBanner(this.banner, {super.key});
+class UserBanner extends StatelessWidget {
+  const UserBanner(this.banner, {super.key});
 
   final String? banner;
+
+  static const empty = ColoredBox(color: Colors.grey);
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 3,
-      child: Image.asset(
-        'assets/banner/$banner.jpg',
-        fit: BoxFit.fitWidth,
-        errorBuilder: (a, b, c) => const ColoredBox(color: Colors.grey),
-      ),
+      child: banner == null
+          ? empty
+          : Image.asset(
+              'assets/banner/$banner.jpg',
+              fit: BoxFit.fitWidth,
+              errorBuilder: (a, b, c) => empty,
+            ),
     );
   }
 }

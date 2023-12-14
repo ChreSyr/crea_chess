@@ -1,7 +1,11 @@
-import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:crea_chess/package/atomic_design/streamer/streamer.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/relationship_button.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_header.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_sections.dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
+import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
@@ -16,7 +20,7 @@ import 'package:go_router/go_router.dart';
 // LATER: App Check
 
 class UserBody extends MainRouteBody {
-  const UserBody({this.userId, super.key})
+  const UserBody({this.routeUserId, super.key})
       : super(
           id: 'user',
           icon: Icons.person,
@@ -25,37 +29,25 @@ class UserBody extends MainRouteBody {
           // scrolled: false,
         );
 
-  final String? userId;
+  final String? routeUserId;
 
   @override
   String getTitle(AppLocalizations l10n) => l10n.profile;
 
-  static const notifNotFullyAuthenticated = 'not-fully-authenticated';
+  static const notifEmailNotVerified = 'email-not-verified';
   static const notifPhotoEmpty = 'photo-empty';
   static const notifNameEmpty = 'name-empty';
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = context.read<UserCubit>().state?.id;
-    if (userId != null && currentUserId != userId) {
-      return UserProfile.fromId(userId: userId!);
-    }
-
-    return BlocConsumer<AuthenticationCubit, User?>(
-      listener: (context, auth) {
-        if (auth == null) {
-          context.read<NavNotifCubit>().remove(id, notifNotFullyAuthenticated);
-        } else {
-          if (auth.isFullyAuthenticated != true) {
-            context.read<NavNotifCubit>().add(id, notifNotFullyAuthenticated);
-          } else {
-            context
-                .read<NavNotifCubit>()
-                .remove(id, notifNotFullyAuthenticated);
-          }
-        }
-      },
+    return BlocBuilder<AuthenticationCubit, User?>(
       builder: (context, auth) {
+        if (auth != null && !auth.isVerified) {
+          context.read<NavNotifCubit>().add(id, notifEmailNotVerified);
+        } else {
+          context.read<NavNotifCubit>().remove(id, notifEmailNotVerified);
+        }
+
         // Note : if auth is null, the sso route replaces the user route.
         // This is just a security.
         if (auth == null) {
@@ -69,9 +61,51 @@ class UserBody extends MainRouteBody {
 
           // If the email is not confirmed yet
           // LATER: rethink : authenticated simply with phone ?
-          // LATER: move in sso route
-        } else if (!auth.isFullyAuthenticated) {
-          return NotFullyAuthenticated(auth: auth);
+        } else if (!auth.isVerified) {
+          return UserProfile(
+            header: UserHeader.notVerified(authUid: auth.uid),
+            tabSections: UserSection.getNotVerifiedSections(),
+          );
+        }
+
+        final currentUserId = auth.uid;
+        final userId = routeUserId ?? currentUserId;
+
+        if (currentUserId != userId) {
+          return Streamer.user(
+            userId: userId,
+            builder: (_, user) {
+              final relationshipWidget = StreamBuilder<RelationshipModel?>(
+                stream: relationshipCRUD.stream(
+                  documentId: relationshipCRUD.getId(currentUserId, userId),
+                ),
+                builder: (context, snapshot) {
+                  final streaming =
+                      snapshot.connectionState == ConnectionState.active;
+                  final relation = snapshot.data ??
+                      RelationshipModel(users: [userId, currentUserId]);
+
+                  return (streaming && userId != currentUserId
+                          ? getRelationshipButton(context, relation)
+                          : null) ??
+                      Container();
+                },
+              );
+
+              return UserProfile(
+                header: UserHeader(
+                  userId: userId,
+                  banner: user.banner,
+                  photo: user.photo,
+                  username: user.username,
+                  editable: false,
+                ),
+                relationshipWidget: relationshipWidget,
+                tabSections:
+                    UserSection.getSections(currentUserId, userId),
+              );
+            },
+          );
         }
 
         return BlocConsumer<UserCubit, UserModel?>(
@@ -96,80 +130,19 @@ class UserBody extends MainRouteBody {
             // creating the user
             if (user == null) return const CircularProgressIndicator();
 
-            return UserProfile(user: user);
+            return UserProfile(
+              header: UserHeader(
+                userId: userId,
+                banner: user.banner,
+                photo: user.photo,
+                username: user.username,
+                editable: false,
+              ),
+              tabSections: UserSection.getSections(currentUserId, userId),
+            );
           },
         );
       },
-    );
-  }
-}
-
-class NotFullyAuthenticated extends StatelessWidget {
-  // TODO : use UserProfile
-  const NotFullyAuthenticated({
-    required this.auth,
-    super.key,
-  });
-
-  final User auth;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: CCWidgetSize.large4,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            title: Center(
-              child: UserProfilePhoto(
-                auth.photoURL,
-                radius: CCSize.xxxlarge,
-                backgroundColor: auth.photoURL == null ? Colors.red[100] : null,
-              ),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.alternate_email),
-            title: Text(auth.displayName ?? ''),
-          ),
-          ListTile(
-            leading: const Icon(Icons.email),
-            title: Text(auth.email ?? ''),
-            // email verification
-            trailing: auth.isFullyAuthenticated
-                ? null
-                : const Icon(Icons.priority_high, color: Colors.red),
-            // email verification
-            onTap: auth.isFullyAuthenticated
-                ? null
-                : () => showDialog<AlertDialog>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Text(
-                            context.l10n.verifyEmailExplanation,
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: context.pop,
-                              child: Text(context.l10n.cancel),
-                            ),
-                            FilledButton(
-                              child: Text(context.l10n.sendEmail),
-                              onPressed: () {
-                                context
-                                  ..pop()
-                                  ..push('/sso/email_verification');
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-          ),
-        ],
-      ),
     );
   }
 }

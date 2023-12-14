@@ -5,13 +5,12 @@ import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user.
 import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_relationship.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_banner.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_banner.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
-import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/firebase/storage/extension.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,20 +20,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-class UserProfileHeader extends StatelessWidget {
-  const UserProfileHeader({required this.user, super.key});
+class UserHeader extends StatelessWidget {
+  const UserHeader({
+    required this.userId,
+    required this.banner,
+    required this.photo,
+    required this.username,
+    required this.editable,
+    super.key,
+  });
 
-  final UserModel user;
+  factory UserHeader.notVerified({required String authUid}) => UserHeader(
+        userId: authUid,
+        banner: null,
+        photo: null,
+        username: null,
+        editable: false,
+      );
+
+  final String userId;
+  final String? banner;
+  final String? photo;
+  final String? username;
+  final bool editable;
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = context.read<UserCubit>().state?.id;
-    if (currentUserId == null) return Container(); // should never happen
-    if (user.id == null) return Container(); // should never happen
-    final userId = user.id!;
-
-    final editable = currentUserId == userId;
-
     return Column(
       children: [
         Stack(
@@ -44,7 +55,7 @@ class UserProfileHeader extends StatelessWidget {
             // banner
             Stack(
               children: [
-                UserProfileBanner(user.banner),
+                UserBanner(banner),
                 if (editable)
                   Positioned(
                     right: 0,
@@ -70,11 +81,10 @@ class UserProfileHeader extends StatelessWidget {
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  UserProfilePhoto(
-                    user.photo,
+                  UserPhoto(
+                    photo,
                     radius: CCWidgetSize.xxsmall,
-                    backgroundColor:
-                        user.photo == null ? Colors.red[100] : null,
+                    backgroundColor: photo == null ? Colors.red[100] : null,
                   ),
                   if (editable)
                     Positioned(
@@ -82,7 +92,7 @@ class UserProfileHeader extends StatelessWidget {
                       bottom: 0,
                       child: IconButton(
                         onPressed: () => showPhotoModal(context),
-                        icon: (user.photo ?? '').isEmpty
+                        icon: (photo ?? '').isEmpty
                             ? const Icon(Icons.priority_high, color: Colors.red)
                             : const Icon(Icons.edit),
                         style: ButtonStyle(
@@ -102,9 +112,9 @@ class UserProfileHeader extends StatelessWidget {
         // username
         ListTile(
           leading: const Icon(Icons.alternate_email),
-          title: Text(user.username ?? ''),
+          title: Text(username ?? ''),
           trailing: editable
-              ? ((user.username ?? '').isEmpty || user.username == user.id)
+              ? ((username ?? '').isEmpty || username == userId)
                   ? const Icon(Icons.priority_high, color: Colors.red)
                   : const Icon(Icons.edit)
               : const Icon(Icons.more_horiz),
@@ -119,8 +129,6 @@ class UserProfileHeader extends StatelessWidget {
   void showUserActionsModal(BuildContext context) {
     final currentUserId = context.read<UserCubit>().state?.id;
     if (currentUserId == null) return; // should never happen
-    if (user.id == null) return; // should never happen
-    final userId = user.id!;
 
     return Modal.show(
       context: context,
@@ -174,7 +182,7 @@ class UserProfileHeader extends StatelessWidget {
                     userCRUD.userCubit.setBanner(banner: e);
                     context.pop();
                   },
-                  child: UserProfileBanner(e),
+                  child: UserBanner(e),
                 ),
               )
               .toList(),
@@ -209,31 +217,35 @@ class UserProfileHeader extends StatelessWidget {
           title: Text(context.l10n.avatarChoose),
           onTap: () {
             context.pop();
-            Modal.show(
-              context: context,
-              sections: [
-                GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 4,
-                  crossAxisSpacing: CCSize.large,
-                  mainAxisSpacing: CCSize.large,
-                  children: avatarNames
-                      .map(
-                        (e) => GestureDetector(
-                          onTap: () {
-                            userCRUD.userCubit.setPhoto(photo: 'avatar-$e');
-                            context.pop();
-                          },
-                          child: CircleAvatar(
-                            backgroundImage: AssetImage('assets/avatar/$e.jpg'),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-            );
+            showAvatarModal(context);
           },
+        ),
+      ],
+    );
+  }
+
+  void showAvatarModal(BuildContext context) {
+    Modal.show(
+      context: context,
+      sections: [
+        GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 4,
+          crossAxisSpacing: CCSize.large,
+          mainAxisSpacing: CCSize.large,
+          children: avatarNames
+              .map(
+                (e) => GestureDetector(
+                  onTap: () {
+                    userCRUD.userCubit.setPhoto(photo: 'avatar-$e');
+                    context.pop();
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage('assets/avatar/$e.jpg'),
+                  ),
+                ),
+              )
+              .toList(),
         ),
       ],
     );
@@ -244,7 +256,7 @@ class UserProfileHeader extends StatelessWidget {
 
     if (pickedFile == null) return;
 
-    final photoRef = FirebaseStorage.instance.getUserPhotoRef(user.id!);
+    final photoRef = FirebaseStorage.instance.getUserPhotoRef(userId);
     await photoRef.putFile(File(pickedFile.path));
     await userCRUD.userCubit.setPhoto(photo: await photoRef.getDownloadURL());
   }

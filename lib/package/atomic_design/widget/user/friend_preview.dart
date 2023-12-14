@@ -1,5 +1,5 @@
 import 'package:crea_chess/package/atomic_design/size.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
@@ -49,7 +49,7 @@ class FriendPreview extends StatelessWidget {
               context.push('/user/@$friendId');
             }
           },
-          child: UserProfilePhoto(
+          child: UserPhoto(
             friend.photo,
             radius: radius,
           ),

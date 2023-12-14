@@ -87,7 +87,7 @@ final router = GoRouter(
                   path: '@:userId',
                   builder: (context, state) => RouteScaffold(
                     body: UserBody(
-                      userId: state.pathParameters['userId'] ?? '',
+                      routeUserId: state.pathParameters['userId'] ?? '',
                     ),
                   ),
                 ),

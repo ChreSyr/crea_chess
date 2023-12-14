@@ -5,7 +5,7 @@ import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_frie
 import 'package:crea_chess/package/atomic_design/dialog/relationship/unblock_user.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
 import 'package:crea_chess/package/atomic_design/widget/simple_badge.dart';
-import 'package:crea_chess/package/atomic_design/widget/user/user_profile_photo.dart';
+import 'package:crea_chess/package/atomic_design/widget/user/user_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
@@ -195,7 +195,7 @@ Widget getUserTile(BuildContext context, UserModel user) {
       final trailing = getTrailing();
 
       return ListTile(
-        leading: UserProfilePhoto(user.photo),
+        leading: UserPhoto(user.photo),
         title: Text(user.username ?? ''),
         trailing: trailing,
         onTap: () => context.push('/user/@$userId'),
