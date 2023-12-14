@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/dialog/user/reset_password.dart';
 import 'package:crea_chess/package/atomic_design/field/input_decoration.dart';
 import 'package:crea_chess/package/atomic_design/field/password_form_field.dart';
 import 'package:crea_chess/package/atomic_design/snack_bar.dart';
@@ -38,41 +39,6 @@ class SigninBody extends RouteBody {
 
 class _SigninBody extends StatelessWidget {
   const _SigninBody();
-
-  // TODO : dialog folder
-  Future<AlertDialog?> confirmResetPassword(
-    BuildContext context,
-    String email,
-  ) {
-    return showDialog<AlertDialog>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Text(
-            context.l10n.resetPasswordExplanation(email),
-          ),
-          actions: [
-            TextButton(
-              onPressed: context.pop,
-              child: Text(context.l10n.cancel),
-            ),
-            FilledButton(
-              child: Text(context.l10n.sendEmail),
-              onPressed: () {
-                try {
-                  authenticationCRUD.sendPasswordResetEmail(email: email);
-                  snackBarNotify(context, context.l10n.verifyMailbox);
-                  context.pop();
-                } catch (_) {
-                  snackBarError(context, context.l10n.errorOccurred);
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +101,7 @@ class _SigninBody extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () => confirmResetPassword(
+                onPressed: () => showResetPasswordDialog(
                   context,
                   form.email.value,
                 ),
