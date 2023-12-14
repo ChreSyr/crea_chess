@@ -136,7 +136,7 @@ class UserBody extends MainRouteBody {
                 banner: user.banner,
                 photo: user.photo,
                 username: user.username,
-                editable: false,
+                editable: true,
               ),
               tabSections: UserSection.getSections(currentUserId, userId),
             );

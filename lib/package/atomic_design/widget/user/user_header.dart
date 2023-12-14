@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:crea_chess/package/atomic_design/color.dart';
 import 'package:crea_chess/package/atomic_design/dialog/relationship/block_user.dart';
 import 'package:crea_chess/package/atomic_design/dialog/relationship/cancel_relationship.dart';
 import 'package:crea_chess/package/atomic_design/modal/modal.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
+import 'package:crea_chess/package/atomic_design/widget/edit_button.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_banner.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_photo.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
@@ -60,16 +60,8 @@ class UserHeader extends StatelessWidget {
                   Positioned(
                     right: 0,
                     bottom: 0,
-                    child: IconButton(
-                      onPressed: () => showBannerModal(context),
-                      icon: const Icon(Icons.edit),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => CCColor.background(context),
-                          // TODO : sligth transparency in background
-                        ),
-                      ),
-                    ),
+                    child:
+                        EditButton(onPressed: () => showBannerModal(context)),
                   ),
               ],
             ),
@@ -90,17 +82,9 @@ class UserHeader extends StatelessWidget {
                     Positioned(
                       right: -CCSize.medium,
                       bottom: 0,
-                      child: IconButton(
+                      child: EditButton(
                         onPressed: () => showPhotoModal(context),
-                        icon: (photo ?? '').isEmpty
-                            ? const Icon(Icons.priority_high, color: Colors.red)
-                            : const Icon(Icons.edit),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => CCColor.background(context),
-                            // TODO : sligth transparency in background
-                          ),
-                        ),
+                        priorityHigh: (photo ?? '').isEmpty,
                       ),
                     ),
                 ],
@@ -114,9 +98,10 @@ class UserHeader extends StatelessWidget {
           leading: const Icon(Icons.alternate_email),
           title: Text(username ?? ''),
           trailing: editable
-              ? ((username ?? '').isEmpty || username == userId)
-                  ? const Icon(Icons.priority_high, color: Colors.red)
-                  : const Icon(Icons.edit)
+              ? EditButton(
+                  priorityHigh: editable &&
+                      ((username ?? '').isEmpty || username == userId),
+                )
               : const Icon(Icons.more_horiz),
           onTap: editable
               ? () => context.push('/user/modify_name')
