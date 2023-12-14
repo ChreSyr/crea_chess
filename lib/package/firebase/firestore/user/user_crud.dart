@@ -52,10 +52,18 @@ class _UserCRUD extends BaseCRUD<UserModel> {
     }
   }
 
+  Stream<Iterable<UserModel>> streamUsername(String username) {
+    return streamFiltered(
+      filter: (collection) => collection.where(
+        'usernameLowercase',
+        isEqualTo: username.toLowerCase(),
+      ),
+    );
+  }
+
   Future<bool> usernameIsTaken(String username) async {
     final users = await readFiltered(
-        filter: (collection) =>
-            collection.where(
+      filter: (collection) => collection.where(
         'usernameLowercase',
         isEqualTo: username.toLowerCase(),
       ),

@@ -52,6 +52,7 @@ class UserCubit extends Cubit<UserModel?> {
     });
   }
 
+  // TODO : replace by userStreamSubscription?.cancel();
   void cancelUserStreamSubscription() {
     if (userStreamSubscription != null) {
       userStreamSubscription!.cancel();

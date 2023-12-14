@@ -30,8 +30,8 @@ class UserHeader extends StatelessWidget {
     super.key,
   });
 
-  factory UserHeader.notVerified({required String authUid}) => UserHeader(
-        userId: authUid,
+  factory UserHeader.notVerified({required String authId}) => UserHeader(
+        userId: authId,
         banner: null,
         photo: null,
         username: null,

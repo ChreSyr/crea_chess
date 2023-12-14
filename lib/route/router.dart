@@ -80,10 +80,11 @@ final router = GoRouter(
                       const RouteScaffold(body: ModifyUsernameBody()),
                 ),
                 GoRoute(
-                  path: '@:userId',
+                  path: '@:username',
                   builder: (context, state) => RouteScaffold(
                     body: UserBody(
-                      routeUserId: state.pathParameters['userId'] ?? '',
+                      routeUsernameLowercase:
+                          state.pathParameters['username']?.toLowerCase() ?? '',
                     ),
                   ),
                 ),
@@ -98,8 +99,7 @@ final router = GoRouter(
             GoRoute(
               path: '/settings',
               builder: (context, state) =>
-                  const RouteScaffold(body: SettingsBody()
-              ),
+                  const RouteScaffold(body: SettingsBody()),
             ),
           ],
         ),
@@ -170,8 +170,12 @@ class ErrorBody extends StatelessWidget {
         children: [
           Text(exception?.toString() ?? 'null'),
           TextButton(
-            onPressed: () => context.go('/play'),
-            child: Text(context.l10n.home),
+            onPressed: () {
+              while (context.canPop()) {
+                context.pop();
+              }
+            },
+            child: Text(context.l10n.back),
           ),
         ],
       ),

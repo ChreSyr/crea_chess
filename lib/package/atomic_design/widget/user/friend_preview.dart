@@ -46,7 +46,8 @@ class FriendPreview extends StatelessWidget {
                 context.pop();
               }
             } else {
-              context.push('/user/@$friendId');
+              // TODO : on push, the url changes
+              context.push('/user/@${friend.usernameLowercase}');
             }
           },
           child: UserPhoto(
