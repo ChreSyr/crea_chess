@@ -1,3 +1,4 @@
+import 'package:crea_chess/package/atomic_design/dialog/user/email_verification.dart';
 import 'package:crea_chess/package/atomic_design/size.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/friend_preview.Dart';
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
@@ -7,7 +8,6 @@ import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 // LATER: if other is not a friend, can only see friends in common
 
@@ -88,30 +88,7 @@ class UserSectionDetails extends UserSection {
           : const Icon(Icons.priority_high, color: Colors.red),
       onTap: isVerified
           ? null
-          : () => showDialog<AlertDialog>(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: Text(
-                      context.l10n.verifyEmailExplanation,
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: context.pop,
-                        child: Text(context.l10n.cancel),
-                      ),
-                      FilledButton(
-                        child: Text(context.l10n.sendEmail),
-                        onPressed: () {
-                          context
-                            ..pop()
-                            ..push('/sso/email_verification');
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
+          : () => showEmailVerificationDialog(context),
     );
   }
 }
