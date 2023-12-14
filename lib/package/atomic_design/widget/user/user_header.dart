@@ -99,13 +99,13 @@ class UserHeader extends StatelessWidget {
           title: Text(username ?? ''),
           trailing: editable
               ? EditButton(
+                  onPressed: editable
+                      ? () => context.push('/user/modify_name')
+                      : () => showUserActionsModal(context),
                   priorityHigh: editable &&
                       ((username ?? '').isEmpty || username == userId),
                 )
               : const Icon(Icons.more_horiz),
-          onTap: editable
-              ? () => context.push('/user/modify_name')
-              : () => showUserActionsModal(context),
         ),
       ],
     );

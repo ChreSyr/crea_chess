@@ -21,13 +21,7 @@ import 'package:go_router/go_router.dart';
 
 class UserBody extends MainRouteBody {
   const UserBody({this.routeUserId, super.key})
-      : super(
-          id: 'user',
-          icon: Icons.person,
-          centered: false,
-          padded: false,
-          // scrolled: false,
-        );
+      : super(id: 'user', icon: Icons.person, centered: false, padded: false);
 
   final String? routeUserId;
 
@@ -101,8 +95,7 @@ class UserBody extends MainRouteBody {
                   editable: false,
                 ),
                 relationshipWidget: relationshipWidget,
-                tabSections:
-                    UserSection.getSections(currentUserId, userId),
+                tabSections: UserSection.getSections(currentUserId, userId),
               );
             },
           );
