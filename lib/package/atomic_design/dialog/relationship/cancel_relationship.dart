@@ -24,7 +24,7 @@ void showCancelRelationshipDialog(
       builder: (context, snapshot) {
         final toBlock = snapshot.data;
         return ListTile(
-          leading: UserPhoto(toBlock?.photo),
+          leading: UserPhoto(userId: relatedUserId, photo: toBlock?.photo),
           title: Text(toBlock?.username ?? ''),
         );
       },

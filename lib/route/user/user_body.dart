@@ -1,4 +1,3 @@
-import 'package:crea_chess/package/atomic_design/streamer/streamer.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/relationship_button.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_header.dart';
 import 'package:crea_chess/package/atomic_design/widget/user/user_profile.dart';
@@ -6,6 +5,7 @@ import 'package:crea_chess/package/atomic_design/widget/user/user_sections.dart'
 import 'package:crea_chess/package/firebase/authentication/authentication_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/relationship/relationship_model.dart';
+import 'package:crea_chess/package/firebase/firestore/user/user_crud.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_cubit.dart';
 import 'package:crea_chess/package/firebase/firestore/user/user_model.dart';
 import 'package:crea_chess/package/l10n/l10n.dart';
@@ -65,10 +65,6 @@ class UserBody extends MainRouteBody {
         final currentUserId = auth.uid;
         final userId = routeUserId ?? currentUserId;
 
-        if (currentUserId != userId) {
-          return Streamer.user(
-            userId: userId,
-            builder: (_, user) {
               final relationshipWidget = StreamBuilder<RelationshipModel?>(
                 stream: relationshipCRUD.stream(
                   documentId: relationshipCRUD.getId(currentUserId, userId),
@@ -86,12 +82,18 @@ class UserBody extends MainRouteBody {
                 },
               );
 
+        if (currentUserId != userId) {
+          return StreamBuilder<UserModel?>(
+            stream: userCRUD.stream(documentId: userId),
+            builder: (context, snapshot) {
+              final user = snapshot.data;
+
               return UserProfile(
                 header: UserHeader(
                   userId: userId,
-                  banner: user.banner,
-                  photo: user.photo,
-                  username: user.username,
+                  banner: user?.banner,
+                  photo: user?.photo,
+                  username: user?.username,
                   editable: false,
                 ),
                 relationshipWidget: relationshipWidget,

@@ -47,9 +47,8 @@ final router = GoRouter(
             // top route inside branch
             GoRoute(
               path: '/play',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: RouteScaffold(body: HomeBody()),
-              ),
+              builder: (context, state) =>
+                  const RouteScaffold(body: HomeBody()),
               routes: [
                 // child routes
                 GoRoute(
@@ -71,11 +70,8 @@ final router = GoRouter(
             // top route inside branch
             GoRoute(
               path: '/user',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: RouteScaffold(
-                  body: UserBody(),
-                ),
-              ),
+              builder: (context, state) =>
+                  const RouteScaffold(body: UserBody()),
               routes: [
                 // child routes
                 GoRoute(
@@ -101,8 +97,8 @@ final router = GoRouter(
             // top route inside branch
             GoRoute(
               path: '/settings',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: RouteScaffold(body: SettingsBody()),
+              builder: (context, state) =>
+                  const RouteScaffold(body: SettingsBody()
               ),
             ),
           ],
@@ -113,9 +109,8 @@ final router = GoRouter(
             // top route inside branch
             GoRoute(
               path: '/sso',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: RouteScaffold(body: SignMethodsBody()),
-              ),
+              builder: (context, state) =>
+                  const RouteScaffold(body: SignMethodsBody()),
               routes: [
                 // child routes
                 GoRoute(

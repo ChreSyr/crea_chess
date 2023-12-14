@@ -74,7 +74,8 @@ class UserHeader extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   UserPhoto(
-                    photo,
+                    userId: userId,
+                    photo: photo,
                     radius: CCWidgetSize.xxsmall,
                     backgroundColor: photo == null ? Colors.red[100] : null,
                   ),
