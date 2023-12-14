@@ -32,39 +32,42 @@ class UserProfile extends StatelessWidget {
       create: (context) => _TabIndexCubit(),
       child: Builder(
         builder: (context) {
-          return SizedBox(
-            width: CCWidgetSize.large4,
-            child: Column(
-              children: [
-                header,
-                if (relationshipWidget != null) relationshipWidget!,
-                if (tabSections.isNotEmpty) ...[
-                  CCGap.medium,
-                  DefaultTabController(
-                    length: tabSections.length,
-                    child: TabBar(
-                      isScrollable: true,
-                      tabAlignment: TabAlignment.start,
-                      tabs: tabSections
-                          .map((e) => Tab(text: e.getTitle(context.l10n)))
-                          .toList(),
-                      onTap: context.read<_TabIndexCubit>().set,
+          return Align(
+            alignment: Alignment.topCenter,
+            child: SizedBox(
+              width: CCWidgetSize.large4,
+              child: Column(
+                children: [
+                  header,
+                  if (relationshipWidget != null) relationshipWidget!,
+                  if (tabSections.isNotEmpty) ...[
+                    CCGap.medium,
+                    DefaultTabController(
+                      length: tabSections.length,
+                      child: TabBar(
+                        isScrollable: true,
+                        tabAlignment: TabAlignment.start,
+                        tabs: tabSections
+                            .map((e) => Tab(text: e.getTitle(context.l10n)))
+                            .toList(),
+                        onTap: context.read<_TabIndexCubit>().set,
+                      ),
                     ),
-                  ),
-                  CCDivider.xthin,
-                  CCPadding.allMedium(
-                    child: BlocBuilder<_TabIndexCubit, int>(
-                      builder: (context, index) {
-                        return IndexedStack(
-                          alignment: Alignment.topCenter,
-                          index: index,
-                          children: tabSections.toList(),
-                        );
-                      },
+                    CCDivider.xthin,
+                    CCPadding.allMedium(
+                      child: BlocBuilder<_TabIndexCubit, int>(
+                        builder: (context, index) {
+                          return IndexedStack(
+                            alignment: Alignment.topCenter,
+                            index: index,
+                            children: tabSections.toList(),
+                          );
+                        },
+                      ),
                     ),
-                  ),
+                  ],
                 ],
-              ],
+              ),
             ),
           );
         },
