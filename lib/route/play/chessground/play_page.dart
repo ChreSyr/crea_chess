@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:chessground/chessground.dart';
 import 'package:crea_chess/frenzy_piece_set.dart';
+import 'package:crea_chess/package/atomic_design/dialog/enum_choice.dart';
 import 'package:crea_chess/route/play/chessground/draw_shapes_page.dart';
 import 'package:dartchess_webok/dartchess_webok.dart' as dc;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart'
@@ -155,7 +156,7 @@ class _HomePageState extends State<PlayPage> {
                   children: [
                     ElevatedButton(
                       child: Text('Piece set: ${pieceSet?.label ?? 'frenzy'}'),
-                      onPressed: () => _showChoicesPicker<PieceSet>(
+                      onPressed: () => showEnumChoiceDialog<PieceSet>(
                         context,
                         choices: PieceSet.values,
                         selectedItem: pieceSet ?? PieceSet.merida,
@@ -172,7 +173,7 @@ class _HomePageState extends State<PlayPage> {
                     const SizedBox(width: 8),
                     ElevatedButton(
                       child: Text('Board theme: ${boardTheme.label}'),
-                      onPressed: () => _showChoicesPicker<BoardTheme>(
+                      onPressed: () => showEnumChoiceDialog<BoardTheme>(
                         context,
                         choices: BoardTheme.values,
                         selectedItem: boardTheme,
@@ -207,44 +208,6 @@ class _HomePageState extends State<PlayPage> {
           ],
         ),
       ),
-    );
-  }
-
-  void _showChoicesPicker<T extends Enum>(
-    BuildContext context, {
-    required List<T> choices,
-    required T selectedItem,
-    required Widget Function(T choice) labelBuilder,
-    required void Function(T choice) onSelectedItemChanged,
-  }) {
-    showDialog<void>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.only(top: 12),
-          scrollable: true,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: choices.map((value) {
-              return RadioListTile<T>(
-                title: labelBuilder(value),
-                value: value,
-                groupValue: selectedItem,
-                onChanged: (value) {
-                  if (value != null) onSelectedItemChanged(value);
-                  Navigator.of(context).pop();
-                },
-              );
-            }).toList(growable: false),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
     );
   }
 
