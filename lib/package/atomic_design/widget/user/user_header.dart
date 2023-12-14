@@ -106,7 +106,10 @@ class UserHeader extends StatelessWidget {
                   priorityHigh: editable &&
                       ((username ?? '').isEmpty || username == userId),
                 )
-              : const Icon(Icons.more_horiz),
+              : IconButton(
+                  onPressed: () => showUserActionsModal(context),
+                  icon: const Icon(Icons.more_horiz),
+                ),
         ),
       ],
     );
